@@ -12,6 +12,9 @@ import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
 import com.shoppin.customer.R;
+import com.shoppin.customer.model.Suburb;
+
+import java.util.ArrayList;
 
 
 public class Utils {
@@ -126,6 +129,19 @@ public class Utils {
                 "Share using : "));
     }
 
+
+    public static Suburb getSelectedSuburb(ArrayList<Suburb> suburbArrayList, String suburbName) {
+        Suburb selectedSuburb = null;
+        if (suburbArrayList != null && suburbName != null) {
+            for (int i = 0; i < suburbArrayList.size(); i++) {
+                if (suburbName.equals(suburbArrayList.get(i).suburb_name)) {
+                    selectedSuburb = suburbArrayList.get(i);
+                    break;
+                }
+            }
+        }
+        return selectedSuburb;
+    }
 
 //    public static String webServiceCall(String wsUrl, String params) {
 //

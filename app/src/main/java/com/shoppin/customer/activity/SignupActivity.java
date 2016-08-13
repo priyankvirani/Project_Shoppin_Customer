@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shoppin.customer.R;
+import com.shoppin.customer.database.DBAdapter;
+import com.shoppin.customer.database.IDatabase;
 import com.shoppin.customer.model.Suburb;
 import com.shoppin.customer.network.DataRequest;
 import com.shoppin.customer.network.IWebService;
@@ -30,6 +32,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.shoppin.customer.utils.Utils.getSelectedSuburb;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -64,19 +68,6 @@ public class SignupActivity extends AppCompatActivity {
     private ArrayAdapter<Suburb> suburbArrayAdapter;
     private Suburb selectedSuburb;
 
-    private static Suburb getSelectedSuburb(ArrayList<Suburb> suburbArrayList, String suburbName) {
-        Suburb selectedSuburb = null;
-        if (suburbArrayList != null && suburbName != null) {
-            for (int i = 0; i < suburbArrayList.size(); i++) {
-                if (suburbName.equals(suburbArrayList.get(i).suburb_name)) {
-                    selectedSuburb = suburbArrayList.get(i);
-                    break;
-                }
-            }
-        }
-        return selectedSuburb;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,15 +77,6 @@ public class SignupActivity extends AppCompatActivity {
         suburbArrayList = new ArrayList<>();
         suburbArrayAdapter = new ArrayAdapter<>(SignupActivity.this, android.R.layout.simple_dropdown_item_1line, suburbArrayList);
         etxSuburb.setAdapter(suburbArrayAdapter);
-        etxSuburb.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                Log.d(TAG, "selected = " + suburbArrayList.get(arg2));
-            }
-        });
-
         getSuburbs();
     }
 
@@ -146,7 +128,7 @@ public class SignupActivity extends AppCompatActivity {
         etxPassword.setError(null);
         etxConfirmPassword.setError(null);
 
-        selectedSuburb = getSelectedSuburb(suburbArrayList, etxSuburb.getText().toString());
+        selectedSuburb = Utils.getSelectedSuburb(suburbArrayList, etxSuburb.getText().toString());
 
         if (Utils.isNullOrEmpty(etxName.getText().toString())) {
             etxName.setError(getString(R.string.error_required));
@@ -187,15 +169,14 @@ public class SignupActivity extends AppCompatActivity {
 
     private void getSuburbs() {
         DataRequest getSuburbsDataRequest = new DataRequest(SignupActivity.this);
-//        getSuburbs.setShowProgressDialog(true);
         getSuburbsDataRequest.execute(IWebService.GET_SUBURB, null, new DataRequest.CallBack() {
             public void onPreExecute() {
-                Log.d(TAG, "onPreExecute");
                 rlvGlobalProgressbar.setVisibility(View.VISIBLE);
             }
 
             public void onPostExecute(String response) {
                 try {
+                    rlvGlobalProgressbar.setVisibility(View.GONE);
                     if (!DataRequest.hasError(SignupActivity.this, response, true)) {
                         Gson gson = new Gson();
                         JSONObject dataJObject = DataRequest.getJObjWebdata(response);
@@ -210,7 +191,6 @@ public class SignupActivity extends AppCompatActivity {
                             suburbArrayAdapter.notifyDataSetChanged();
                         }
                     }
-                    rlvGlobalProgressbar.setVisibility(View.GONE);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -237,46 +217,45 @@ public class SignupActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_guest_suburb, null);
         dialogBuilder.setView(dialogView);
-        final AlertDialog alertDialogForLocation = dialogBuilder.create();
-//        ListView listMyLocation = (ListView) dialogView
-//                .findViewById(R.id.listMyLocation);
+        dialogBuilder.setCancelable(false);
+        final AlertDialog alertDialog = dialogBuilder.create();
 
+        final AutoCompleteTextView atxSuburbDialog = (AutoCompleteTextView) dialogView.findViewById(R.id.atxSuburbDialog);
+        atxSuburbDialog.setAdapter(suburbArrayAdapter);
 
         dialogView.findViewById(R.id.txtCancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertDialogForLocation.dismiss();
+                alertDialog.dismiss();
             }
         });
-//        final MyLocationAdapter myLocationAdapter = new MyLocationAdapter(SignupActivity.this,
-//                myLocationArrayList);
-//        listMyLocation.setAdapter(myLocationAdapter);
-//        listMyLocation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-//                                    long arg3) {
-//                Log.d(TAG, "arg2 = " + arg2);
-//                // update data for location
-//                for (int i = 0; i < myLocationArrayList.size(); i++) {
-//                    myLocationArrayList.get(i).isSelected = false;
-//                }
-//                myLocationArrayList.get(arg2).isSelected = true;
-//                myLocationAdapter.notifyDataSetChanged();
-//
-//                // Save selected location in sharedpreference
-//                Gson gson = new Gson();
-//                String myLocationJsonStr = gson.toJson(myLocationArrayList
-//                        .get(arg2));
-//                DBAdapter.insertUpdateMap(SignupActivity.this, IMap.LOCATION,
-//                        myLocationJsonStr);
-//                alertDialogForLocation.dismiss();
-//            }
-//        });
 
-        alertDialogForLocation.getWindow().setBackgroundDrawableResource(
-                R.color.transparent);
-        alertDialogForLocation.show();
+        dialogView.findViewById(R.id.txtGo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                atxSuburbDialog.setError(null);
+                selectedSuburb = getSelectedSuburb(suburbArrayList, atxSuburbDialog.getText().toString());
+                if (selectedSuburb == null) {
+                    atxSuburbDialog.setError(getString(R.string.error_valid_suburb));
+                    atxSuburbDialog.requestFocus();
+                } else {
+                    DBAdapter.insertUpdateMap(SignupActivity.this, IDatabase.IMap.SUBURB_ID,
+                            selectedSuburb.suburb_id);
+                    DBAdapter.insertUpdateMap(SignupActivity.this, IDatabase.IMap.SUBURB_NAME,
+                            selectedSuburb.suburb_name);
+                    DBAdapter.setMapKeyValueBoolean(SignupActivity.this, IDatabase.IMap.IS_LOGIN, false);
+
+                    Intent intent = new Intent(SignupActivity.this, NavigationDrawerActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+
+        alertDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        alertDialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alertDialog.show();
     }
 
 }

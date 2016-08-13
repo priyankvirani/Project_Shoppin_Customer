@@ -9,34 +9,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_small"
-        android:background="@drawable/bg_dialog_round_top"
-        android:orientation="vertical">
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_medium">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/app_theme_1"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:padding="@dimen/margin_small">
 
             <TextView
                 android:id="@+id/txtCancel"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="@dimen/margin_small"
                 android:gravity="left|center_vertical"
-                android:padding="@dimen/margin_small"
                 android:text="@string/cancel"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_title"
                 android:textStyle="bold" />
 
+
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 android:gravity="center"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp"
                 android:text="@string/dialog_title_guest"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_title"
@@ -44,21 +46,21 @@
 
             <TextView
                 android:id="@+id/txtGo"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin_small"
                 android:gravity="right|center_vertical"
-                android:padding="@dimen/margin_small"
                 android:text="@string/button_go"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_title"
                 android:textStyle="bold" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
         <AutoCompleteTextView
-            android:id="@+id/atxSuburb"
+            android:id="@+id/atxSuburbDialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_medium"
@@ -68,26 +70,8 @@
             android:hint="@string/edittext_hint_suburb"
             android:inputType="text"
             android:maxLines="1"
-            android:paddingBottom="@dimen/margin_medium"
-            android:textColor="@color/white"
+            android:textColor="@color/app_theme_1"
             android:textColorHint="@color/app_theme_1"
             android:textSize="@dimen/font_size_edittext" />
-
-        <!--        <TextView
-                    android:id="@+id/txtGo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_medium"
-                    android:background="@drawable/button_background_green"
-                    android:gravity="center"
-                    android:padding="@dimen/margin_button"
-                    android:text="@string/button_go"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font_size_button"
-                    android:textStyle="bold" />-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_dialog_round_bottom" />
     </LinearLayout>
 </LinearLayout>
