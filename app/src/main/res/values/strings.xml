@@ -22,7 +22,6 @@
     <string name="text_or">Or</string>
     <string name="text_explore_guest">Explore as</string>
 
-
     <!-- Edit text hint-->
     <string name="edittext_hint_mobile_number">Mobile Number</string>
     <string name="edittext_hint_password">Password</string>
