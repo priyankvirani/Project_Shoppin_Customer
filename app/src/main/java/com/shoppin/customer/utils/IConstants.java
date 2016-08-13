@@ -4,8 +4,8 @@ package com.shoppin.customer.utils;
  * Created by ubuntu on 21/7/16.
  */
 public interface IConstants {
-    String adInterstitialId = "ca-app-pub-5984127134426363/1414441730";
 
+    String adInterstitialId = "ca-app-pub-5984127134426363/1414441730";
     //    "<center><b><u>Guidelines for using Pokemon Go Hack</u></b></center><br/>" +
     String guideText = "Before using Hacks and Guide for Pokemon Go, there are some necessary settings to be enabled to work it properly." +
             "<br/> <br/> <b>Developer Option :</b><br/>" +
@@ -23,10 +23,35 @@ public interface IConstants {
             "<br/>Once you have enable the “Developer Option” , the next required setting is to enable \"Allow Mock  Locations\"<br/>" +
             "- Go to Developer Option --> Check  \"Allow mock location\"<br/>" +
             "<br/>On Android M (Marshmallow – 6.0) device <br/>" +
-                "- Go to Developer Option --> Press \"Select mock location app\" --> Choose \"Hacks and Guide for Pokemon Go\" application.";
-
+            "- Go to Developer Option --> Press \"Select mock location app\" --> Choose \"Hacks and Guide for Pokemon Go\" application.";
     String aboutUsText = "Hacks and Guide for Pokemon Go links to third-party web sites. We are thankful to Pokecrew and others website for providing the contents to us." +
             " The content of such third-party sites is the responsibility of the respective owners/providers.<br/>" +
             "<br/>At the time third-party web sites were linked to ours, we found no grounds whatsoever of any likely contravention of the law. " +
             "We shall promptly delete a link upon becoming aware that it violates the law.<br/>";
+
+    interface IDrawerMenu {
+        String LOGIN_SIGNUP = "Login / Sign Up";
+        int LOGIN_SIGNUP_ID = 10011;
+
+        String WELCOME = "Welcome";
+        int WELCOME_ID = 10012;
+
+        String CHANGE_SUBURB = "Change Suburb";
+        int CHANGE_SUBURB_ID = 1002;
+
+        String STORE_LIST = "Store List";
+        int STORE_LIST_ID = 1003;
+
+        String MY_ORDER = "My Order";
+        int MY_ORDER_ID = 1004;
+
+        String CART = "Cart";
+        int CART_ID = 1005;
+
+        String OFFERS = "Offers";
+        int OFFERS_ID = 1006;
+
+        String ABOUT_US = "About Us";
+        int ABOUT_US_ID = 1007;
+    }
 }

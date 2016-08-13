@@ -1,16 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_navigation_drawer"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.shoppin.customer.activity.NavigationDrawerActivity">
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/logOut"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        android:textSize="30sp" />
+        android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+        <include layout="@layout/toolbar_app" />
+
+        <!-- fragment view -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/contentFrame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!--        <FrameLayout
+                        android:id="@+id/contentFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:foreground="?android:windowContentOverlay" />-->
+            <!--<include layout="@layout/progressbar" />-->
+        </RelativeLayout>
+
+        <!-- left side navigation drawer -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="left">
+
+            <ListView
+                android:id="@+id/leftDrawerList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/app_theme_1"
+                android:divider="@color/white"
+                android:dividerHeight="1dp"
+                android:paddingLeft="@dimen/margin_small"
+                android:paddingRight="@dimen/margin_small" />
+        </RelativeLayout>
+    </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>
