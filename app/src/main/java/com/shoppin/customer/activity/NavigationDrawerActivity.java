@@ -22,7 +22,9 @@ import android.widget.Toast;
 import com.shoppin.customer.R;
 import com.shoppin.customer.adapter.NavigationDrawerMenuAdapter;
 import com.shoppin.customer.database.DBAdapter;
-import com.shoppin.customer.fragment.BaseFragment;
+import com.shoppin.customer.fragment.HomeFragment;
+import com.shoppin.customer.fragment.MyAccountFragment;
+import com.shoppin.customer.fragment.UnderDevelopmentFragment;
 import com.shoppin.customer.model.NavigationDrawerMenuItem;
 
 import butterknife.BindView;
@@ -32,8 +34,6 @@ import static com.shoppin.customer.database.IDatabase.IMap;
 import static com.shoppin.customer.utils.IConstants.IDrawerMenu;
 
 public class NavigationDrawerActivity extends BaseActivity {
-//    @BindView(R.id.logOut)
-//    TextView logOut;
 
     private static final String TAG = SignupActivity.class.getSimpleName();
 
@@ -77,39 +77,39 @@ public class NavigationDrawerActivity extends BaseActivity {
                 switch (menuTagId) {
 
                     case IDrawerMenu.LOGIN_SIGNUP_ID:
-                        newContent = new BaseFragment();
+                        newContent = new UnderDevelopmentFragment();
                         break;
 
                     case IDrawerMenu.WELCOME_ID:
-                        newContent = new BaseFragment();
+                        newContent = new MyAccountFragment();
                         break;
 
                     case IDrawerMenu.CHANGE_SUBURB_ID:
-                        newContent = new BaseFragment();
+                        newContent = new UnderDevelopmentFragment();
                         break;
 
+                    case IDrawerMenu.HOME_ID:
+                        newContent = new HomeFragment();
+                        break;
 
                     case IDrawerMenu.STORE_LIST_ID:
-                        newContent = new BaseFragment();
+                        newContent = new UnderDevelopmentFragment();
                         break;
 
-
                     case IDrawerMenu.MY_ORDER_ID:
-                        newContent = new BaseFragment();
+                        newContent = new UnderDevelopmentFragment();
                         break;
 
                     case IDrawerMenu.CART_ID:
-                        newContent = new BaseFragment();
+                        newContent = new UnderDevelopmentFragment();
                         break;
 
                     case IDrawerMenu.OFFERS_ID:
-                        newContent = new BaseFragment();
+                        newContent = new UnderDevelopmentFragment();
                         break;
                     case IDrawerMenu.ABOUT_US_ID:
-                        newContent = new BaseFragment();
+                        newContent = new UnderDevelopmentFragment();
                         break;
-
-
                 }
                 if (newContent != null) {
                     isNavMenuchange = true;
@@ -136,7 +136,7 @@ public class NavigationDrawerActivity extends BaseActivity {
 //            DBAdapter.insertUpdateMap(NavigationDrawerActivity.this, IMap.SUBURB_ID, "");
 //            DBAdapter.insertUpdateMap(NavigationDrawerActivity.this, IMap.SUBURB_NAME, "");
 //            finish();
-//        } else {
+//        } else {.
 //            finish();
 //        }
 //    }
@@ -151,13 +151,23 @@ public class NavigationDrawerActivity extends BaseActivity {
         Log.d(TAG, "suburb_id = " + DBAdapter.getMapKeyValueString(NavigationDrawerActivity.this, IMap.SUBURB_ID));
         Log.d(TAG, "suburb_name = " + DBAdapter.getMapKeyValueString(NavigationDrawerActivity.this, IMap.SUBURB_NAME));
 
-        initDrawer();
-
         if (toolbar != null) {
             toolbar.setNavigationIcon(R.mipmap.menu_icon);
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("");
         }
+        initDrawer();
+
+        // For the first time load it will display
+        // Product fragment as default
+        if (content == null) {
+            Log.i(TAG, "content is null");
+            isNavMenuchange = true;
+            switchContent(new HomeFragment());
+            // switchContent(new ProductDetailFragment());
+        }
+//        getSupportFragmentManager().addOnBackStackChangedListener(
+//                onBackStackChangedListener);
     }
 
     private void setMenuAdapter() {
@@ -173,6 +183,8 @@ public class NavigationDrawerActivity extends BaseActivity {
 
         drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.CHANGE_SUBURB,
                 IDrawerMenu.CHANGE_SUBURB_ID, R.mipmap.ic_profile));
+        drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.HOME,
+                IDrawerMenu.HOME_ID, R.mipmap.ic_profile));
         drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.STORE_LIST,
                 IDrawerMenu.STORE_LIST_ID, R.mipmap.ic_profile));
 

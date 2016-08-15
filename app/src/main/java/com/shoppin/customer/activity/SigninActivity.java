@@ -24,7 +24,6 @@ import com.shoppin.customer.network.DataRequest;
 import com.shoppin.customer.network.IWebService;
 import com.shoppin.customer.utils.Utils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -73,45 +72,47 @@ public class SigninActivity extends AppCompatActivity {
 
     @OnClick(R.id.txtSignin)
     void singIn() {
-        if (loginValidation()) {
-            DataRequest signinDataRequest = new DataRequest(SigninActivity.this);
-            JSONObject loginParam = new JSONObject();
-            try {
+        try {
+            if (loginValidation()) {
+                JSONObject loginParam = new JSONObject();
                 loginParam.put(IWebService.KEY_REQ_CUSTOMER_MOBILE, etxSigninId.getText().toString());
                 loginParam.put(IWebService.KEY_REQ_CUSTOMER_PASSWORD, etxPassword.getText().toString());
                 loginParam.put(IWebService.KEY_REQ_CUSTOMER_DEVICE_TYPE, etxSigninId.getText().toString());
                 loginParam.put(IWebService.KEY_REQ_CUSTOMER_DEVICE_TOKEN, etxSigninId.getText().toString());
                 loginParam.put(IWebService.KEY_REQ_CUSTOMER_DEVICE_ID, etxSigninId.getText().toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            signinDataRequest.execute(IWebService.CUSTOMER_LOGIN, loginParam.toString(), new DataRequest.CallBack() {
-                public void onPreExecute() {
-                    rlvGlobalProgressbar.setVisibility(View.VISIBLE);
-                }
 
-                public void onPostExecute(String response) {
-                    try {
-                        rlvGlobalProgressbar.setVisibility(View.GONE);
-                        if (!DataRequest.hasError(SigninActivity.this, response, true)) {
-
-                            JSONObject dataJObject = DataRequest.getJObjWebdata(response);
-
-                            DBAdapter.insertUpdateMap(SigninActivity.this, IMap.SUBURB_ID,
-                                    dataJObject.getString(IWebService.KEY_RES_SUBURB_ID));
-                            DBAdapter.insertUpdateMap(SigninActivity.this, IMap.SUBURB_NAME,
-                                    dataJObject.getString(IWebService.KEY_RES_SUBURB_NAME));
-                            DBAdapter.setMapKeyValueBoolean(SigninActivity.this, IMap.IS_LOGIN, true);
-
-                            Intent intent = new Intent(SigninActivity.this, NavigationDrawerActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                DataRequest signinDataRequest = new DataRequest(SigninActivity.this);
+                signinDataRequest.execute(IWebService.CUSTOMER_LOGIN, loginParam.toString(), new DataRequest.CallBack() {
+                    public void onPreExecute() {
+                        rlvGlobalProgressbar.setVisibility(View.VISIBLE);
                     }
-                }
-            });
+
+                    public void onPostExecute(String response) {
+                        try {
+                            rlvGlobalProgressbar.setVisibility(View.GONE);
+                            if (!DataRequest.hasError(SigninActivity.this, response, true)) {
+
+                                JSONObject dataJObject = DataRequest.getJObjWebdata(response);
+
+                                DBAdapter.insertUpdateMap(SigninActivity.this, IMap.SUBURB_ID,
+                                        dataJObject.getString(IWebService.KEY_RES_SUBURB_ID));
+                                DBAdapter.insertUpdateMap(SigninActivity.this, IMap.SUBURB_NAME,
+                                        dataJObject.getString(IWebService.KEY_RES_SUBURB_NAME));
+                                DBAdapter.setMapKeyValueBoolean(SigninActivity.this, IMap.IS_LOGIN, true);
+
+                                Intent intent = new Intent(SigninActivity.this, NavigationDrawerActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

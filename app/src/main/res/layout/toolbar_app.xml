@@ -22,7 +22,7 @@
             android:id="@+id/txtFragmentTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="left|center_vertical"
             android:background="@color/app_theme_3"
             android:ellipsize="marquee"
             android:maxLines="1"

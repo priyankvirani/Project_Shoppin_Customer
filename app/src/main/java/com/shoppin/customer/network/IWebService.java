@@ -17,6 +17,8 @@ public interface IWebService {
     String CUSTOMER_LOGIN = MAIN_URL + "customer/CustomerLogin";
     String CUSTOMER_REGISTRATION = MAIN_URL + "customer/CustomerRegistration";
 
+    String GET_CATEGORY = MAIN_URL + "category/GetCategoryList";
+
     /**
      * Request Params
      */
@@ -30,6 +32,7 @@ public interface IWebService {
     String KEY_REQ_CUSTOMER_STREET = "customer_address_line1";
     String KEY_REQ_CUSTOMER_SUBURB_ID = "customer_suburb_id";
     String KEY_REQ_CUSTOMER_POSTCODE = "customer_zip";
+    String KEY_REQ_IS_HOME = "is_home";
 
     /**
      * Response Params
@@ -37,4 +40,5 @@ public interface IWebService {
     String KEY_RES_SUBURB_LIST = "suburb_list";
     String KEY_RES_SUBURB_ID = "suburb_id";
     String KEY_RES_SUBURB_NAME = "suburb_name";
+    String KEY_RES_CATEGORY_LIST = "category_list";
 }

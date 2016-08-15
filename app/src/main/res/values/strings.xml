@@ -43,7 +43,6 @@
     <string name="edittext_hint_postcode">Postcode</string>
     <string name="edittext_hint_confirm_password">Confirm Password</string>
 
-
     <!-- Button text -->
     <string name="button_signin">Sign In</string>
     <string name="button_signup">Sign Up</string>
