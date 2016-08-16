@@ -1,7 +1,9 @@
 package com.shoppin.customer.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +15,17 @@ import com.google.gson.reflect.TypeToken;
 import com.shoppin.customer.R;
 import com.shoppin.customer.activity.SignupActivity;
 import com.shoppin.customer.adapter.CategoryAdapter;
+import com.shoppin.customer.adapter.ViewImageAdapter;
 import com.shoppin.customer.model.Category;
+import com.shoppin.customer.model.Offer;
 import com.shoppin.customer.network.DataRequest;
 import com.shoppin.customer.network.IWebService;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +38,10 @@ public class HomeFragment extends BaseFragment {
 
     private static final String TAG = SignupActivity.class.getSimpleName();
 
+    private int position = 0;
+    private Handler handler;
+    private Runnable runnable;
+
 
     @BindView(R.id.rlvGlobalProgressbar)
     public View rlvGlobalProgressbar;
@@ -39,8 +49,14 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.lstCategory)
     ListView lstCategory;
 
+    @BindView(R.id.pager)
+    ViewPager viewPager;
+
     private ArrayList<Category> categoryArrayList;
     private CategoryAdapter categoryAdapter;
+
+    private ViewImageAdapter viewImageAdapter;
+    private ArrayList<String> offerArrayList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -55,7 +71,56 @@ public class HomeFragment extends BaseFragment {
 
         getCategory();
 
+        if (offerArrayList != null) {
+            viewImageAdapter = new ViewImageAdapter(getActivity(), offerArrayList);
+            viewPager.setAdapter(viewImageAdapter);
+            viewPager.setCurrentItem(0);
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int arg) {
+                    position = arg;
+
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+
+            handler = new Handler();
+            runnable = new Runnable() {
+                public void run() {
+                    if (position >= (categoryArrayList.size() - 1)) {
+                        position = 0;
+                    } else {
+                        position = position + 1;
+                    }
+                    viewPager.setCurrentItem(position);
+                    handler.postDelayed(runnable, 5000);
+                }
+            };
+        }
         return layoutView;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (handler != null) {
+            handler.removeCallbacks(runnable);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume(); // Always call the superclass method first
+        handler.postDelayed(runnable, 3000);
     }
 
     private void getCategory() {
@@ -84,6 +149,23 @@ public class HomeFragment extends BaseFragment {
                                 categoryAdapter.notifyDataSetChanged();
                                 Log.d(TAG, "tmpCategoryArrayList = " + tmpCategoryArrayList.size());
                             }
+
+//                            Type listType = new TypeToken<List<String>>() {
+//                            }.getType();
+//                            List<String> yourList = gson.fromJson(String.valueOf(dataJObject.get(IWebService.KEY_RES_OFFER_LIST)), listType);
+//                            Log.d(TAG, "tmpOfferArrayList = " + yourList.size());
+                            ArrayList<String> tmpOfferArrayList = gson.fromJson
+                                    (dataJObject.getJSONArray(IWebService.KEY_RES_OFFER_LIST).toString(),
+                                            new TypeToken<ArrayList<String>>() {
+                                            }.getType());
+//                            Log.d(TAG, "tmpOfferArrayList = " + tmpOfferArrayList.size());
+                            if (tmpOfferArrayList != null) {
+//                                offerArrayList.addAll(tmpOfferArrayList);
+                                offerArrayList.addAll(tmpOfferArrayList);
+                                viewImageAdapter.notifyDataSetChanged();
+                                Log.d(TAG, "tmpOfferArrayList = " + tmpOfferArrayList.size());
+                            }
+
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

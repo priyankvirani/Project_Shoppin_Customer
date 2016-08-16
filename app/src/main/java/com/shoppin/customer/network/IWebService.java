@@ -41,4 +41,5 @@ public interface IWebService {
     String KEY_RES_SUBURB_ID = "suburb_id";
     String KEY_RES_SUBURB_NAME = "suburb_name";
     String KEY_RES_CATEGORY_LIST = "category_list";
+    String KEY_RES_OFFER_LIST = "offer_list";
 }
