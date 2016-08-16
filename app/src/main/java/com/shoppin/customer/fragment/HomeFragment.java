@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shoppin.customer.R;
 import com.shoppin.customer.activity.SignupActivity;
-import com.shoppin.customer.adapter.CategoryAdapter;
+import com.shoppin.customer.adapter.CategoryHomeAdapter;
 import com.shoppin.customer.model.Category;
 import com.shoppin.customer.network.DataRequest;
 import com.shoppin.customer.network.IWebService;
@@ -34,28 +34,38 @@ public class HomeFragment extends BaseFragment {
 
 
     @BindView(R.id.rlvGlobalProgressbar)
-    public View rlvGlobalProgressbar;
+    View rlvGlobalProgressbar;
 
     @BindView(R.id.lstCategory)
     ListView lstCategory;
 
     private ArrayList<Category> categoryArrayList;
-    private CategoryAdapter categoryAdapter;
+    private CategoryHomeAdapter categoryHomeAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        layoutView = inflater.inflate(R.layout.fragment_home, null);
         layoutView = inflater.inflate(R.layout.fragment_home, container, false);
+
         ButterKnife.bind(this, layoutView);
 
+        initView();
+
         categoryArrayList = new ArrayList<>();
-        categoryAdapter = new CategoryAdapter(getActivity(), categoryArrayList);
-        lstCategory.setAdapter(categoryAdapter);
+        categoryHomeAdapter = new CategoryHomeAdapter(getActivity(), categoryArrayList);
+        lstCategory.setAdapter(categoryHomeAdapter);
 
         getCategory();
 
         return layoutView;
+    }
+
+    private void initView() {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        ViewGroup headerView = (ViewGroup) inflater.inflate(
+                R.layout.fragment_home_header, null);
+        lstCategory.addHeaderView(headerView);
     }
 
     private void getCategory() {
@@ -81,7 +91,7 @@ public class HomeFragment extends BaseFragment {
 
                             if (tmpCategoryArrayList != null) {
                                 categoryArrayList.addAll(tmpCategoryArrayList);
-                                categoryAdapter.notifyDataSetChanged();
+                                categoryHomeAdapter.notifyDataSetChanged();
                                 Log.d(TAG, "tmpCategoryArrayList = " + tmpCategoryArrayList.size());
                             }
                         }

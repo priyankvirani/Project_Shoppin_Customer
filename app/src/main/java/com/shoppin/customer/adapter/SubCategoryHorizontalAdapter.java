@@ -7,11 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.shoppin.customer.R;
 import com.shoppin.customer.model.SubCategory;
+import com.shoppin.customer.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -42,7 +42,11 @@ public class SubCategoryHorizontalAdapter extends RecyclerView.Adapter<SubCatego
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.txtsubCategory.setText(subCategoryArrayList.get(position).subcat_name);
-        Glide.with(context).load(subCategoryArrayList.get(position).subcat_image).into(holder.imgSubcategory);
+        Glide.with(context)
+                .load(subCategoryArrayList.get(position).subcat_image)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
+                .into(holder.imgSubcategory);
         holder.imgSubcategory.setOnClickListener(new OnItemClickListener(subCategoryArrayList.get(position)));
     }
 
@@ -72,7 +76,7 @@ public class SubCategoryHorizontalAdapter extends RecyclerView.Adapter<SubCatego
 
         @Override
         public void onClick(View arg0) {
-            Toast.makeText(context, cat_id + "," + subCategory.subcat_name, Toast.LENGTH_LONG).show();
+            Utils.showToastShort(context, "Under Development : " + subCategory.subcat_name);
         }
     }
 }

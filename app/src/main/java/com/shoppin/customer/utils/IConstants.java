@@ -16,9 +16,6 @@ public interface IConstants {
         String CHANGE_SUBURB = "Change Suburb";
         int CHANGE_SUBURB_ID = 1002;
 
-//        String HOME = "Home";
-//        int HOME_ID = 1003;
-
         String STORE_LIST = "Store List";
         int STORE_LIST_ID = 1004;
 

@@ -5,17 +5,10 @@
     android:background="@color/white"
     android:clickable="true">
 
-    <ImageView
-        android:id="@+id/imgOffer"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:src="@drawable/placeholder" />
-
     <ListView
         android:id="@+id/lstCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imgOffer"
         android:layout_marginTop="2dp"
         android:divider="@color/white"
         android:dividerHeight="1dp"

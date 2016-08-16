@@ -82,11 +82,7 @@ public class NavigationDrawerActivity extends BaseActivity {
     };
     private ActionBarDrawerToggle drawerToggle;
     private NavigationDrawerMenuAdapter drawerMenuAdapter;
-    /**
-     * When user select option from navigation drawer remove all previous
-     * frgaments
-     */
-    private boolean isNavMenuchange = false;
+
     /**
      * Menu drawer item click listener to set respective fragment
      */
@@ -114,10 +110,6 @@ public class NavigationDrawerActivity extends BaseActivity {
                         newContent = new UnderDevelopmentFragment();
                         break;
 
-//                    case IDrawerMenu.HOME_ID:
-//                        newContent = new HomeFragment();
-//                        break;
-
                     case IDrawerMenu.STORE_LIST_ID:
                         newContent = new UnderDevelopmentFragment();
                         break;
@@ -138,8 +130,7 @@ public class NavigationDrawerActivity extends BaseActivity {
                         break;
                 }
                 if (newContent != null) {
-                    isNavMenuchange = true;
-                    switchContent(newContent);
+                    switchContent(newContent, true);
                 }
             }
         }
@@ -171,8 +162,7 @@ public class NavigationDrawerActivity extends BaseActivity {
         // Product fragment as default
         if (content == null) {
             Log.i(TAG, "content is null");
-            isNavMenuchange = true;
-            switchContent(new HomeFragment());
+            switchContent(new HomeFragment(), true);
             // switchContent(new ProductDetailFragment());
         }
         getSupportFragmentManager().addOnBackStackChangedListener(
@@ -203,8 +193,7 @@ public class NavigationDrawerActivity extends BaseActivity {
 
     @OnClick(R.id.imgHome)
     public void launchHome() {
-        isNavMenuchange = true;
-        switchContent(new HomeFragment());
+        switchContent(new HomeFragment(), true);
     }
 
     @OnClick(R.id.imgSearch)
@@ -215,8 +204,7 @@ public class NavigationDrawerActivity extends BaseActivity {
 
     @OnClick(R.id.imgCart)
     public void openCart() {
-        isNavMenuchange = true;
-        switchContent(new UnderDevelopmentFragment());
+        switchContent(new UnderDevelopmentFragment(), true);
     }
 
     private void setMenuAdapter() {
@@ -312,7 +300,7 @@ public class NavigationDrawerActivity extends BaseActivity {
     /*
      * For switching fragments
      */
-    public void switchContent(Fragment fragment) {
+    public void switchContent(Fragment fragment, boolean emptyStack) {
         FragmentManager manager = getSupportFragmentManager();
 //        To hide keyboard on fragment change
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -327,8 +315,7 @@ public class NavigationDrawerActivity extends BaseActivity {
         // .toString()) == 0
         // || backStateName.compareTo(SettingsFragment.class.getSimpleName()
         // .toString()) == 0) {
-        if (isNavMenuchange) {
-            isNavMenuchange = false;
+        if (emptyStack) {
             // Remove all inner fragments of previous section
             boolean fragmentPopped = manager.popBackStackImmediate(null,
                     FragmentManager.POP_BACK_STACK_INCLUSIVE);

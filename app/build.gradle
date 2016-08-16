@@ -52,6 +52,8 @@ dependencies {
 
     // For smart tab layout
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+    //Optional: see how to use the utility.
+    compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.1@aar'
 
     // For image caching
     compile 'com.github.bumptech.glide:glide:3.7.0'

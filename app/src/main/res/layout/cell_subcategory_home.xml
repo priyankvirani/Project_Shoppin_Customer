@@ -23,10 +23,11 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:background="@drawable/img_overly"
+            android:ellipsize="end"
             android:gravity="bottom|center"
             android:maxLines="2"
-            android:padding="2dp"
+            android:padding="@dimen/margin_tiny"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_title" />
+            android:textSize="@dimen/font_size_edittext" />
     </RelativeLayout>
 </LinearLayout>
