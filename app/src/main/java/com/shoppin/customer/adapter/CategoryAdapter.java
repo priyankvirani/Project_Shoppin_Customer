@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shoppin.customer.R;
 import com.shoppin.customer.model.Category;
@@ -52,6 +52,7 @@ public class CategoryAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = View.inflate(context, R.layout.cell_category_home_fragment, null);
             holder = new ViewHolder();
+            holder.rlvCategory = (RelativeLayout) convertView.findViewById(R.id.rlvCategory);
             holder.txtCategory = (TextView) convertView.findViewById(R.id.txtCategory);
             holder.imgViewAllCategory = (ImageView) convertView.findViewById(R.id.imgViewAllCategory);
             holder.rclHorizontalSubCategoty = (RecyclerView) convertView.findViewById(R.id.recycler_view);
@@ -60,7 +61,7 @@ public class CategoryAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Log.e(TAG, "" + categoryArrayList.get(position).cat_id);
+        Log.e(TAG, "cat_id = " + categoryArrayList.get(position).cat_id);
 
         holder.txtCategory.setText(categoryArrayList.get(position).cat_name);
 
@@ -77,13 +78,12 @@ public class CategoryAdapter extends BaseAdapter {
         } else {
             holder.rclHorizontalSubCategoty.setVisibility(View.GONE);
         }
-        //Log.e(TAG, "" + listModelCategoryTempValues.getCat_name() + "," + listModelCategoryTempValues.isCategoryExpand() + "," + position);
 
-        holder.txtCategory.setOnClickListener(new OnItemClickListener(position));
+        holder.rlvCategory.setOnClickListener(new OnItemClickListener(position));
         holder.imgViewAllCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Log.e(TAG, "Size : " + categoryArrayList.size());
+                Log.e(TAG, "Size : " + categoryArrayList.size());
 
 //                NavigationDrawerActivity fca = (NavigationDrawerActivity) context;
 //
@@ -105,9 +105,9 @@ public class CategoryAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
+        public RelativeLayout rlvCategory;
         public TextView txtCategory;
         public RecyclerView rclHorizontalSubCategoty;
-        //        public TextView txtViewAll;
         public ImageView imgViewAllCategory;
     }
 
@@ -120,18 +120,14 @@ public class CategoryAdapter extends BaseAdapter {
 
         @Override
         public void onClick(View arg0) {
-            Category listModelCategory = categoryArrayList.get(mPosition);
-
-            if (listModelCategory.isCategoryExpand()) {
-                listModelCategory.setCategoryExpand(false);
+            Log.d(TAG, "Category : " + categoryArrayList.get(mPosition).cat_name);
+            if (categoryArrayList.get(mPosition).isCategoryExpand()) {
+                categoryArrayList.get(mPosition).setCategoryExpand(false);
             } else {
-                listModelCategory.setCategoryExpand(true);
+                categoryArrayList.get(mPosition).setCategoryExpand(true);
             }
             notifyDataSetChanged();
-            Toast.makeText(context, "Category : " + listModelCategory.cat_name, Toast.LENGTH_LONG).show();
         }
-
-
     }
 
 

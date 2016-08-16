@@ -42,8 +42,6 @@ public class SubCategoryHorizontalAdapter extends RecyclerView.Adapter<SubCatego
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.txtsubCategory.setText(subCategoryArrayList.get(position).subcat_name);
-        //Log.e(TAG, " : " + listModelSubCategoryTempValues.getSubcat_name());
-        //Log.e(TAG, " : " + listModelSubCategoryTempValues.getItemCellCategoryName());
         Glide.with(context).load(subCategoryArrayList.get(position).subcat_image).into(holder.imgSubcategory);
         holder.imgSubcategory.setOnClickListener(new OnItemClickListener(subCategoryArrayList.get(position)));
     }
@@ -75,7 +73,6 @@ public class SubCategoryHorizontalAdapter extends RecyclerView.Adapter<SubCatego
         @Override
         public void onClick(View arg0) {
             Toast.makeText(context, cat_id + "," + subCategory.subcat_name, Toast.LENGTH_LONG).show();
-            //Log.e(TAG, " :    " + subCategory.getItemCellCategoryName() + "," + subCategory.getSubcat_name());
         }
     }
 }
