@@ -3,7 +3,7 @@
     android:id="@+id/activity_sign_in"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/app_bg">
+    android:background="@drawable/app_bg">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_medium"
                 android:layout_marginTop="100dp"
-                android:src="@mipmap/app_logo_transparent" />
+                android:src="@drawable/app_logo_transparent" />
 
             <EditText
                 android:id="@+id/etxSigninId"
@@ -32,12 +32,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:background="@drawable/edittext_bottom_line_white"
-                android:drawableLeft="@mipmap/ic_profile"
+                android:drawableLeft="@drawable/mobilenumber"
                 android:drawablePadding="@dimen/margin_tiny"
                 android:hint="@string/edittext_hint_mobile_number"
                 android:inputType="number"
                 android:maxLines="1"
-                android:paddingBottom="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_edittext_bottom"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="@dimen/font_size_edittext" />
@@ -48,12 +48,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:background="@drawable/edittext_bottom_line_white"
-                android:drawableLeft="@mipmap/ic_profile"
+                android:drawableLeft="@drawable/lock_password"
                 android:drawablePadding="@dimen/margin_tiny"
                 android:hint="@string/edittext_hint_password"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:paddingBottom="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_edittext_bottom"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="@dimen/font_size_edittext" />

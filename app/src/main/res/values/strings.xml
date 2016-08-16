@@ -5,13 +5,13 @@
     <string name="drawer_open">Drawer Open</string>
     <string name="drawer_close">Drawer Close</string>
 
-<!--    <string name="drawer_menu_login">Login / Sign Up</string>
-    <string name="drawer_menu_change_suburb">Change Suburb</string>
-    <string name="drawer_menu_store_list">Store List</string>
-    <string name="drawer_menu_my_order">My Order</string>
-    <string name="drawer_menu_cart">Cart</string>
-    <string name="drawer_menu_offers">Offers</string>
-    <string name="drawer_menu_about_us">About Us</string>-->
+    <!--    <string name="drawer_menu_login">Login / Sign Up</string>
+        <string name="drawer_menu_change_suburb">Change Suburb</string>
+        <string name="drawer_menu_store_list">Store List</string>
+        <string name="drawer_menu_my_order">My Order</string>
+        <string name="drawer_menu_cart">Cart</string>
+        <string name="drawer_menu_offers">Offers</string>
+        <string name="drawer_menu_about_us">About Us</string>-->
 
     <!-- Other -->
     <string name="ok">Ok</string>
@@ -52,4 +52,7 @@
     <!--dialog -->
     <string name="dialog_title_guest">Guest Login</string>
 
+    <!-- Menu Action -->
+    <string name="action_search_product">Search</string>
+    <string name="action_view_cart">Cart</string>
 </resources>

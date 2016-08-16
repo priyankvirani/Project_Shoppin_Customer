@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,8 +52,8 @@ public class CategoryAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = View.inflate(context, R.layout.cell_category_home_fragment, null);
             holder = new ViewHolder();
-            holder.txtCategory = (TextView) convertView.findViewById(R.id.txtcategory);
-            holder.txtViewAll = (TextView) convertView.findViewById(R.id.txtViewAll);
+            holder.txtCategory = (TextView) convertView.findViewById(R.id.txtCategory);
+            holder.imgViewAllCategory = (ImageView) convertView.findViewById(R.id.imgViewAllCategory);
             holder.rclHorizontalSubCategoty = (RecyclerView) convertView.findViewById(R.id.recycler_view);
             convertView.setTag(holder);
         } else {
@@ -79,7 +80,7 @@ public class CategoryAdapter extends BaseAdapter {
         //Log.e(TAG, "" + listModelCategoryTempValues.getCat_name() + "," + listModelCategoryTempValues.isCategoryExpand() + "," + position);
 
         holder.txtCategory.setOnClickListener(new OnItemClickListener(position));
-        holder.txtViewAll.setOnClickListener(new View.OnClickListener() {
+        holder.imgViewAllCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Log.e(TAG, "Size : " + categoryArrayList.size());
@@ -106,7 +107,8 @@ public class CategoryAdapter extends BaseAdapter {
     class ViewHolder {
         public TextView txtCategory;
         public RecyclerView rclHorizontalSubCategoty;
-        public TextView txtViewAll;
+        //        public TextView txtViewAll;
+        public ImageView imgViewAllCategory;
     }
 
     private class OnItemClickListener implements View.OnClickListener {

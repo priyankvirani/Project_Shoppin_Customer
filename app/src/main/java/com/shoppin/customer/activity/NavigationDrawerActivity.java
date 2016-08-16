@@ -22,13 +22,16 @@ import android.widget.Toast;
 import com.shoppin.customer.R;
 import com.shoppin.customer.adapter.NavigationDrawerMenuAdapter;
 import com.shoppin.customer.database.DBAdapter;
+import com.shoppin.customer.fragment.BaseFragment;
 import com.shoppin.customer.fragment.HomeFragment;
+import com.shoppin.customer.fragment.IUpdateFragment;
 import com.shoppin.customer.fragment.MyAccountFragment;
 import com.shoppin.customer.fragment.UnderDevelopmentFragment;
 import com.shoppin.customer.model.NavigationDrawerMenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.shoppin.customer.database.IDatabase.IMap;
 import static com.shoppin.customer.utils.IConstants.IDrawerMenu;
@@ -54,6 +57,29 @@ public class NavigationDrawerActivity extends BaseActivity {
     DrawerLayout drawerLayout;
     @BindView(R.id.leftDrawerList)
     ListView leftDrawerList;
+    /**
+     * Basically to change title in tool bar.
+     * <p/>
+     * First get the current fragment and then calling its onStart() method to
+     * set title.
+     */
+    FragmentManager.OnBackStackChangedListener onBackStackChangedListener = new FragmentManager.OnBackStackChangedListener() {
+
+        @Override
+        public void onBackStackChanged() {
+            // TODO Auto-generated method stub
+            // Update your UI here.
+            Log.i(TAG, "OnBackStackChangedListener");
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment currentFragment = fragmentManager
+                    .findFragmentById(R.id.contentFrame);
+            if (currentFragment != null
+                    && (currentFragment instanceof IUpdateFragment)) {
+                Log.e(TAG, currentFragment.getClass().getSimpleName());
+                ((BaseFragment) currentFragment).updateFragment();
+            }
+        }
+    };
     private ActionBarDrawerToggle drawerToggle;
     private NavigationDrawerMenuAdapter drawerMenuAdapter;
     /**
@@ -88,9 +114,9 @@ public class NavigationDrawerActivity extends BaseActivity {
                         newContent = new UnderDevelopmentFragment();
                         break;
 
-                    case IDrawerMenu.HOME_ID:
-                        newContent = new HomeFragment();
-                        break;
+//                    case IDrawerMenu.HOME_ID:
+//                        newContent = new HomeFragment();
+//                        break;
 
                     case IDrawerMenu.STORE_LIST_ID:
                         newContent = new UnderDevelopmentFragment();
@@ -123,24 +149,6 @@ public class NavigationDrawerActivity extends BaseActivity {
      */
     private boolean doubleBackToExitPressedOnce;
 
-    /**
-     * Set title
-     */
-    public void mSetToolbarTitle(String toolbarTitle) {
-        txtFragmentTitle.setText(toolbarTitle);
-    }
-
-//    @OnClick(R.id.logOut)
-//    void logOut() {
-//        if (DBAdapter.getMapKeyValueBoolean(NavigationDrawerActivity.this, IMap.IS_LOGIN)) {
-//            DBAdapter.insertUpdateMap(NavigationDrawerActivity.this, IMap.SUBURB_ID, "");
-//            DBAdapter.insertUpdateMap(NavigationDrawerActivity.this, IMap.SUBURB_NAME, "");
-//            finish();
-//        } else {.
-//            finish();
-//        }
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,7 +160,8 @@ public class NavigationDrawerActivity extends BaseActivity {
         Log.d(TAG, "suburb_name = " + DBAdapter.getMapKeyValueString(NavigationDrawerActivity.this, IMap.SUBURB_NAME));
 
         if (toolbar != null) {
-            toolbar.setNavigationIcon(R.mipmap.menu_icon);
+//            toolbar.setNavigationIcon(R.drawable.menu_icon);
+//            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.menu_icon));
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("");
         }
@@ -166,8 +175,48 @@ public class NavigationDrawerActivity extends BaseActivity {
             switchContent(new HomeFragment());
             // switchContent(new ProductDetailFragment());
         }
-//        getSupportFragmentManager().addOnBackStackChangedListener(
-//                onBackStackChangedListener);
+        getSupportFragmentManager().addOnBackStackChangedListener(
+                onBackStackChangedListener);
+    }
+
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_app_global, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//        if (id == R.id.action_search_product) {
+//            return true;
+//        } else if (id == R.id.action_view_cart) {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
+    @OnClick(R.id.imgHome)
+    public void launchHome() {
+        isNavMenuchange = true;
+        switchContent(new HomeFragment());
+    }
+
+    @OnClick(R.id.imgSearch)
+    public void searchProduct() {
+//        isNavMenuchange = true;
+//        switchContent(new HomeFragment());
+    }
+
+    @OnClick(R.id.imgCart)
+    public void openCart() {
+        isNavMenuchange = true;
+        switchContent(new UnderDevelopmentFragment());
     }
 
     private void setMenuAdapter() {
@@ -175,30 +224,30 @@ public class NavigationDrawerActivity extends BaseActivity {
                 NavigationDrawerActivity.this);
         if (DBAdapter.getMapKeyValueBoolean(NavigationDrawerActivity.this, IMap.IS_LOGIN)) {
             drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.WELCOME,
-                    IDrawerMenu.WELCOME_ID, R.mipmap.ic_profile));
+                    IDrawerMenu.WELCOME_ID, R.drawable.user));
         } else {
             drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.LOGIN_SIGNUP,
-                    IDrawerMenu.LOGIN_SIGNUP_ID, R.mipmap.ic_profile));
+                    IDrawerMenu.LOGIN_SIGNUP_ID, R.drawable.user));
         }
 
         drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.CHANGE_SUBURB,
-                IDrawerMenu.CHANGE_SUBURB_ID, R.mipmap.ic_profile));
-        drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.HOME,
-                IDrawerMenu.HOME_ID, R.mipmap.ic_profile));
+                IDrawerMenu.CHANGE_SUBURB_ID, R.drawable.street));
+//        drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.HOME,
+//                IDrawerMenu.HOME_ID, R.drawable.user));
         drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.STORE_LIST,
-                IDrawerMenu.STORE_LIST_ID, R.mipmap.ic_profile));
+                IDrawerMenu.STORE_LIST_ID, R.drawable.storelist));
 
         if (DBAdapter.getMapKeyValueBoolean(NavigationDrawerActivity.this, IMap.IS_LOGIN)) {
             drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.MY_ORDER,
-                    IDrawerMenu.MY_ORDER_ID, R.mipmap.ic_profile));
+                    IDrawerMenu.MY_ORDER_ID, R.drawable.myorder));
         }
 
         drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.CART,
-                IDrawerMenu.CART_ID, R.mipmap.ic_profile));
+                IDrawerMenu.CART_ID, R.drawable.mycart));
         drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.OFFERS,
-                IDrawerMenu.OFFERS_ID, R.mipmap.ic_profile));
+                IDrawerMenu.OFFERS_ID, R.drawable.offers));
         drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.ABOUT_US,
-                IDrawerMenu.ABOUT_US_ID, R.mipmap.ic_profile));
+                IDrawerMenu.ABOUT_US_ID, R.drawable.aboutus));
     }
 
     private void initDrawer() {
@@ -239,7 +288,8 @@ public class NavigationDrawerActivity extends BaseActivity {
         drawerLayout.closeDrawer(Gravity.LEFT);
     }
 
-    private void toggleLeftDrawer() {
+    @OnClick(R.id.imgToggleDrawer)
+    public void toggleLeftDrawer() {
         if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
             drawerLayout.closeDrawer(Gravity.LEFT);
         } else {
@@ -340,4 +390,12 @@ public class NavigationDrawerActivity extends BaseActivity {
             }
         }
     }
+
+    /**
+     * Set title
+     */
+    public void setToolbarTitle(String toolbarTitle) {
+        txtFragmentTitle.setText(toolbarTitle);
+    }
+
 }

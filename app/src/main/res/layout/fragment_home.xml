@@ -9,7 +9,7 @@
         android:id="@+id/imgOffer"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/placeholder" />
 
     <ListView
         android:id="@+id/lstCategory"

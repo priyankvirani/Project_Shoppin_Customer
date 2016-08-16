@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/app_theme_1"
-                android:divider="@color/white"
+                android:divider="@color/white_50"
                 android:dividerHeight="1dp"
                 android:paddingLeft="@dimen/margin_small"
                 android:paddingRight="@dimen/margin_small" />

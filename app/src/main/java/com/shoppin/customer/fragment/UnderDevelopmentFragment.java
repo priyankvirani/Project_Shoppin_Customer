@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shoppin.customer.R;
+import com.shoppin.customer.activity.NavigationDrawerActivity;
 import com.shoppin.customer.activity.SignupActivity;
 
 import butterknife.ButterKnife;
@@ -31,4 +32,11 @@ public class UnderDevelopmentFragment extends BaseFragment {
         return layoutView;
     }
 
+    @Override
+    public void updateFragment() {
+        super.updateFragment();
+        if (getActivity() != null && getActivity() instanceof NavigationDrawerActivity) {
+            ((NavigationDrawerActivity) getActivity()).setToolbarTitle("Under Development");
+        }
+    }
 }
