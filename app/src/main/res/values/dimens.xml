@@ -29,6 +29,6 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- image size -->
-    <dimen name="grid_subcategory">150dp</dimen>
+    <dimen name="grid_subcategory">140dp</dimen>
 
 </resources>
