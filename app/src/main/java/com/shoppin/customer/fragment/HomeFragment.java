@@ -3,11 +3,14 @@ package com.shoppin.customer.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -41,6 +44,8 @@ public class HomeFragment extends BaseFragment {
     private int position = 0;
     private Handler handler;
     private Runnable runnable;
+    private int dotsCount;
+    private ImageView[] dots;
 
 
     @BindView(R.id.rlvGlobalProgressbar)
@@ -51,6 +56,9 @@ public class HomeFragment extends BaseFragment {
 
     @BindView(R.id.pager)
     ViewPager viewPager;
+
+    @BindView(R.id.viewPagerCountDots)
+    LinearLayout pager_indicator;
 
     private ArrayList<Category> categoryArrayList;
     private CategoryAdapter categoryAdapter;
@@ -71,8 +79,10 @@ public class HomeFragment extends BaseFragment {
 
         getCategory();
 
+
         if (offerArrayList != null) {
             viewImageAdapter = new ViewImageAdapter(getActivity(), offerArrayList);
+
             viewPager.setAdapter(viewImageAdapter);
             viewPager.setCurrentItem(0);
             viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -84,6 +94,12 @@ public class HomeFragment extends BaseFragment {
                 @Override
                 public void onPageSelected(int arg) {
                     position = arg;
+
+                    for (int i = 0; i < dotsCount; i++) {
+                        dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.nonselecteditem_dot));
+                    }
+
+                    dots[position].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.selecteditem_dot));
 
                 }
 
@@ -106,6 +122,7 @@ public class HomeFragment extends BaseFragment {
                 }
             };
         }
+
         return layoutView;
     }
 
@@ -121,6 +138,29 @@ public class HomeFragment extends BaseFragment {
     public void onResume() {
         super.onResume(); // Always call the superclass method first
         handler.postDelayed(runnable, 3000);
+    }
+
+    private void setUiPageViewController() {
+
+        dotsCount = offerArrayList.size();
+        Log.d(TAG, "dotsCount = " + offerArrayList.size());
+        dots = new ImageView[dotsCount];
+
+        for (int i = 0; i < dotsCount; i++) {
+            dots[i] = new ImageView(getActivity());
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.nonselecteditem_dot));
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+
+            params.setMargins(4, 0, 4, 0);
+
+            pager_indicator.addView(dots[i], params);
+        }
+
+        dots[0].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.selecteditem_dot));
     }
 
     private void getCategory() {
@@ -163,6 +203,7 @@ public class HomeFragment extends BaseFragment {
 //                                offerArrayList.addAll(tmpOfferArrayList);
                                 offerArrayList.addAll(tmpOfferArrayList);
                                 viewImageAdapter.notifyDataSetChanged();
+                                setUiPageViewController();
                                 Log.d(TAG, "tmpOfferArrayList = " + tmpOfferArrayList.size());
                             }
 

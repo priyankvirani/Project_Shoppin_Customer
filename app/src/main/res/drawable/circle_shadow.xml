@@ -17,7 +17,7 @@
         </shape>
     </item>
 
-    <!--    &lt;!&ndash; White Top color &ndash;&gt;
+        <!-- White Top color
         <item
             android:bottom="2dp"
             android:left="1dp"

@@ -19,6 +19,7 @@ import com.shoppin.customer.model.Offer;
 import java.util.ArrayList;
 
 public class ViewImageAdapter extends PagerAdapter {
+    private static final String TAG = ViewImageAdapter.class.getSimpleName();
     Context context;
     ArrayList<String> imageArrayList;
 
@@ -43,7 +44,7 @@ public class ViewImageAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -53,11 +54,18 @@ public class ViewImageAdapter extends PagerAdapter {
         ImageView imgDetail = (ImageView) viewLayout
                 .findViewById(R.id.imgDetail);
 
-//		Picasso.with(context).load(imageArrayList.get(position).imgPath)
-//				.placeholder(R.drawable.ic_launcher)
-//				.error(R.drawable.ic_launcher).into(imgDetail);
-        Glide.with(context).load(imageArrayList.get(position).toString()).into(imgDetail);
+        Glide.with(context).load(imageArrayList.get(position).toString())
+                .placeholder(R.drawable.app_logo_transparent)
+                .error(R.drawable.app_logo_transparent).into(imgDetail);
+//        Glide.with(context).load(imageArrayList.get(position).toString()).into(imgDetail);
 
+        // on page click listener of view pager
+        viewLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, " positionClicked = " + position);
+            }
+        });
         ((ViewPager) container).addView(viewLayout);
 
         return viewLayout;
