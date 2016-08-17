@@ -1,6 +1,7 @@
 package com.shoppin.customer.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -80,9 +81,6 @@ public class NavigationDrawerActivity extends BaseActivity {
             }
         }
     };
-    private ActionBarDrawerToggle drawerToggle;
-    private NavigationDrawerMenuAdapter drawerMenuAdapter;
-
     /**
      * Menu drawer item click listener to set respective fragment
      */
@@ -99,7 +97,8 @@ public class NavigationDrawerActivity extends BaseActivity {
                 switch (menuTagId) {
 
                     case IDrawerMenu.LOGIN_SIGNUP_ID:
-                        newContent = new UnderDevelopmentFragment();
+                        login();
+                        toggleLeftDrawer();
                         break;
 
                     case IDrawerMenu.WELCOME_ID:
@@ -135,6 +134,8 @@ public class NavigationDrawerActivity extends BaseActivity {
             }
         }
     };
+    private ActionBarDrawerToggle drawerToggle;
+    private NavigationDrawerMenuAdapter drawerMenuAdapter;
     /**
      * For double back exit functionality
      */
@@ -383,6 +384,11 @@ public class NavigationDrawerActivity extends BaseActivity {
      */
     public void setToolbarTitle(String toolbarTitle) {
         txtFragmentTitle.setText(toolbarTitle);
+    }
+
+    private void login() {
+        Intent intent = new Intent(NavigationDrawerActivity.this, SigninActivity.class);
+        startActivity(intent);
     }
 
 }

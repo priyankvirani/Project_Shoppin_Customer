@@ -1,9 +1,11 @@
 package com.shoppin.customer.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,10 +26,12 @@ public class SubCategoryNestedAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<SubCategory> subCategoryArrayList;
+    private int cellWidth = 100;
 
     public SubCategoryNestedAdapter(Context context, ArrayList<SubCategory> subCategoryArrayList) {
         this.context = context;
         this.subCategoryArrayList = subCategoryArrayList;
+        this.cellWidth = Utils.getDeviceWidth(context) / 3;
     }
 
     @Override
@@ -66,6 +70,10 @@ public class SubCategoryNestedAdapter extends BaseAdapter {
                 .into(holder.imgSubcategory);
         holder.imgSubcategory.setOnClickListener(new OnItemClickListener(subCategoryArrayList.get(position)));
 
+//        convertView.setLayoutParams(new GridView.LayoutParams(
+//                GridView.AUTO_FIT, Utils.dpToPx(cellWidth)));
+        Log.d(TAG, "cellWidth = " + cellWidth);
+        convertView.setLayoutParams(new GridView.LayoutParams(cellWidth, cellWidth));
         return convertView;
     }
 

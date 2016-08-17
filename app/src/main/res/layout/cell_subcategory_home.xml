@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+    android:paddingTop="2dp">
 
-    <RelativeLayout
-        android:layout_width="@dimen/grid_subcategory"
-        android:layout_height="@dimen/grid_subcategory"
-        android:layout_margin="1dp">
+    <!--    <RelativeLayout
+            android:layout_width="@dimen/grid_subcategory"
+            android:layout_height="@dimen/grid_subcategory"
+            android:layout_margin="1dp">-->
 
-        <ImageView
-            android:id="@+id/imgSubcategory"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/placeholder" />
+    <ImageView
+        android:id="@+id/imgSubcategory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/placeholder" />
 
-        <TextView
-            android:id="@+id/txtSubcategory"
+    <!--    <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/img_overly"
-            android:ellipsize="end"
-            android:gravity="bottom|center"
-            android:maxLines="2"
-            android:padding="@dimen/margin_tiny"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_size_edittext" />
-    </RelativeLayout>
-</LinearLayout>
+            android:src="@drawable/img_overly" />-->
+
+    <TextView
+        android:id="@+id/txtSubcategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/img_overly"
+        android:ellipsize="end"
+        android:gravity="bottom|center_horizontal"
+        android:maxLines="2"
+        android:padding="@dimen/margin_tiny"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_edittext" />
+
+</RelativeLayout>

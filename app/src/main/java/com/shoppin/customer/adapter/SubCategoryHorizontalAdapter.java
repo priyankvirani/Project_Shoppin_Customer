@@ -2,9 +2,11 @@ package com.shoppin.customer.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,17 +27,21 @@ public class SubCategoryHorizontalAdapter extends RecyclerView.Adapter<SubCatego
     private Context context;
     private ArrayList<SubCategory> subCategoryArrayList;
     private String cat_id;
+    private int cellWidth = 100;
 
     public SubCategoryHorizontalAdapter(Context context, ArrayList<SubCategory> subCategoryArrayList, String cat_id) {
         this.context = context;
         this.subCategoryArrayList = subCategoryArrayList;
         this.cat_id = cat_id;
+        this.cellWidth = Utils.getDeviceWidth(context) / 3;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cell_subcategory_home, parent, false);
+        Log.d(TAG, "cellWidth = " + cellWidth);
+        itemView.setLayoutParams(new GridView.LayoutParams(cellWidth, cellWidth));
         return new MyViewHolder(itemView);
     }
 

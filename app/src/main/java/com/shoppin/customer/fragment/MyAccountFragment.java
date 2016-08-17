@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shoppin.customer.R;
+import com.shoppin.customer.activity.NavigationDrawerActivity;
 import com.shoppin.customer.activity.SigninActivity;
 import com.shoppin.customer.activity.SignupActivity;
 import com.shoppin.customer.database.DBAdapter;
@@ -45,4 +46,11 @@ public class MyAccountFragment extends BaseFragment {
         getActivity().finish();
     }
 
+    @Override
+    public void updateFragment() {
+        super.updateFragment();
+        if (getActivity() != null && getActivity() instanceof NavigationDrawerActivity) {
+            ((NavigationDrawerActivity) getActivity()).setToolbarTitle("My Account");
+        }
+    }
 }
