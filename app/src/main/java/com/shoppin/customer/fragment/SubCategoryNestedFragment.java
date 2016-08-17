@@ -34,7 +34,7 @@ public class SubCategoryNestedFragment extends BaseFragment {
     private int categoryPosition = -1;
     private int position;
     private ArrayList<Category> categoryArrayList;
-    private SubCategoryNestedAdapter subCategoryGridAdapter;
+    private SubCategoryNestedAdapter subCategoryNestedAdapter;
 
     @Nullable
     @Override
@@ -49,10 +49,10 @@ public class SubCategoryNestedFragment extends BaseFragment {
         }
 
         //Category listModelCategory = categoryArrayList.get(0);
-        //subCategoryGridAdapter = new SubCategoryAdapter(getActivity(), listModelCategory.getSub_category());
-        //grdSubCategory.setAdapter(subCategoryGridAdapter);
+        //subCategoryNestedAdapter = new SubCategoryAdapter(getActivity(), listModelCategory.getSub_category());
+        //grdSubCategory.setAdapter(subCategoryNestedAdapter);
 
-        initAdapter();
+//        initAdapter();
 
         return layoutView;
     }
@@ -64,17 +64,25 @@ public class SubCategoryNestedFragment extends BaseFragment {
 //
 //        position = FragmentPagerItem.getPosition(getArguments());
 //        Log.e(TAG, "Position :  -  " + position);
-//        subCategoryGridAdapter = new SubCategoryAdapter(getActivity(), categoryArrayList.get(position).subCategoryArrayList);
-//        grdSubCategory.setAdapter(subCategoryGridAdapter);
-//        //subCategoryGridAdapter.notifyDataSetChanged();
+//        subCategoryNestedAdapter = new SubCategoryAdapter(getActivity(), categoryArrayList.get(position).subCategoryArrayList);
+//        grdSubCategory.setAdapter(subCategoryNestedAdapter);
+//        //subCategoryNestedAdapter.notifyDataSetChanged();
 //        Log.e(TAG, "onViewCreated");
 //
 //    }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initAdapter();
+        Log.e(TAG, "onViewCreated");
+
+    }
+
     private void initAdapter() {
         position = FragmentPagerItem.getPosition(getArguments());
         Log.e(TAG, "Position :  -  " + position);
-        subCategoryGridAdapter = new SubCategoryNestedAdapter(getActivity(), categoryArrayList.get(position).subCategoryArrayList);
-        grdSubCategory.setAdapter(subCategoryGridAdapter);
+        subCategoryNestedAdapter = new SubCategoryNestedAdapter(getActivity(), categoryArrayList.get(position).subCategoryArrayList);
+        grdSubCategory.setAdapter(subCategoryNestedAdapter);
     }
 }

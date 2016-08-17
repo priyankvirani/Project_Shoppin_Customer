@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:divider="@color/white"
-        android:dividerHeight="1dp"
-        android:transcriptMode="alwaysScroll" />
+        android:dividerHeight="1dp" />
+    <!--android:transcriptMode="alwaysScroll"-->
 
     <include layout="@layout/progressbar" />
 </RelativeLayout>

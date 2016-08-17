@@ -1,7 +1,6 @@
 package com.shoppin.customer.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -72,7 +71,7 @@ public class SubCategoryNestedAdapter extends BaseAdapter {
 
 //        convertView.setLayoutParams(new GridView.LayoutParams(
 //                GridView.AUTO_FIT, Utils.dpToPx(cellWidth)));
-        Log.d(TAG, "cellWidth = " + cellWidth);
+//        Log.d(TAG, "cellWidth = " + cellWidth);
         convertView.setLayoutParams(new GridView.LayoutParams(cellWidth, cellWidth));
         return convertView;
     }

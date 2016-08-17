@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +86,8 @@ public class CategoryFragment extends BaseFragment {
             fragmentPagerItems.add(FragmentPagerItem.of(categoryNameArrayList.get(i), SubCategoryNestedFragment.class, args));
         }
 
-        fragmentPagerItemAdapter = new FragmentPagerItemAdapter(getActivity().getSupportFragmentManager(), fragmentPagerItems);
+//        fragmentPagerItemAdapter = new FragmentPagerItemAdapter(getActivity().getSupportFragmentManager(), fragmentPagerItems);
+        fragmentPagerItemAdapter = new FragmentPagerItemAdapter(getChildFragmentManager(), fragmentPagerItems);
         categoryViewPager.setAdapter(fragmentPagerItemAdapter);
         categorySmartTabLayout.setViewPager(categoryViewPager);
 
@@ -108,17 +110,16 @@ public class CategoryFragment extends BaseFragment {
 //                } else {
 //                    Log.e(TAG, "non UpdateableFragment");
 //                }
+                Log.d(TAG, "onPageScrolled position = " + position);
             }
 
             @Override
             public void onPageSelected(int position) {
-
-
+                Log.d(TAG, "onPageSelected position = " + position);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
         categorySmartTabLayout.setOnTabClickListener(new SmartTabLayout.OnTabClickListener() {
