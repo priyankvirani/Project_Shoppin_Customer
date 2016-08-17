@@ -50,7 +50,7 @@ public class SubCategoryNestedFragment extends BaseFragment {
 
         //Category listModelCategory = categoryArrayList.get(0);
         //subCategoryNestedAdapter = new SubCategoryAdapter(getActivity(), listModelCategory.getSub_category());
-        //grdSubCategory.setAdapter(subCategoryNestedAdapter);
+        //listProduct.setAdapter(subCategoryNestedAdapter);
 
 //        initAdapter();
 
@@ -64,8 +64,8 @@ public class SubCategoryNestedFragment extends BaseFragment {
 //
 //        position = FragmentPagerItem.getPosition(getArguments());
 //        Log.e(TAG, "Position :  -  " + position);
-//        subCategoryNestedAdapter = new SubCategoryAdapter(getActivity(), categoryArrayList.get(position).subCategoryArrayList);
-//        grdSubCategory.setAdapter(subCategoryNestedAdapter);
+//        subCategoryNestedAdapter = new SubCategoryAdapter(getActivity(), categoryArrayList.get(position).productVariantArrayList);
+//        listProduct.setAdapter(subCategoryNestedAdapter);
 //        //subCategoryNestedAdapter.notifyDataSetChanged();
 //        Log.e(TAG, "onViewCreated");
 //

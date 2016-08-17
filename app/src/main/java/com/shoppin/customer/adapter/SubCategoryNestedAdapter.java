@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.shoppin.customer.R;
+import com.shoppin.customer.activity.NavigationDrawerActivity;
+import com.shoppin.customer.fragment.ProductListFragment;
 import com.shoppin.customer.model.SubCategory;
 import com.shoppin.customer.utils.Utils;
 
@@ -67,7 +69,7 @@ public class SubCategoryNestedAdapter extends BaseAdapter {
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)
                 .into(holder.imgSubcategory);
-        holder.imgSubcategory.setOnClickListener(new OnItemClickListener(subCategoryArrayList.get(position)));
+        holder.imgSubcategory.setOnClickListener(new OnItemClickListener(position, subCategoryArrayList.get(position)));
 
 //        convertView.setLayoutParams(new GridView.LayoutParams(
 //                GridView.AUTO_FIT, Utils.dpToPx(cellWidth)));
@@ -83,14 +85,20 @@ public class SubCategoryNestedAdapter extends BaseAdapter {
 
     private class OnItemClickListener implements View.OnClickListener {
         private SubCategory listModelSubCategoryArr;
+        private int subCategoryPosition;
 
-        OnItemClickListener(SubCategory listModelSubCategory) {
-            listModelSubCategoryArr = listModelSubCategory;
+        OnItemClickListener(int subCategoryPosition, SubCategory listModelSubCategory) {
+            this.listModelSubCategoryArr = listModelSubCategory;
+            this.subCategoryPosition = subCategoryPosition;
         }
 
         @Override
         public void onClick(View arg0) {
-            Utils.showToastShort(context, "Under Development : " + listModelSubCategoryArr.subcat_name);
+//            Utils.showToastShort(context, "Under Development : " + listModelSubCategoryArr.subcat_name);
+            if (context != null && context instanceof NavigationDrawerActivity) {
+                NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
+                navigationDrawerActivity.switchContent(ProductListFragment.newInstance(subCategoryPosition, subCategoryArrayList), false);
+            }
         }
     }
 }

@@ -4,4 +4,5 @@
   <item name="tab" type="id"/>
   <item name="viewpager" type="id"/>
   <item name="categorySmartTabLayout" type="id"/>
+  <item name="subCategorySmartTabLayout" type="id"/>
 </resources>

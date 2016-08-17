@@ -210,18 +210,18 @@ public class DBAdapter {
 //        return rootJObject.toString();
 //    }
 //
-//    public static boolean insertSubCategories(Context context, ArrayList<SubCategory> subCategoryArrayList, JSONArray subCategoryJArray) {
+//    public static boolean insertSubCategories(Context context, ArrayList<SubCategory> productVariantArrayList, JSONArray subCategoryJArray) {
 //        try {
-//            if (subCategoryArrayList != null && subCategoryArrayList.size() > 0) {
-//                Log.e(TAG, "subCategories.size() = " + subCategoryArrayList.size());
+//            if (productVariantArrayList != null && productVariantArrayList.size() > 0) {
+//                Log.e(TAG, "subCategories.size() = " + productVariantArrayList.size());
 //
 //                SQLiteDatabase db = DatabaseHelper.getInstance(context).getWritableDatabase();
 //
-//                for (int i = 0; i < subCategoryArrayList.size(); i++) {
+//                for (int i = 0; i < productVariantArrayList.size(); i++) {
 //                    ContentValues contentValues = new ContentValues();
-//                    contentValues.put(ISubCategory.KEY_SUB_CATEGORY_ID, subCategoryArrayList.get(i).id);
-//                    contentValues.put(ISubCategory.KEY_CATEGORY_ID, subCategoryArrayList.get(i).cat_id);
-//                    contentValues.put(ISubCategory.KEY_NAME, subCategoryArrayList.get(i).name);
+//                    contentValues.put(ISubCategory.KEY_SUB_CATEGORY_ID, productVariantArrayList.get(i).id);
+//                    contentValues.put(ISubCategory.KEY_CATEGORY_ID, productVariantArrayList.get(i).cat_id);
+//                    contentValues.put(ISubCategory.KEY_NAME, productVariantArrayList.get(i).name);
 //                    contentValues.put(ISubCategory.KEY_JSON, subCategoryJArray.getString(i));
 //                    db.insert(ISubCategory.TABLE_SUB_CATEGORY, null, contentValues);
 //                }

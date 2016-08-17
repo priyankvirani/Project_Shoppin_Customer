@@ -19,6 +19,8 @@ public interface IWebService {
 
     String GET_CATEGORY = MAIN_URL + "category/GetCategoryList";
 
+    String GET_PRODUCT_BY_SUB_CATEGORY = MAIN_URL + "category/GetProductsBySubCatID";
+
     /**
      * Request Params
      */
@@ -33,6 +35,7 @@ public interface IWebService {
     String KEY_REQ_CUSTOMER_SUBURB_ID = "customer_suburb_id";
     String KEY_REQ_CUSTOMER_POSTCODE = "customer_zip";
     String KEY_REQ_IS_HOME = "is_home";
+    String KEY_REQ_SUB_CATEGORY_ID = "sub_cat_id";
 
     /**
      * Response Params
@@ -42,4 +45,5 @@ public interface IWebService {
     String KEY_RES_SUBURB_NAME = "suburb_name";
     String KEY_RES_CATEGORY_LIST = "category_list";
     String KEY_RES_OFFER_LIST = "offer_list";
+    String KEY_RES_PRODUCT_LIST = "product_list";
 }

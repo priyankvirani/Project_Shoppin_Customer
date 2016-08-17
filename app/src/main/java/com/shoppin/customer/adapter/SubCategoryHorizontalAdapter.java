@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.shoppin.customer.R;
+import com.shoppin.customer.activity.NavigationDrawerActivity;
+import com.shoppin.customer.fragment.ProductListFragment;
 import com.shoppin.customer.model.SubCategory;
 import com.shoppin.customer.utils.Utils;
 
@@ -52,7 +54,8 @@ public class SubCategoryHorizontalAdapter extends RecyclerView.Adapter<SubCatego
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)
                 .into(holder.imgSubcategory);
-        holder.imgSubcategory.setOnClickListener(new OnItemClickListener(subCategoryArrayList.get(position)));
+        holder.imgSubcategory.setOnClickListener(
+                new OnItemClickListener(position, subCategoryArrayList.get(position)));
     }
 
     @Override
@@ -74,14 +77,19 @@ public class SubCategoryHorizontalAdapter extends RecyclerView.Adapter<SubCatego
 
     private class OnItemClickListener implements View.OnClickListener {
         private SubCategory subCategory;
+        private int subCategoryPosition;
 
-        OnItemClickListener(SubCategory subCategory) {
+        OnItemClickListener(int subCategoryPosition, SubCategory subCategory) {
+            this.subCategoryPosition = subCategoryPosition;
             this.subCategory = subCategory;
         }
 
         @Override
         public void onClick(View arg0) {
-            Utils.showToastShort(context, "Under Development : " + subCategory.subcat_name);
+            if (context != null && context instanceof NavigationDrawerActivity) {
+                NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
+                navigationDrawerActivity.switchContent(ProductListFragment.newInstance(subCategoryPosition, subCategoryArrayList), false);
+            }
         }
     }
 }
