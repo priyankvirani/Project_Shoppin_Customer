@@ -110,6 +110,7 @@ public class SignupActivity extends AppCompatActivity {
                     Log.d(TAG, "response = " + response);
                     if (!DataRequest.hasError(SignupActivity.this, response, true)) {
                         Intent intent = new Intent(SignupActivity.this, SigninActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
                     }
@@ -246,6 +247,7 @@ public class SignupActivity extends AppCompatActivity {
                     DBAdapter.setMapKeyValueBoolean(SignupActivity.this, IDatabase.IMap.IS_LOGIN, false);
 
                     Intent intent = new Intent(SignupActivity.this, NavigationDrawerActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 }

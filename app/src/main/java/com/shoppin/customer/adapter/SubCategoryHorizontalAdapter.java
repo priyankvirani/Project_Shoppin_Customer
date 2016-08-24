@@ -5,13 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.shoppin.customer.R;
+import com.shoppin.customer.activity.NavigationDrawerActivity;
+import com.shoppin.customer.fragment.ProductListFragment;
 import com.shoppin.customer.model.SubCategory;
+import com.shoppin.customer.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -25,25 +28,34 @@ public class SubCategoryHorizontalAdapter extends RecyclerView.Adapter<SubCatego
     private Context context;
     private ArrayList<SubCategory> subCategoryArrayList;
     private String cat_id;
+    private int cellWidth = 100;
 
     public SubCategoryHorizontalAdapter(Context context, ArrayList<SubCategory> subCategoryArrayList, String cat_id) {
         this.context = context;
         this.subCategoryArrayList = subCategoryArrayList;
         this.cat_id = cat_id;
+        this.cellWidth = Utils.getDeviceWidth(context) / 3;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cell_subcategory_home, parent, false);
+//        Log.d(TAG, "cellWidth = " + cellWidth);
+        itemView.setLayoutParams(new GridView.LayoutParams(cellWidth, cellWidth));
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.txtsubCategory.setText(subCategoryArrayList.get(position).subcat_name);
-        Glide.with(context).load(subCategoryArrayList.get(position).subcat_image).into(holder.imgSubcategory);
-        holder.imgSubcategory.setOnClickListener(new OnItemClickListener(subCategoryArrayList.get(position)));
+        Glide.with(context)
+                .load(subCategoryArrayList.get(position).subcat_image)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
+                .into(holder.imgSubcategory);
+        holder.imgSubcategory.setOnClickListener(
+                new OnItemClickListener(position, subCategoryArrayList.get(position)));
     }
 
     @Override
@@ -65,14 +77,19 @@ public class SubCategoryHorizontalAdapter extends RecyclerView.Adapter<SubCatego
 
     private class OnItemClickListener implements View.OnClickListener {
         private SubCategory subCategory;
+        private int subCategoryPosition;
 
-        OnItemClickListener(SubCategory subCategory) {
+        OnItemClickListener(int subCategoryPosition, SubCategory subCategory) {
+            this.subCategoryPosition = subCategoryPosition;
             this.subCategory = subCategory;
         }
 
         @Override
         public void onClick(View arg0) {
-            Toast.makeText(context, cat_id + "," + subCategory.subcat_name, Toast.LENGTH_LONG).show();
+            if (context != null && context instanceof NavigationDrawerActivity) {
+                NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
+                navigationDrawerActivity.switchContent(ProductListFragment.newInstance(subCategoryPosition, subCategoryArrayList), false);
+            }
         }
     }
 }

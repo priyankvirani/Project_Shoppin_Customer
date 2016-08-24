@@ -12,21 +12,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shoppin.customer.R;
+import com.shoppin.customer.activity.NavigationDrawerActivity;
+import com.shoppin.customer.fragment.CategoryFragment;
 import com.shoppin.customer.model.Category;
 import com.shoppin.customer.model.SubCategory;
 
 import java.util.ArrayList;
 
-public class CategoryAdapter extends BaseAdapter {
+public class CategoryHomeAdapter extends BaseAdapter {
 
-    private static final String TAG = CategoryAdapter.class.getSimpleName();
+    private static final String TAG = CategoryHomeAdapter.class.getSimpleName();
 
     private Context context;
     private ArrayList<Category> categoryArrayList;
     private ArrayList<SubCategory> subCategoryArrayList;
     private SubCategoryHorizontalAdapter subCategoryHorizontalAdapter;
 
-    public CategoryAdapter(Context context, ArrayList<Category> categoryArrayList) {
+    public CategoryHomeAdapter(Context context, ArrayList<Category> categoryArrayList) {
         this.context = context;
         this.categoryArrayList = categoryArrayList;
     }
@@ -48,7 +50,6 @@ public class CategoryAdapter extends BaseAdapter {
 
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-
         if (convertView == null) {
             convertView = View.inflate(context, R.layout.cell_category_home_fragment, null);
             holder = new ViewHolder();
@@ -84,20 +85,10 @@ public class CategoryAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Log.e(TAG, "Size : " + categoryArrayList.size());
-
-//                NavigationDrawerActivity fca = (NavigationDrawerActivity) context;
-//
-//                //Intent intent = new Intent(context, SubCategoryFragment.class);
-//                Bundle args = new Bundle();
-//                args.putSerializable(SubCategoryFragment.DATA_ITEMCATEGORY_EXTRA, (Serializable) categoryArrayList);
-//                args.putInt(SubCategoryFragment.EXTRA_SELECTED_CELL_ID, position);
-//                SubCategoryFragment subCategoryFragment = new SubCategoryFragment();
-//                subCategoryFragment.setArguments(args);
-//                fca.switchContent(subCategoryFragment, true);
-
-                //intent.putExtra(SubCategoryFragment.BUNDLEVISIBLE, args);
-                //context.startActivity(intent);
-
+                if(context!=null && context instanceof  NavigationDrawerActivity) {
+                    NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
+                    navigationDrawerActivity.switchContent(CategoryFragment.newInstance(position, categoryArrayList), false);
+                }
             }
         });
         return convertView;

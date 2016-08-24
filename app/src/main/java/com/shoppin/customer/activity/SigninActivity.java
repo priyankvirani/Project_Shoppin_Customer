@@ -101,6 +101,7 @@ public class SigninActivity extends AppCompatActivity {
                                 DBAdapter.setMapKeyValueBoolean(SigninActivity.this, IMap.IS_LOGIN, true);
 
                                 Intent intent = new Intent(SigninActivity.this, NavigationDrawerActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();
                             }
@@ -210,6 +211,7 @@ public class SigninActivity extends AppCompatActivity {
                     DBAdapter.setMapKeyValueBoolean(SigninActivity.this, IDatabase.IMap.IS_LOGIN, false);
 
                     Intent intent = new Intent(SigninActivity.this, NavigationDrawerActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 }

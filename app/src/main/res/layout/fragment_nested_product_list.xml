@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:clickable="true">
+    android:layout_height="wrap_content">
 
     <ListView
-        android:id="@+id/lstCategory"
+        android:id="@+id/listProduct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:divider="@color/white"
-        android:dividerHeight="1dp" />
-    <!--android:transcriptMode="alwaysScroll"-->
+        android:layout_margin="@dimen/margin_tiny" />
 
     <include layout="@layout/progressbar" />
 </RelativeLayout>

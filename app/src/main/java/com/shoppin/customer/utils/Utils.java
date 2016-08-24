@@ -1,5 +1,6 @@
 package com.shoppin.customer.utils;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.shoppin.customer.R;
@@ -175,5 +178,11 @@ public class Utils {
 //        return wsResponse;
 //    }
 
+    public static int getDeviceWidth(Context context) {
+        DisplayMetrics dm = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        Log.d(TAG, "dm.widthPixels = " + dm.widthPixels);
+        return dm.widthPixels;
+    }
 
 }
