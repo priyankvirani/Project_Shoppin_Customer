@@ -16,7 +16,6 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 import com.shoppin.customer.R;
 import com.shoppin.customer.model.SubCategory;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -82,7 +81,7 @@ public class ProductListFragment extends BaseFragment {
 
         for (int i = 0; i < subCategoryNameArrayList.size(); i++) {
             Bundle args = new Bundle();
-            args.putSerializable(ProductListFragment.SUB_CATEGORY_ARRAYLIST, (Serializable) subCategoryArrayList);
+            args.putSerializable(ProductListFragment.SUB_CATEGORY_ARRAYLIST, subCategoryArrayList);
             args.putInt(ProductListFragment.SUB_CATEGORY_POSITION, subCategoryPosition);
             fragmentPagerItems.add(FragmentPagerItem.of(subCategoryNameArrayList.get(i), ProductListNestedFragment.class, args));
         }

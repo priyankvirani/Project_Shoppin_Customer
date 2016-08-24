@@ -2,7 +2,6 @@ package com.shoppin.customer.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +37,7 @@ public class OfferHomeAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         // TODO Auto-generated method stub
-        return view == ((RelativeLayout) object);
+        return view == object;
     }
 
     @Override
@@ -63,14 +62,14 @@ public class OfferHomeAdapter extends PagerAdapter {
                 Log.d(TAG, " positionClicked = " + position);
             }
         });
-        ((ViewPager) container).addView(viewLayout);
+        container.addView(viewLayout);
 
         return viewLayout;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        ((ViewPager) container).removeView((RelativeLayout) object);
+        container.removeView((RelativeLayout) object);
 
     }
 
