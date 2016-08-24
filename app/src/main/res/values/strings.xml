@@ -55,4 +55,7 @@
     <!-- Menu Action -->
     <string name="action_search_product">Search</string>
     <string name="action_view_cart">Cart</string>
+
+    <!--Toast message-->
+    <string name="msg_copy_clipboard">Text copied to clipboard</string>
 </resources>

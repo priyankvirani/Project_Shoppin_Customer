@@ -27,6 +27,8 @@ import com.shoppin.customer.fragment.BaseFragment;
 import com.shoppin.customer.fragment.HomeFragment;
 import com.shoppin.customer.fragment.IUpdateFragment;
 import com.shoppin.customer.fragment.MyAccountFragment;
+import com.shoppin.customer.fragment.OfferFragment;
+import com.shoppin.customer.fragment.StoreListFragment;
 import com.shoppin.customer.fragment.UnderDevelopmentFragment;
 import com.shoppin.customer.model.NavigationDrawerMenuItem;
 
@@ -110,7 +112,7 @@ public class NavigationDrawerActivity extends BaseActivity {
                         break;
 
                     case IDrawerMenu.STORE_LIST_ID:
-                        newContent = new UnderDevelopmentFragment();
+                        newContent = new StoreListFragment();
                         break;
 
                     case IDrawerMenu.MY_ORDER_ID:
@@ -122,7 +124,7 @@ public class NavigationDrawerActivity extends BaseActivity {
                         break;
 
                     case IDrawerMenu.OFFERS_ID:
-                        newContent = new UnderDevelopmentFragment();
+                        newContent = new OfferFragment();
                         break;
                     case IDrawerMenu.ABOUT_US_ID:
                         newContent = new UnderDevelopmentFragment();

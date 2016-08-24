@@ -12,4 +12,10 @@ import java.util.ArrayList;
 public class Offer implements Serializable {
 
     public String[] offer_list;
+
+    public String offer_detail;
+
+    public Offer(String offer_detail) {
+        this.offer_detail = offer_detail;
+    }
 }

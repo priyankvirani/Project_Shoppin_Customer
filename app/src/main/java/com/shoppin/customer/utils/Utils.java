@@ -146,6 +146,19 @@ public class Utils {
         return selectedSuburb;
     }
 
+    public static void copyTextToClipBoard(Context context, String copiedText) {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setText(copiedText);
+            showToastShort(context, context.getResources().getString(R.string.msg_copy_clipboard));
+        } else {
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", copiedText);
+            clipboard.setPrimaryClip(clip);
+            showToastShort(context, context.getResources().getString(R.string.msg_copy_clipboard));
+        }
+    }
+
 //    public static String webServiceCall(String wsUrl, String params) {
 //
 //        Log.d(TAG, "MAIN_URL = " + wsUrl);
