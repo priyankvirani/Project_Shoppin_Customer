@@ -164,7 +164,7 @@
 
         </RelativeLayout>
 
-        <include layout="@layout/dialog_edit_address" />
+        <include layout="@layout/cell_address" />
 
 
     </LinearLayout>

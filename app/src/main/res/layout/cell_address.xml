@@ -30,26 +30,55 @@
             android:textSize="@dimen/font_size_title" />
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_medium"
-        android:text="Phone number"
-        android:textColor="@color/text_black"
-        android:textSize="@dimen/font_size_title" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_medium"
-        android:text="Street"
-        android:textColor="@color/text_black"
-        android:textSize="@dimen/font_size_title" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_medium"
-        android:text="Street"
-        android:textColor="@color/text_black"
-        android:textSize="@dimen/font_size_title" />
+        android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_tiny"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:text="Phone number"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/font_size_title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_tiny"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:text="Street"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/font_size_title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_tiny"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:text="Suburb"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/font_size_title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_tiny"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:text="Town"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/font_size_title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_tiny"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:text="Post Code"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/font_size_title" />
+    </LinearLayout>
 </LinearLayout>
