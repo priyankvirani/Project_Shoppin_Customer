@@ -48,6 +48,7 @@
     <string name="button_signup">Sign Up</string>
     <string name="button_guest">Guest</string>
     <string name="button_go">Go</string>
+    <string name="button_update">Update</string>
 
     <!--dialog -->
     <string name="dialog_title_guest">Guest Login</string>
