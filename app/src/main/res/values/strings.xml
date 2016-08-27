@@ -20,6 +20,7 @@
     <string name="retry">Retry</string>
     <string name="user_login_id">Mobile Number</string>
 
+
     <!-- Error messages -->
     <string name="error_title">Error : </string>
     <string name="error_technichal_problem">Having some technical problem</string>
@@ -40,6 +41,7 @@
     <string name="edittext_hint_name">Name</string>
     <string name="edittext_hint_street">Street</string>
     <string name="edittext_hint_suburb">Suburb</string>
+    <string name="edittext_hint_town">Town</string>
     <string name="edittext_hint_postcode">Postcode</string>
     <string name="edittext_hint_confirm_password">Confirm Password</string>
 
@@ -49,9 +51,11 @@
     <string name="button_guest">Guest</string>
     <string name="button_go">Go</string>
     <string name="button_update">Update</string>
+    <string name="button_done">Done</string>
 
     <!--dialog -->
     <string name="dialog_title_guest">Guest Login</string>
+    <string name="dialog_title_addres">Address</string>
 
     <!-- Menu Action -->
     <string name="action_search_product">Search</string>
@@ -59,4 +63,10 @@
 
     <!--Toast message-->
     <string name="msg_copy_clipboard">Text copied to clipboard</string>
+
+
+    <!--Title -->
+    <string name="activity_address">Address</string>
+    <string name="fragment_myaccount">My Account</string>
+
 </resources>

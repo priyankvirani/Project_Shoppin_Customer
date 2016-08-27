@@ -18,8 +18,11 @@ public interface IDatabase {
         String KEY_MAP_KEY = "map_key";
         String KEY_MAP_VALUE = "map_value";
         String IS_LOGIN = "is_login";
-        String SUBURB_ID = "suburb_id";
-        String SUBURB_NAME = "suburb_name";
+        String SUBURB_ID = "customer_suburb_id";
+        String SUBURB_NAME = "customer_suburb_name";
+        String CUSTOMER_ID = "customer_id";
+        String CUSTOMER_ADDRESS_ID = "customer_address_id";
+
         String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
         String GCM_REGISTRATION_ID = "gcm_registration_id";
 

@@ -85,7 +85,7 @@ public class CategoryHomeAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Log.e(TAG, "Size : " + categoryArrayList.size());
-                if(context!=null && context instanceof  NavigationDrawerActivity) {
+                if (context != null && context instanceof NavigationDrawerActivity) {
                     NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
                     navigationDrawerActivity.switchContent(CategoryFragment.newInstance(position, categoryArrayList), false);
                 }

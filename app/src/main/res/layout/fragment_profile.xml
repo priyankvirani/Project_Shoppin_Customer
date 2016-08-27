@@ -74,6 +74,22 @@
             android:textColorHint="@color/gray"
             android:textSize="@dimen/font_size_edittext" />
 
+        <!--<EditText-->
+        <!--android:id="@+id/etxTown"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/margin_medium"-->
+        <!--android:background="@drawable/edittext_bottom_line_gray"-->
+        <!--android:drawablePadding="@dimen/margin_tiny"-->
+        <!--android:hint="@string/edittext_hint_town"-->
+        <!--android:inputType="text"-->
+        <!--android:maxLines="1"-->
+        <!--android:paddingBottom="@dimen/margin_edittext_bottom"-->
+        <!--android:textColor="@color/gray"-->
+        <!--android:textColorHint="@color/gray"-->
+        <!--android:textSize="@dimen/font_size_edittext" />-->
+
+
         <EditText
             android:id="@+id/etxPostcode"
             android:layout_width="match_parent"
@@ -120,7 +136,7 @@
             android:textSize="@dimen/font_size_edittext" />
 
         <TextView
-            android:id="@+id/txtSignup"
+            android:id="@+id/txtUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_medium"
@@ -164,10 +180,18 @@
 
         </RelativeLayout>
 
-        <include layout="@layout/cell_address" />
+        <!--<include layout="@layout/cell_address" />-->
+
+        <ListView
+            android:id="@+id/lstAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:divider="@color/gray"
+            android:dividerHeight="1dp" />
 
 
     </LinearLayout>
 
-
+    <include layout="@layout/progressbar" />
 </RelativeLayout>

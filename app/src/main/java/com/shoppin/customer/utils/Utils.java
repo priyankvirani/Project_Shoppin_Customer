@@ -12,6 +12,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.shoppin.customer.R;
@@ -157,6 +159,12 @@ public class Utils {
             clipboard.setPrimaryClip(clip);
             showToastShort(context, context.getResources().getString(R.string.msg_copy_clipboard));
         }
+    }
+
+    public static void hideSoftKeyBoard(Activity activity) {
+        activity.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
     }
 
 //    public static String webServiceCall(String wsUrl, String params) {
