@@ -62,12 +62,12 @@ public class CategoryHomeAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Log.e(TAG, "cat_id = " + categoryArrayList.get(position).cat_id);
+        Log.e(TAG, "cat_id = " + categoryArrayList.get(position).category_id);
 
-        holder.txtCategory.setText(categoryArrayList.get(position).cat_name);
+        holder.txtCategory.setText(categoryArrayList.get(position).category_name);
 
         subCategoryArrayList = categoryArrayList.get(position).subCategoryArrayList;
-        subCategoryHorizontalAdapter = new SubCategoryHorizontalAdapter(context, subCategoryArrayList, categoryArrayList.get(position).cat_id);
+        subCategoryHorizontalAdapter = new SubCategoryHorizontalAdapter(context, subCategoryArrayList, categoryArrayList.get(position).category_id);
         LinearLayoutManager horizontalLayoutManager
                 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         holder.rclHorizontalSubCategoty.setLayoutManager(horizontalLayoutManager);
@@ -111,7 +111,7 @@ public class CategoryHomeAdapter extends BaseAdapter {
 
         @Override
         public void onClick(View arg0) {
-            Log.d(TAG, "Category : " + categoryArrayList.get(mPosition).cat_name);
+            Log.d(TAG, "Category : " + categoryArrayList.get(mPosition).category_name);
             if (categoryArrayList.get(mPosition).isCategoryExpand()) {
                 categoryArrayList.get(mPosition).setCategoryExpand(false);
             } else {

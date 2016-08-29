@@ -57,7 +57,7 @@ public class AddressRecyleAdapter extends RecyclerView.Adapter<AddressRecyleAdap
         holder.txtName.setText(addressArrayList.get(position).name);
         holder.txtPhone.setText(addressArrayList.get(position).phoneNumber);
         holder.txtStreet.setText(addressArrayList.get(position).street);
-        holder.txtSuburb.setText(addressArrayList.get(position).suburb);
+        holder.txtSuburb.setText(addressArrayList.get(position).suburbId);
 //        holder.txtTown.setText(addressArrayList.get(position).town);
         holder.txtPostCode.setText(addressArrayList.get(position).postCode);
 

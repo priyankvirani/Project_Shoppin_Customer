@@ -70,7 +70,7 @@ public class ProductListFragment extends BaseFragment {
     private ArrayList<String> getTabName() {
         subCategoryNameArrayList = new ArrayList<>();
         for (int i = 0; i < subCategoryArrayList.size(); i++) {
-            subCategoryNameArrayList.add(subCategoryArrayList.get(i).subcat_name);
+            subCategoryNameArrayList.add(subCategoryArrayList.get(i).subcategory_name);
         }
         return subCategoryNameArrayList;
     }

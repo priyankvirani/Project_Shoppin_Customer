@@ -20,6 +20,8 @@ import android.widget.RelativeLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shoppin.customer.R;
+import com.shoppin.customer.database.DBAdapter;
+import com.shoppin.customer.database.IDatabase;
 import com.shoppin.customer.model.Address;
 import com.shoppin.customer.model.Suburb;
 import com.shoppin.customer.network.DataRequest;
@@ -27,6 +29,7 @@ import com.shoppin.customer.network.IWebService;
 import com.shoppin.customer.utils.IConstants;
 import com.shoppin.customer.utils.Utils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -110,7 +113,7 @@ public class AddressEditActivity extends AppCompatActivity {
         etxName.setText(addressArrayList.get(ADDRESS_POSITION).name);
         etxPhone.setText(addressArrayList.get(ADDRESS_POSITION).phoneNumber);
         etxStreet.setText(addressArrayList.get(ADDRESS_POSITION).street);
-        atxSuburb.setText(addressArrayList.get(ADDRESS_POSITION).suburb);
+        atxSuburb.setText(addressArrayList.get(ADDRESS_POSITION).suburbId);
         etxPostCode.setText(addressArrayList.get(ADDRESS_POSITION).postCode);
     }
 
@@ -162,11 +165,16 @@ public class AddressEditActivity extends AppCompatActivity {
                 return true;
             case R.id.action_save:
                 if (validData()) {
-                    Intent data = new Intent();
-                    data.putExtra(IConstants.IRequestCode.KEY_ADDRESS_LIST, (Serializable) addressArrayList);
-                    setResult(IConstants.IRequestCode.REQUEST_CODE_ADDRESS, data);
-                    updateAddress();
-                    onBackPressed();
+//                    Intent data = new Intent();
+//                    data.putExtra(IConstants.IRequestCode.KEY_ADDRESS_LIST, (Serializable) addressArrayList);
+//                    setResult(IConstants.IRequestCode.REQUEST_CODE_ADDRESS, data);
+//                    updateAddress();
+                    if (ADDRESS_POSITION >= 0) {
+                        updateAddress();
+                    } else {
+                        addAddress();
+                    }
+//                    onBackPressed();
                 }
                 return true;
             case R.id.action_delete:
@@ -223,7 +231,7 @@ public class AddressEditActivity extends AppCompatActivity {
         return isValid;
     }
 
-    private void updateAddress() {
+   /* private void updateAddress() {
         String name = etxName.getText().toString().trim();
         String phoneNumber = etxPhone.getText().toString().trim();
         String street = etxStreet.getText().toString().trim();
@@ -238,7 +246,7 @@ public class AddressEditActivity extends AppCompatActivity {
         } else {
             addressArrayList.add(address);
         }
-    }
+    }*/
 
     private void deleteAddress() {
         if (ADDRESS_POSITION >= 0) {
@@ -250,6 +258,87 @@ public class AddressEditActivity extends AppCompatActivity {
         }
     }
 
+    private void addAddress() {
+        DataRequest addressDataRequest = new DataRequest(AddressEditActivity.this);
+        JSONObject addressParams = new JSONObject();
+
+        try {
+            addressParams.put(IWebService.KEY_RES_CUSTOMER_ID,
+                    DBAdapter.getMapKeyValueString(AddressEditActivity.this, IDatabase.IMap.CUSTOMER_ID));
+            addressParams.put(IWebService.KEY_REQ_CUSTOMER_NAME, etxName.getText().toString().trim());
+            addressParams.put(IWebService.KEY_REQ_CUSTOMER_MOBILE, etxPhone.getText().toString().trim());
+            addressParams.put(IWebService.KEY_REQ_CUSTOMER_STREET, etxStreet.getText().toString().trim());
+            addressParams.put(IWebService.KEY_REQ_CUSTOMER_SUBURB_ID, selectedSuburb.suburb_id);
+            addressParams.put(IWebService.KEY_REQ_CUSTOMER_POSTCODE, etxPostCode.getText().toString().trim());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        addressDataRequest.execute(IWebService.CUSTOMER_ADD_ADDRESS, addressParams.toString(), new DataRequest.CallBack() {
+            @Override
+            public void onPreExecute() {
+                rlvGlobalProgressbar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPostExecute(String response) {
+                rlvGlobalProgressbar.setVisibility(View.GONE);
+                Log.d(TAG, "response = " + response);
+
+                if (!DataRequest.hasError(AddressEditActivity.this, response, true)) {
+                    JSONObject responseJObject = null;
+                    try {
+                        responseJObject = new JSONObject(response);
+                        Utils.showToastShort(AddressEditActivity.this, responseJObject.getString(IWebService.KEY_RES_MESSAGE));
+                        onBackPressed();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+    }
+
+    private void updateAddress() {
+        DataRequest updateDataRequest = new DataRequest(AddressEditActivity.this);
+        JSONObject updateParams = new JSONObject();
+        try {
+            updateParams.put(IWebService.KEY_REQ_ADDRESS_ID, addressArrayList.get(ADDRESS_POSITION).addressId);
+            updateParams.put(IWebService.KEY_REQ_CUSTOMER_NAME, etxName.getText().toString().trim());
+            updateParams.put(IWebService.KEY_REQ_CUSTOMER_MOBILE, etxPhone.getText().toString().trim());
+            updateParams.put(IWebService.KEY_REQ_CUSTOMER_STREET, etxStreet.getText().toString().trim());
+            updateParams.put(IWebService.KEY_REQ_CUSTOMER_SUBURB_ID, selectedSuburb.suburb_id);
+            updateParams.put(IWebService.KEY_REQ_CUSTOMER_POSTCODE, etxPostCode.getText().toString().trim());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        updateDataRequest.execute(IWebService.CUSTOMER_UPDATE_ADDRESS, updateParams.toString(), new DataRequest.CallBack() {
+            @Override
+            public void onPreExecute() {
+                rlvGlobalProgressbar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPostExecute(String response) {
+                rlvGlobalProgressbar.setVisibility(View.GONE);
+                Log.d(TAG, "response = " + response);
+
+                if (!DataRequest.hasError(AddressEditActivity.this, response, true)) {
+                    try {
+                        JSONObject responseJObject = new JSONObject(response);
+                        Utils.showToastShort(AddressEditActivity.this, responseJObject.getString(IWebService.KEY_RES_MESSAGE));
+                        onBackPressed();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
 
 }
 

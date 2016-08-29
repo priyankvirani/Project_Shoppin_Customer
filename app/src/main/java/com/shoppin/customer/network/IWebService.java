@@ -6,7 +6,8 @@ package com.shoppin.customer.network;
 
 public interface IWebService {
 
-    String MAIN_URL = "http://192.168.0.1/ci/shoppin/admin/v1/";
+    //    String MAIN_URL = "http://192.168.0.1/ci/shoppin/admin/v1/";
+    String MAIN_URL = " http://192.168.0.1/shoppin/service/index.php/";
 
     String KEY_RES_DATA = "data";
     String KEY_RES_SUCCESS = "success";
@@ -18,6 +19,9 @@ public interface IWebService {
     String CUSTOMER_REGISTRATION = MAIN_URL + "customer/CustomerRegistration";
     String CUSTOMER_ACCOUNT_UPDATE = MAIN_URL + "customer/CustomerProfileUpdate";
     String CUSTOMER_ADDRESS_LIST = MAIN_URL + "customer/MyAddressList";
+    String CUSTOMER_PROFILE = MAIN_URL + "customer/MyProfile";
+    String CUSTOMER_ADD_ADDRESS = MAIN_URL + "customer/AddMyAddress";
+    String CUSTOMER_UPDATE_ADDRESS = MAIN_URL + "customer/UpdateMyAddress";
 
     String GET_CATEGORY = MAIN_URL + "category/GetCategoryList";
 
@@ -38,17 +42,19 @@ public interface IWebService {
     String KEY_REQ_CUSTOMER_POSTCODE = "customer_zip";
     String KEY_REQ_IS_HOME = "is_home";
     String KEY_REQ_SUB_CATEGORY_ID = "sub_cat_id";
-    String KEY_REQ_ADDRESS_ID = "customer_address_id";
+    String KEY_REQ_ADDRESS_ID = "customers_address_id";
+    String KEY_REQ_CUSTOMER_SUBURB_NAME = "customer_suburb_name";
 
     /**
      * Response Params
      */
     String KEY_RES_CUSTOMER_ID = "customer_id";
     String KEY_RES_SUBURB_LIST = "suburb_list";
-    String KEY_RES_SUBURB_ID = "suburb_id";
-    String KEY_RES_SUBURB_NAME = "suburb_name";
+    String KEY_RES_SUBURB_ID = "customer_suburb_id";
+    String KEY_RES_SUBURB_NAME = "customer_suburb_name";
     String KEY_RES_CATEGORY_LIST = "category_list";
     String KEY_RES_OFFER_LIST = "offer_list";
     String KEY_RES_PRODUCT_LIST = "product_list";
+    String KEY_RES_ADDRESS_LIST = "address_list";
 
 }

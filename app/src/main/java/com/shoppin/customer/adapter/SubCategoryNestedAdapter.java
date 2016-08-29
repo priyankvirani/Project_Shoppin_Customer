@@ -63,9 +63,9 @@ public class SubCategoryNestedAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.txtSubcategory.setText(subCategoryArrayList.get(position).subcat_name);
+        holder.txtSubcategory.setText(subCategoryArrayList.get(position).subcategory_name);
         Glide.with(context)
-                .load(subCategoryArrayList.get(position).subcat_image)
+                .load(subCategoryArrayList.get(position).image)
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)
                 .into(holder.imgSubcategory);

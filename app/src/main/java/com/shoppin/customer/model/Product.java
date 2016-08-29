@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class Product implements Serializable {
     public String product_id;
+
     public String product_name;
     @SerializedName("product_variants")
     public ArrayList<ProductVariant> productVariantArrayList;

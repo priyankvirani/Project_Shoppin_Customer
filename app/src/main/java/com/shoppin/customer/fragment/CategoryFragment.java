@@ -69,7 +69,7 @@ public class CategoryFragment extends BaseFragment {
     private ArrayList<String> getTabName() {
         categoryNameArrayList = new ArrayList<>();
         for (int i = 0; i < categoryArrayList.size(); i++) {
-            categoryNameArrayList.add(categoryArrayList.get(i).cat_name);
+            categoryNameArrayList.add(categoryArrayList.get(i).category_name);
         }
         return categoryNameArrayList;
     }

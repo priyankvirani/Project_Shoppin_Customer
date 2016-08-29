@@ -43,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.shoppin.customer.R.id.atxSuburb;
+import static com.shoppin.customer.R.id.etxPhone;
 import static com.shoppin.customer.R.id.rlvGlobalProgressbar;
 import static com.shoppin.customer.database.IDatabase.IMap;
 
@@ -108,10 +109,11 @@ public class MyAccountFragment extends BaseFragment {
         suburbArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, suburbArrayList);
         atxSuburb.setAdapter(suburbArrayAdapter);
         getSuburbs();
+        getAddressList();
 
 
         Log.d(TAG, "customer_id = " + DBAdapter.getMapKeyValueString(getActivity(), IMap.CUSTOMER_ID));
-        dummyData();
+//        dummyData();
 
         txtAddNewAddress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,15 +156,15 @@ public class MyAccountFragment extends BaseFragment {
         }
     }
 
-    private void dummyData() {
-        Address address1 = new Address("Peter Parker", "1234567890", "Surat", "Surat", "345678");
-        addressArrayList.add(address1);
-
-        Address address2 = new Address("Peter Parker", "1234567890", "Surat", "Surat", "345678");
-        addressArrayList.add(address2);
-
-        addressAdapter.notifyDataSetChanged();
-    }
+//    private void dummyData() {
+//        Address address1 = new Address("Peter Parker", "1234567890", "Surat", "Surat", "345678");
+//        addressArrayList.add(address1);
+//
+//        Address address2 = new Address("Peter Parker", "1234567890", "Surat", "Surat", "345678");
+//        addressArrayList.add(address2);
+//
+//        addressAdapter.notifyDataSetChanged();
+//    }
 
 //    @OnClick(R.id.txtAddNewAddress)
 
@@ -175,11 +177,12 @@ public class MyAccountFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == IConstants.IRequestCode.REQUEST_CODE_ADDRESS) {
+            getAddressList();
             if (data != null) {
-                addressArrayList.clear();
-                addressArrayList.addAll((Collection<? extends Address>) data.getSerializableExtra(IConstants.IRequestCode.KEY_ADDRESS_LIST));
-                Log.d(TAG, "addressArrayList.size() = " + addressArrayList.size());
-                addressAdapter.notifyDataSetChanged();
+//                addressArrayList.clear();
+//                addressArrayList.addAll((Collection<? extends Address>) data.getSerializableExtra(IConstants.IRequestCode.KEY_ADDRESS_LIST));
+//                Log.d(TAG, "addressArrayList.size() = " + addressArrayList.size());
+//                addressAdapter.notifyDataSetChanged();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -208,6 +211,8 @@ public class MyAccountFragment extends BaseFragment {
                             suburbArrayList.addAll(tmpSuburbArrayList);
                             suburbArrayAdapter.notifyDataSetChanged();
                         }
+                        //webservice call to fetch the customer details.
+//                        getMyProfileDetails();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -313,7 +318,62 @@ public class MyAccountFragment extends BaseFragment {
             public void onPostExecute(String response) {
                 Log.d(TAG, "response = " + response);
                 if (!DataRequest.hasError(getActivity(), response, true)) {
+                    addressArrayList.clear();
+                    Gson gson = new Gson();
+                    JSONObject dataJObject = DataRequest.getJObjWebdata(response);
 
+                    try {
+                        ArrayList<Address> tmpAddressArrayList = gson.fromJson(
+                                dataJObject.getJSONArray(IWebService.KEY_RES_ADDRESS_LIST).toString(),
+                                new TypeToken<ArrayList<Address>>() {
+                                }.getType());
+                        if (tmpAddressArrayList != null) {
+                            Log.e(TAG, "size = " + tmpAddressArrayList.size());
+                            addressArrayList.addAll(tmpAddressArrayList);
+                            addressAdapter.notifyDataSetChanged();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+    }
+
+
+    private void getMyProfileDetails() {
+        DataRequest profileDataRequest = new DataRequest(getActivity());
+        JSONObject profileParams = new JSONObject();
+
+        try {
+            profileParams.put(IWebService.KEY_RES_CUSTOMER_ID, DBAdapter.getMapKeyValueString(getActivity(), IMap.CUSTOMER_ID));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        profileDataRequest.execute(IWebService.CUSTOMER_PROFILE, profileParams.toString(), new DataRequest.CallBack() {
+            @Override
+            public void onPreExecute() {
+//                rlvGlobalProgressbar.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onPostExecute(String response) {
+                Log.d(TAG, "response = " + response);
+                rlvGlobalProgressbar.setVisibility(View.GONE);
+                if (!DataRequest.hasError(getActivity(), response, true)) {
+                    JSONObject dataJObject = DataRequest.getJObjWebdata(response);
+                    try {
+                        etxName.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_NAME));
+                        etxPhoneNumber.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_MOBILE));
+                        etxStreet.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_STREET));
+                        atxSuburb.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_SUBURB_NAME));
+                        etxPassword.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_POSTCODE));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

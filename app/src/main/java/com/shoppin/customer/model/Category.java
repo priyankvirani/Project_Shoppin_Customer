@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public class Category implements Serializable {
 
 
-    public String cat_name;
-    public String cat_id;
+    public String category_name;
+    public String category_id;
     @SerializedName("sub_category")
     public ArrayList<SubCategory> subCategoryArrayList;
     private boolean isCategoryExpand;

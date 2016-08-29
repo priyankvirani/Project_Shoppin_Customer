@@ -100,7 +100,7 @@ public class ProductListNestedFragment extends BaseFragment {
         try {
             position = FragmentPagerItem.getPosition(getArguments());
             JSONObject loginParam = new JSONObject();
-            loginParam.put(IWebService.KEY_REQ_SUB_CATEGORY_ID, subCategoryArrayList.get(position).subcat_id);
+            loginParam.put(IWebService.KEY_REQ_SUB_CATEGORY_ID, subCategoryArrayList.get(position).subcategory_id);
             DataRequest getSuburbsDataRequest = new DataRequest(getActivity());
             getSuburbsDataRequest.execute(IWebService.GET_PRODUCT_BY_SUB_CATEGORY, loginParam.toString(), new DataRequest.CallBack() {
                 public void onPreExecute() {
