@@ -113,7 +113,7 @@ public class AddressEditActivity extends AppCompatActivity {
         etxName.setText(addressArrayList.get(ADDRESS_POSITION).name);
         etxPhone.setText(addressArrayList.get(ADDRESS_POSITION).phoneNumber);
         etxStreet.setText(addressArrayList.get(ADDRESS_POSITION).street);
-        atxSuburb.setText(addressArrayList.get(ADDRESS_POSITION).suburbId);
+        atxSuburb.setText(addressArrayList.get(ADDRESS_POSITION).suburbName);
         etxPostCode.setText(addressArrayList.get(ADDRESS_POSITION).postCode);
     }
 
@@ -178,7 +178,9 @@ public class AddressEditActivity extends AppCompatActivity {
                 }
                 return true;
             case R.id.action_delete:
-                deleteAddress();
+                if (ADDRESS_POSITION >= 0) {
+                    deleteAddress();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -249,13 +251,36 @@ public class AddressEditActivity extends AppCompatActivity {
     }*/
 
     private void deleteAddress() {
-        if (ADDRESS_POSITION >= 0) {
-            Intent data = new Intent();
-            data.putExtra(IConstants.IRequestCode.KEY_ADDRESS_LIST, (Serializable) addressArrayList);
-            setResult(IConstants.IRequestCode.REQUEST_CODE_ADDRESS, data);
-            addressArrayList.remove(ADDRESS_POSITION);
-            onBackPressed();
+        DataRequest deleteDataRequest = new DataRequest(AddressEditActivity.this);
+        JSONObject deleteParams = new JSONObject();
+        try {
+            deleteParams.put(IWebService.KEY_REQ_ADDRESS_ID, addressArrayList.get(ADDRESS_POSITION).addressId);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
+        deleteDataRequest.execute(IWebService.CUSTOMER_DELETE_ADDRESS, deleteParams.toString(), new DataRequest.CallBack() {
+            @Override
+            public void onPreExecute() {
+                rlvGlobalProgressbar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPostExecute(String response) {
+                Log.d(TAG, "response = " + response);
+                rlvGlobalProgressbar.setVisibility(View.GONE);
+                if (!DataRequest.hasError(AddressEditActivity.this, response, true)) {
+                    try {
+                        JSONObject responseJObject = new JSONObject(response);
+                        Utils.showToastShort(AddressEditActivity.this, responseJObject.getString(IWebService.KEY_RES_MESSAGE));
+                        onBackPressed();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
     }
 
     private void addAddress() {
@@ -339,6 +364,7 @@ public class AddressEditActivity extends AppCompatActivity {
         });
 
     }
+
 
 }
 

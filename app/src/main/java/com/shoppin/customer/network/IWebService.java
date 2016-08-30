@@ -7,7 +7,7 @@ package com.shoppin.customer.network;
 public interface IWebService {
 
     //    String MAIN_URL = "http://192.168.0.1/ci/shoppin/admin/v1/";
-    String MAIN_URL = " http://192.168.0.1/shoppin/service/index.php/";
+    String MAIN_URL = "http://192.168.0.1/shoppin/service/index.php/";
 
     String KEY_RES_DATA = "data";
     String KEY_RES_SUCCESS = "success";
@@ -22,6 +22,7 @@ public interface IWebService {
     String CUSTOMER_PROFILE = MAIN_URL + "customer/MyProfile";
     String CUSTOMER_ADD_ADDRESS = MAIN_URL + "customer/AddMyAddress";
     String CUSTOMER_UPDATE_ADDRESS = MAIN_URL + "customer/UpdateMyAddress";
+    String CUSTOMER_DELETE_ADDRESS = MAIN_URL + "customer/DeleteMyAddress";
 
     String GET_CATEGORY = MAIN_URL + "category/GetCategoryList";
 
@@ -42,7 +43,7 @@ public interface IWebService {
     String KEY_REQ_CUSTOMER_POSTCODE = "customer_zip";
     String KEY_REQ_IS_HOME = "is_home";
     String KEY_REQ_SUB_CATEGORY_ID = "sub_cat_id";
-    String KEY_REQ_ADDRESS_ID = "customers_address_id";
+    String KEY_REQ_ADDRESS_ID = "customer_address_id";
     String KEY_REQ_CUSTOMER_SUBURB_NAME = "customer_suburb_name";
 
     /**

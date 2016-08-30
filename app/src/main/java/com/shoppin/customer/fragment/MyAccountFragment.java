@@ -92,6 +92,8 @@ public class MyAccountFragment extends BaseFragment {
     private ArrayAdapter<Suburb> suburbArrayAdapter;
     private Suburb selectedSuburb;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -109,7 +111,6 @@ public class MyAccountFragment extends BaseFragment {
         suburbArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, suburbArrayList);
         atxSuburb.setAdapter(suburbArrayAdapter);
         getSuburbs();
-        getAddressList();
 
 
         Log.d(TAG, "customer_id = " + DBAdapter.getMapKeyValueString(getActivity(), IMap.CUSTOMER_ID));
@@ -127,7 +128,9 @@ public class MyAccountFragment extends BaseFragment {
         txtUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signupValidation();
+                if (signupValidation()) {
+                    updateMyAccountDetails();
+                }
             }
         });
 
@@ -212,7 +215,7 @@ public class MyAccountFragment extends BaseFragment {
                             suburbArrayAdapter.notifyDataSetChanged();
                         }
                         //webservice call to fetch the customer details.
-//                        getMyProfileDetails();
+                        getMyProfileDetails();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -293,6 +296,13 @@ public class MyAccountFragment extends BaseFragment {
                 Log.d(TAG, "response = " + response);
                 if (!DataRequest.hasError(getActivity(), response, true)) {
 
+                    try {
+                        JSONObject responseJObject = new JSONObject(response);
+                        Utils.showToastShort(getActivity(), responseJObject.getString(IWebService.KEY_RES_MESSAGE));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
         });
@@ -317,6 +327,7 @@ public class MyAccountFragment extends BaseFragment {
             @Override
             public void onPostExecute(String response) {
                 Log.d(TAG, "response = " + response);
+                rlvGlobalProgressbar.setVisibility(View.GONE);
                 if (!DataRequest.hasError(getActivity(), response, true)) {
                     addressArrayList.clear();
                     Gson gson = new Gson();
@@ -362,7 +373,7 @@ public class MyAccountFragment extends BaseFragment {
             @Override
             public void onPostExecute(String response) {
                 Log.d(TAG, "response = " + response);
-                rlvGlobalProgressbar.setVisibility(View.GONE);
+//                rlvGlobalProgressbar.setVisibility(View.GONE);
                 if (!DataRequest.hasError(getActivity(), response, true)) {
                     JSONObject dataJObject = DataRequest.getJObjWebdata(response);
                     try {
@@ -370,10 +381,13 @@ public class MyAccountFragment extends BaseFragment {
                         etxPhoneNumber.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_MOBILE));
                         etxStreet.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_STREET));
                         atxSuburb.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_SUBURB_NAME));
-                        etxPassword.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_POSTCODE));
+                        etxPostcode.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_POSTCODE));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                    //webservice call for fetching address
+                    getAddressList();
                 }
             }
         });

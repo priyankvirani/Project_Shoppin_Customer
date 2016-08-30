@@ -24,6 +24,9 @@ public class Address implements Serializable {
     @SerializedName("customer_suburb_id")
     public String suburbId;
 
+    @SerializedName("customer_suburb_name")
+    public String suburbName;
+
 
     @SerializedName("customer_zip")
     public String postCode;

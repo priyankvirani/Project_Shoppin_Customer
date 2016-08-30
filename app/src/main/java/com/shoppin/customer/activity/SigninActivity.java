@@ -100,8 +100,8 @@ public class SigninActivity extends AppCompatActivity {
                                         dataJObject.getString(IWebService.KEY_RES_SUBURB_ID));
                                 DBAdapter.insertUpdateMap(SigninActivity.this, IMap.SUBURB_NAME,
                                         dataJObject.getString(IWebService.KEY_RES_SUBURB_NAME));
-//                                DBAdapter.insertUpdateMap(SigninActivity.this, IMap.CUSTOMER_ADDRESS_ID,
-//                                        dataJObject.getString(IWebService.KEY_REQ_ADDRESS_ID));
+                                DBAdapter.insertUpdateMap(SigninActivity.this, IMap.CUSTOMER_ADDRESS_ID,
+                                        dataJObject.getString(IWebService.KEY_REQ_ADDRESS_ID));
                                 DBAdapter.setMapKeyValueBoolean(SigninActivity.this, IMap.IS_LOGIN, true);
 
                                 Intent intent = new Intent(SigninActivity.this, NavigationDrawerActivity.class);

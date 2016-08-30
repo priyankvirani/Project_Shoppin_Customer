@@ -114,12 +114,12 @@ public class SignupActivity extends AppCompatActivity {
                         try {
                             DBAdapter.insertUpdateMap(SignupActivity.this, IDatabase.IMap.CUSTOMER_ID,
                                     dataJObject.getString(IWebService.KEY_RES_CUSTOMER_ID));
-//                            DBAdapter.insertUpdateMap(SignupActivity.this, IDatabase.IMap.SUBURB_ID,
-//                                    dataJObject.getString(IWebService.KEY_RES_SUBURB_ID));
+                            DBAdapter.insertUpdateMap(SignupActivity.this, IDatabase.IMap.SUBURB_ID,
+                                    dataJObject.getString(IWebService.KEY_RES_SUBURB_ID));
                             DBAdapter.insertUpdateMap(SignupActivity.this, IDatabase.IMap.SUBURB_NAME,
                                     dataJObject.getString(IWebService.KEY_RES_SUBURB_NAME));
-//                            DBAdapter.insertUpdateMap(SignupActivity.this, IDatabase.IMap.CUSTOMER_ADDRESS_ID,
-//                                    dataJObject.getString(IWebService.KEY_REQ_ADDRESS_ID));
+                            DBAdapter.insertUpdateMap(SignupActivity.this, IDatabase.IMap.CUSTOMER_ADDRESS_ID,
+                                    dataJObject.getString(IWebService.KEY_REQ_ADDRESS_ID));
                             DBAdapter.setMapKeyValueBoolean(SignupActivity.this, IDatabase.IMap.IS_LOGIN, true);
 
                             Intent intent = new Intent(SignupActivity.this, NavigationDrawerActivity.class);
