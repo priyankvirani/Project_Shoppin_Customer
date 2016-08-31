@@ -21,8 +21,6 @@ public interface IDatabase {
         String SUBURB_ID = "customer_suburb_id";
         String SUBURB_NAME = "customer_suburb_name";
         String CUSTOMER_ID = "customer_id";
-        String CUSTOMER_ADDRESS_ID = "customer_address_id";
-
         String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
         String GCM_REGISTRATION_ID = "gcm_registration_id";
 
@@ -30,6 +28,21 @@ public interface IDatabase {
                 + KEY_ID + " integer primary key autoincrement, "
                 + KEY_MAP_KEY + " text not null, "
                 + KEY_MAP_VALUE + " text not null);";
+    }
+
+    interface ICart {
+        String TABLE_CART = "cart";
+
+        String KEY_ID = "_id";
+        String KEY_PRODUCT_ID = "product_id";
+//        String KEY_LOCATION_NAME = "location";
+        String KEY_PRODUCT_JSON = "product_json";
+
+        String CREATE_TABLE_CART = "create table " + TABLE_CART + " ("
+                + KEY_ID + " integer primary key autoincrement, "
+                + KEY_PRODUCT_ID + " text not null, "
+//                + KEY_LOCATION_NAME + " text, "
+                + KEY_PRODUCT_JSON + " text);";
     }
 
     interface ILocation {
@@ -91,7 +104,7 @@ public interface IDatabase {
         String TABLE_PRODUCT = "product";
 
         String KEY_ID = "_id";
-        String KEY_PRODUCT_ID = "product_id";
+        String KEY_PRODUCT_ID = "productId";
         String KEY_CATEGORY_ID = "category_id";
         String KEY_SUB_CATEGORY_ID = "sub_cat_id";
         String KEY_NAME = "name";

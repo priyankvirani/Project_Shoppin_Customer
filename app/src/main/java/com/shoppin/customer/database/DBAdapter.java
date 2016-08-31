@@ -4,9 +4,27 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.shoppin.customer.model.Product;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+
+import static android.R.attr.value;
+import static com.shoppin.customer.database.IDatabase.ICart;
 import static com.shoppin.customer.database.IDatabase.IMap;
+
 /**
  * Created by ubuntu on 27/4/16.
  */
@@ -65,6 +83,195 @@ public class DBAdapter {
         } else {
             insertUpdateMap(context, key, IMap.FALSE);
         }
+    }
+
+
+    public static void insertUpdateCart(Context context, Product product, boolean increase) {
+        SQLiteDatabase db = DatabaseHelper.getInstance(context).getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ICart.KEY_PRODUCT_ID, product.productId);
+
+        Gson gson = new Gson();
+//        String productJson = gson.toJson(product);
+
+        Cursor cursor = db.query(ICart.TABLE_CART, new String[]{ICart.KEY_ID, ICart.KEY_PRODUCT_JSON}, ICart.KEY_PRODUCT_ID + " = '" + product.productId + "'", null, null, null, null, null);
+        int index = -1;
+        if (cursor != null && cursor.getCount() > 0) { //if the row exist then return the id
+            cursor.moveToFirst();
+            index = cursor.getInt(cursor.getColumnIndex(IMap.KEY_ID));
+//            cursor.close();
+        }
+
+        if (index == -1) {
+            // new product
+            contentValues.put(ICart.KEY_PRODUCT_ID, product.productId);
+            contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+            db.insert(ICart.TABLE_CART, null, contentValues);
+        } else {
+            if (cursor != null && cursor.getCount() > 0) {
+//                cursor.moveToFirst();
+                Product cartProduct = null;
+
+                do {
+                    try {
+                        cartProduct = gson.fromJson(new JSONObject(cursor.getString(cursor.getColumnIndex(ICart.KEY_PRODUCT_JSON))).toString(), Product.class);
+                        if (cartProduct != null) {
+                            // Product with option
+                            if (cartProduct.productHasOption) {
+//                            Log.e(TAG,"original  product = " + product.productOptionArrayList.size());
+//                            Log.e(TAG,"cart product = " + cartProduct.productOptionArrayList.size());
+                                // same product & different options list
+                                if (product.productOptionArrayList.size() != cartProduct.productOptionArrayList.size()) {
+                                    db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+                                    break;
+                                }
+                                // same product
+                                // options list size are same
+                                // now compare them
+                                else {
+                                    int optionMatchCount = 0;
+                                    // Original product option
+                                    for (int optionProduct = 0; optionProduct < product.productOptionArrayList.size(); optionProduct++) {
+                                        // Cart product option
+                                        for (int optionCartProduct = 0; optionCartProduct < cartProduct.productOptionArrayList.size(); optionCartProduct++) {
+                                            // Original and Cart product option id match
+                                            if (product.productOptionArrayList.get(optionProduct).optionId
+                                                    .equals(cartProduct.productOptionArrayList.get(optionCartProduct).optionId)) {
+                                                // Original product option value
+                                                for (int valueProduct = 0; valueProduct < product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.size(); valueProduct++) {
+                                                    // Cart product option value
+                                                    for (int valueCartProduct = 0; valueCartProduct < cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.size(); valueCartProduct++) {
+                                                        // Both value id got matched
+                                                        // and both are selected
+                                                        if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId
+                                                                .equals(cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).optionValueId)
+                                                                && product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected
+                                                                && cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).selected) {
+                                                            optionMatchCount++;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    // Same product
+                                    // same option
+                                    // same option value
+                                    // update product quantity
+                                    if (optionMatchCount == product.productOptionArrayList.size()) {
+                                        // increase cart
+                                        if (increase) {
+                                            cartProduct.productQuantity++;
+                                            product.productQuantity = cartProduct.productQuantity;
+                                            contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+                                            db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+                                        }
+                                        // decrease cart
+                                        else {
+                                            cartProduct.productQuantity--;
+                                            if (product.productQuantity <= 0) {
+                                                // Remove product from cart
+                                                product.productQuantity = 0;
+                                                contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+                                                db.delete(ICart.TABLE_CART, ICart.KEY_PRODUCT_ID + " = '" + product.productId + "'", null);
+                                            } else {
+                                                product.productQuantity = cartProduct.productQuantity;
+                                                contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+                                                db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+                                            }
+                                        }
+                                    }
+                                    // Same product
+                                    // same option
+                                    // different option value
+                                    // add product as new
+                                    else {
+                                        contentValues.put(ICart.KEY_PRODUCT_ID, product.productId);
+                                        contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+                                        db.insert(ICart.TABLE_CART, null, contentValues);
+                                    }
+                                }
+
+                            }
+                            // Product without option
+                            else {
+                                if (increase) {
+                                    cartProduct.productQuantity++;
+                                    product.productQuantity = cartProduct.productQuantity;
+                                    contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+                                    db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+                                }
+                                // decrease cart
+                                else {
+                                    cartProduct.productQuantity--;
+                                    if (product.productQuantity <= 0) {
+                                        // Remove product from cart
+                                        product.productQuantity = 0;
+                                        contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+                                        db.delete(ICart.TABLE_CART, ICart.KEY_PRODUCT_ID + " = '" + product.productId + "'", null);
+                                    } else {
+                                        product.productQuantity = cartProduct.productQuantity;
+                                        contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+                                        db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+                                    }
+                                }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    cartProduct = null;
+                } while (cursor.moveToNext());
+                cursor.close(); // that's important too, otherwise you're gonna leak cursors
+            }
+        }
+        Log.d(TAG, "insertUpdateCart product.productId = " + product.productId + ", value = " + value);
+    }
+
+    public static Product getProductFromCart(Context context, String ProductId) {
+        SQLiteDatabase db = DatabaseHelper.getInstance(context).getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + ICart.TABLE_CART
+                + " WHERE " + ICart.KEY_PRODUCT_ID + " = " + ProductId, null);
+
+        Gson gson = new Gson();
+        Product product = null;
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            do {
+                try {
+                    product = gson.fromJson(new JSONObject(cursor.getString(cursor.getColumnIndex(ICart.KEY_PRODUCT_JSON))).toString(), Product.class);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } while (cursor.moveToNext());
+            cursor.close(); // that's important too, otherwise you're gonna leak cursors
+        }
+        return product;
+    }
+
+    public static ArrayList<Product> getAllProductFromCart(Context context) {
+        SQLiteDatabase db = DatabaseHelper.getInstance(context).getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + ICart.TABLE_CART, null);
+
+        Gson gson = new Gson();
+        ArrayList<Product> productArrayList = new ArrayList<>();
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            do {
+                try {
+                    Product product = gson.fromJson(new JSONObject(cursor.getString(cursor.getColumnIndex(ICart.KEY_PRODUCT_JSON))).toString(), Product.class);
+                    productArrayList.add(product);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } while (cursor.moveToNext());
+            cursor.close(); // that's important too, otherwise you're gonna leak cursors
+        }
+        return productArrayList;
     }
 
 //    /**
@@ -210,18 +417,18 @@ public class DBAdapter {
 //        return rootJObject.toString();
 //    }
 //
-//    public static boolean insertSubCategories(Context context, ArrayList<SubCategory> productVariantArrayList, JSONArray subCategoryJArray) {
+//    public static boolean insertSubCategories(Context context, ArrayList<SubCategory> productOptionValueArrayList, JSONArray subCategoryJArray) {
 //        try {
-//            if (productVariantArrayList != null && productVariantArrayList.size() > 0) {
-//                Log.e(TAG, "subCategories.size() = " + productVariantArrayList.size());
+//            if (productOptionValueArrayList != null && productOptionValueArrayList.size() > 0) {
+//                Log.e(TAG, "subCategories.size() = " + productOptionValueArrayList.size());
 //
 //                SQLiteDatabase db = DatabaseHelper.getInstance(context).getWritableDatabase();
 //
-//                for (int i = 0; i < productVariantArrayList.size(); i++) {
+//                for (int i = 0; i < productOptionValueArrayList.size(); i++) {
 //                    ContentValues contentValues = new ContentValues();
-//                    contentValues.put(ISubCategory.KEY_SUB_CATEGORY_ID, productVariantArrayList.get(i).id);
-//                    contentValues.put(ISubCategory.KEY_CATEGORY_ID, productVariantArrayList.get(i).cat_id);
-//                    contentValues.put(ISubCategory.KEY_NAME, productVariantArrayList.get(i).name);
+//                    contentValues.put(ISubCategory.KEY_SUB_CATEGORY_ID, productOptionValueArrayList.get(i).id);
+//                    contentValues.put(ISubCategory.KEY_CATEGORY_ID, productOptionValueArrayList.get(i).categoryId);
+//                    contentValues.put(ISubCategory.KEY_NAME, productOptionValueArrayList.get(i).name);
 //                    contentValues.put(ISubCategory.KEY_JSON, subCategoryJArray.getString(i));
 //                    db.insert(ISubCategory.TABLE_SUB_CATEGORY, null, contentValues);
 //                }
@@ -245,8 +452,8 @@ public class DBAdapter {
 //
 //                for (int i = 0; i < productArrayList.size(); i++) {
 //                    ContentValues contentValues = new ContentValues();
-//                    contentValues.put(IProduct.KEY_PRODUCT_ID, productArrayList.get(i).product_id);
-//                    contentValues.put(IProduct.KEY_CATEGORY_ID, productArrayList.get(i).cat_id);
+//                    contentValues.put(IProduct.KEY_PRODUCT_ID, productArrayList.get(i).productId);
+//                    contentValues.put(IProduct.KEY_CATEGORY_ID, productArrayList.get(i).categoryId);
 //                    contentValues.put(IProduct.KEY_SUB_CATEGORY_ID, productArrayList.get(i).sub_cat_id);
 //                    contentValues.put(IProduct.KEY_NAME, productArrayList.get(i).name);
 //                    contentValues.put(IProduct.KEY_LOCATION, productArrayList.get(i).location);
@@ -566,4 +773,26 @@ public class DBAdapter {
 //
 //        return rootJObject.toString();
 //    }
+
+    public static void exportDB(Context context) {
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+            FileChannel source;
+            FileChannel destination;
+            String currentDBPath = "/data/" + "com.shoppin.customer" + "/databases/" + IDatabase.DATABASE_NAME;
+            String backupDBPath = IDatabase.DATABASE_NAME;
+            File currentDB = new File(data, currentDBPath);
+            File backupDB = new File(sd, backupDBPath);
+
+            source = new FileInputStream(currentDB).getChannel();
+            destination = new FileOutputStream(backupDB).getChannel();
+            destination.transferFrom(source, 0, source.size());
+            source.close();
+            destination.close();
+            Toast.makeText(context, "DB Exported!", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

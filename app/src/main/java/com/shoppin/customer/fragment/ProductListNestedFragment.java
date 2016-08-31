@@ -6,12 +6,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.shoppin.customer.R;
+import com.shoppin.customer.activity.NavigationDrawerActivity;
 import com.shoppin.customer.adapter.ProductListAdapter;
 import com.shoppin.customer.model.Product;
 import com.shoppin.customer.model.SubCategory;
@@ -55,12 +57,20 @@ public class ProductListNestedFragment extends BaseFragment {
         if (getArguments() != null) {
             subCategoryArrayList = (ArrayList<SubCategory>) getArguments().getSerializable(SUB_CATEGORY_ARRAYLIST);
             subCategoryPosition = getArguments().getInt(SUB_CATEGORY_POSITION, -1);
-//            Log.e(TAG, "Size : " + productArrayList.size());
         }
 
         productArrayList = new ArrayList<>();
         productListAdapter = new ProductListAdapter(getActivity(), productArrayList);
         listProduct.setAdapter(productListAdapter);
+        listProduct.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) getActivity();
+                if (navigationDrawerActivity != null) {
+                    navigationDrawerActivity.switchContent(ProductDetailFragment.newInstance(productArrayList.get(i).productId), false);
+                }
+            }
+        });
 
 //        initAdapter();
         getProductBySubCategory();
@@ -92,7 +102,7 @@ public class ProductListNestedFragment extends BaseFragment {
 //    private void initAdapter() {
 //        position = FragmentPagerItem.getPosition(getArguments());
 //        Log.e(TAG, "Position :  -  " + position);
-//        productListAdapter = new SubCategoryNestedAdapter(getActivity(), productArrayList.get(position).productVariantArrayList);
+//        productListAdapter = new SubCategoryNestedAdapter(getActivity(), productArrayList.get(position).productOptionValueArrayList);
 //        listProduct.setAdapter(productListAdapter);
 //    }
 
@@ -100,7 +110,7 @@ public class ProductListNestedFragment extends BaseFragment {
         try {
             position = FragmentPagerItem.getPosition(getArguments());
             JSONObject loginParam = new JSONObject();
-            loginParam.put(IWebService.KEY_REQ_SUB_CATEGORY_ID, subCategoryArrayList.get(position).subcategory_id);
+            loginParam.put(IWebService.KEY_REQ_SUB_CATEGORY_ID, subCategoryArrayList.get(position).subcategoryId);
             DataRequest getSuburbsDataRequest = new DataRequest(getActivity());
             getSuburbsDataRequest.execute(IWebService.GET_PRODUCT_BY_SUB_CATEGORY, loginParam.toString(), new DataRequest.CallBack() {
                 public void onPreExecute() {

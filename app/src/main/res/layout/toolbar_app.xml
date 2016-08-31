@@ -51,6 +51,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="Title"
+                android:layout_toLeftOf="@+id/imgSearch"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_title"
                 android:textStyle="bold" />
@@ -64,6 +65,19 @@
                 android:layout_gravity="center_vertical"
                 android:background="?attr/selectableItemBackground"
                 android:src="@drawable/cart" />
+
+            <TextView
+                android:id="@+id/txtCartCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/imgCart"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackground"
+                android:maxLength="3"
+                android:text="X"
+                android:textColor="@color/black" />
 
             <ImageView
                 android:id="@+id/imgSearch"

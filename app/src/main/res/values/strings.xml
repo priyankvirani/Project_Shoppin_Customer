@@ -34,6 +34,12 @@
     <string name="text_already_have_account">Already have an account</string>
     <string name="text_or">Or</string>
     <string name="text_explore_guest">Explore as</string>
+    <string name="text_checkout">Checkout</string>
+    <string name="text_pay">Pay</string>
+    <string name="text_price">Price</string>
+    <string name="text_discount_and_saving">Discount n Saving</string>
+    <string name="text_coupon_discount">Coupon Discount</string>
+    <string name="text_total">Total</string>
 
     <!-- Edit text hint-->
     <string name="edittext_hint_mobile_number">Mobile Number</string>
@@ -60,6 +66,7 @@
     <!-- Menu Action -->
     <string name="action_search_product">Search</string>
     <string name="action_view_cart">Cart</string>
+    <string name="action_checkout">Checkout</string>
 
     <!--Toast message-->
     <string name="msg_copy_clipboard">Text copied to clipboard</string>

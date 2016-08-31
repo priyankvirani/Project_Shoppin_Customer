@@ -64,7 +64,7 @@ public class SubCategoryNestedFragment extends BaseFragment {
 //
 //        position = FragmentPagerItem.getPosition(getArguments());
 //        Log.e(TAG, "Position :  -  " + position);
-//        subCategoryNestedAdapter = new SubCategoryAdapter(getActivity(), categoryArrayList.get(position).productVariantArrayList);
+//        subCategoryNestedAdapter = new SubCategoryAdapter(getActivity(), categoryArrayList.get(position).productOptionValueArrayList);
 //        listProduct.setAdapter(subCategoryNestedAdapter);
 //        //subCategoryNestedAdapter.notifyDataSetChanged();
 //        Log.e(TAG, "onViewCreated");

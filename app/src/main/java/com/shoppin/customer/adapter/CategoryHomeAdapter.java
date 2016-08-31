@@ -62,12 +62,12 @@ public class CategoryHomeAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Log.e(TAG, "cat_id = " + categoryArrayList.get(position).category_id);
+        Log.e(TAG, "categoryId = " + categoryArrayList.get(position).categoryId);
 
-        holder.txtCategory.setText(categoryArrayList.get(position).category_name);
+        holder.txtCategory.setText(categoryArrayList.get(position).categoryName);
 
         subCategoryArrayList = categoryArrayList.get(position).subCategoryArrayList;
-        subCategoryHorizontalAdapter = new SubCategoryHorizontalAdapter(context, subCategoryArrayList, categoryArrayList.get(position).category_id);
+        subCategoryHorizontalAdapter = new SubCategoryHorizontalAdapter(context, subCategoryArrayList, categoryArrayList.get(position).categoryId);
         LinearLayoutManager horizontalLayoutManager
                 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         holder.rclHorizontalSubCategoty.setLayoutManager(horizontalLayoutManager);
@@ -85,7 +85,7 @@ public class CategoryHomeAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Log.e(TAG, "Size : " + categoryArrayList.size());
-                if (context != null && context instanceof NavigationDrawerActivity) {
+                if(context!=null && context instanceof  NavigationDrawerActivity) {
                     NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
                     navigationDrawerActivity.switchContent(CategoryFragment.newInstance(position, categoryArrayList), false);
                 }
@@ -111,7 +111,7 @@ public class CategoryHomeAdapter extends BaseAdapter {
 
         @Override
         public void onClick(View arg0) {
-            Log.d(TAG, "Category : " + categoryArrayList.get(mPosition).category_name);
+            Log.d(TAG, "Category : " + categoryArrayList.get(mPosition).categoryName);
             if (categoryArrayList.get(mPosition).isCategoryExpand()) {
                 categoryArrayList.get(mPosition).setCategoryExpand(false);
             } else {

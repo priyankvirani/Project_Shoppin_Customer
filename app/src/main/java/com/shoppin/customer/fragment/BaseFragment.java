@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,6 +18,13 @@ import com.shoppin.customer.activity.NavigationDrawerActivity;
 
 public class BaseFragment extends Fragment implements IUpdateFragment {
     public View layoutView;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        // Log.i(TAG, "onCreate");
+    }
 
     @Nullable
     @Override
@@ -29,6 +38,14 @@ public class BaseFragment extends Fragment implements IUpdateFragment {
         if (getActivity() != null && getActivity() instanceof NavigationDrawerActivity) {
             ((NavigationDrawerActivity) getActivity()).setToolbarTitle("");
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (menu != null) {
+            menu.clear();
+        }
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }
 

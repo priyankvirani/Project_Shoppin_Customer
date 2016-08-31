@@ -1,12 +1,14 @@
 package com.shoppin.customer.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
@@ -18,15 +20,18 @@ import java.util.ArrayList;
  * Created by ubuntu on 17/8/16.
  */
 
-public class OfferHomeAdapter extends PagerAdapter {
-    private static final String TAG = OfferHomeAdapter.class.getSimpleName();
+public class ImageSlideAdapter extends PagerAdapter {
+    private static final String TAG = ImageSlideAdapter.class.getSimpleName();
 
     private Context context;
     private ArrayList<String> imageArrayList;
+    private ImageView[] dots;
+    private LinearLayout offerViewPagerIndicator;
 
-    public OfferHomeAdapter(Context context, ArrayList<String> imageArrayList) {
+    public ImageSlideAdapter(Context context, ArrayList<String> imageArrayList, LinearLayout offerViewPagerIndicator) {
         this.context = context;
         this.imageArrayList = imageArrayList;
+        this.offerViewPagerIndicator = offerViewPagerIndicator;
     }
 
     @Override
@@ -71,6 +76,39 @@ public class OfferHomeAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((RelativeLayout) object);
 
+    }
+
+    public void setUiPageViewController() {
+        if (offerViewPagerIndicator != null && imageArrayList != null && imageArrayList.size() > 0) {
+            offerViewPagerIndicator.setVisibility(View.VISIBLE);
+            Log.d(TAG, "imageArrayList.size() = " + imageArrayList.size());
+            dots = new ImageView[imageArrayList.size()];
+
+            for (int i = 0; i < imageArrayList.size(); i++) {
+                dots[i] = new ImageView(context);
+                dots[i].setImageDrawable(ContextCompat.getDrawable(context, R.drawable.non_selected_dot));
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+
+                params.setMargins(4, 0, 4, 0);
+
+                offerViewPagerIndicator.addView(dots[i], params);
+            }
+
+            dots[0].setImageDrawable(ContextCompat.getDrawable(context, R.drawable.selected_dot));
+        }
+    }
+
+    public void setIndicator(int position) {
+        if (offerViewPagerIndicator != null && imageArrayList != null && imageArrayList.size() > 0) {
+            for (int i = 0; i < imageArrayList.size(); i++) {
+                dots[i].setImageDrawable(ContextCompat.getDrawable(context, R.drawable.non_selected_dot));
+            }
+            dots[position].setImageDrawable(ContextCompat.getDrawable(context, R.drawable.selected_dot));
+        }
     }
 
 }

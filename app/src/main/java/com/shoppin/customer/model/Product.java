@@ -10,9 +10,21 @@ import java.util.ArrayList;
  */
 
 public class Product implements Serializable {
-    public String product_id;
-
-    public String product_name;
-    @SerializedName("product_variants")
-    public ArrayList<ProductVariant> productVariantArrayList;
+    @SerializedName("product_id")
+    public String productId;
+    @SerializedName("name")
+    public String productName;
+    @SerializedName("images")
+    public ArrayList<String> productImages;
+    @SerializedName("price")
+    public double productPrice;
+    @SerializedName("saleprice")
+    public double productSalePrice;
+    @SerializedName("description")
+    public String productDescription;
+    @SerializedName("has_option")
+    public boolean productHasOption;
+    @SerializedName("option_list")
+    public ArrayList<ProductOption> productOptionArrayList;
+    public int productQuantity;
 }

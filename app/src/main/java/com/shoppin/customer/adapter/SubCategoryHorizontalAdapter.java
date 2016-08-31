@@ -48,9 +48,9 @@ public class SubCategoryHorizontalAdapter extends RecyclerView.Adapter<SubCatego
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.txtsubCategory.setText(subCategoryArrayList.get(position).subcategory_name);
+        holder.txtsubCategory.setText(subCategoryArrayList.get(position).subcategoryName);
         Glide.with(context)
-                .load(subCategoryArrayList.get(position).image)
+                .load(subCategoryArrayList.get(position).subcategoryImage)
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)
                 .into(holder.imgSubcategory);
@@ -86,8 +86,8 @@ public class SubCategoryHorizontalAdapter extends RecyclerView.Adapter<SubCatego
 
         @Override
         public void onClick(View arg0) {
-            if (context != null && context instanceof NavigationDrawerActivity) {
-                NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
+            NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
+            if (navigationDrawerActivity != null) {
                 navigationDrawerActivity.switchContent(ProductListFragment.newInstance(subCategoryPosition, subCategoryArrayList), false);
             }
         }

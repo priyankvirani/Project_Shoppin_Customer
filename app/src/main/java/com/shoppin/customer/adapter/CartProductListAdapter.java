@@ -12,23 +12,21 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.shoppin.customer.R;
-import com.shoppin.customer.activity.NavigationDrawerActivity;
-import com.shoppin.customer.database.DBAdapter;
 import com.shoppin.customer.model.Product;
 import com.shoppin.customer.utils.Utils;
 
 import java.util.ArrayList;
 
-import static com.shoppin.customer.R.id.imgAddToCart;
+import static com.shoppin.customer.R.id.txtProductCartCount;
 
-public class ProductListAdapter extends BaseAdapter {
+public class CartProductListAdapter extends BaseAdapter {
 
-    private static final String TAG = ProductListAdapter.class.getSimpleName();
+    private static final String TAG = CartProductListAdapter.class.getSimpleName();
 
     private Context context;
     private ArrayList<Product> productArrayList;
 
-    public ProductListAdapter(Context context, ArrayList<Product> productArrayList) {
+    public CartProductListAdapter(Context context, ArrayList<Product> productArrayList) {
         this.context = context;
         this.productArrayList = productArrayList;
     }
@@ -51,14 +49,14 @@ public class ProductListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = View.inflate(context, R.layout.cell_product, null);
+            convertView = View.inflate(context, R.layout.cell_cart_product, null);
             holder = new ViewHolder();
             holder.lltCell = (LinearLayout) convertView.findViewById(R.id.lltCell);
             holder.txtProductName = (TextView) convertView.findViewById(R.id.txtProductName);
             holder.txtProductPrice = (TextView) convertView.findViewById(R.id.txtProductPrice);
             holder.txtProductSalePrice = (TextView) convertView.findViewById(R.id.txtProductSalePrice);
+            holder.txtProductCartCount = (TextView) convertView.findViewById(txtProductCartCount);
             holder.imgProduct = (ImageView) convertView.findViewById(R.id.imgProduct);
-            holder.imgAddToCart = (ImageView) convertView.findViewById(imgAddToCart);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -71,6 +69,7 @@ public class ProductListAdapter extends BaseAdapter {
         holder.txtProductPrice.setText("$ " + String.valueOf(productArrayList.get(position).productPrice));
         holder.txtProductPrice.setPaintFlags(holder.txtProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.txtProductSalePrice.setText("$ " + String.valueOf(productArrayList.get(position).productSalePrice));
+        holder.txtProductCartCount.setText("" + String.valueOf(productArrayList.get(position).productQuantity));
 
         if (productArrayList.get(position).productImages != null && productArrayList.get(position).productImages.size() > 0) {
             Glide.with(context)
@@ -79,30 +78,15 @@ public class ProductListAdapter extends BaseAdapter {
                     .error(R.drawable.placeholder)
                     .into(holder.imgProduct);
         }
-        if (productArrayList.get(position).productHasOption) {
-            holder.imgAddToCart.setVisibility(View.INVISIBLE);
-        } else {
-            holder.imgAddToCart.setVisibility(View.VISIBLE);
-            holder.imgAddToCart.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-//                    Utils.showToastShort(context, "Under Development : " + productArrayList.get(position).productName);
-                    NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
-                    if (navigationDrawerActivity != null) {
-                        DBAdapter.insertUpdateCart(context, productArrayList.get(position), true);
-                        navigationDrawerActivity.updateCartCount();
-                    }
-                }
-            });
-        }
+
         return convertView;
 
     }
 
     class ViewHolder {
         public LinearLayout lltCell;
-        public TextView txtProductName, txtProductPrice, txtProductSalePrice;
-        public ImageView imgProduct, imgAddToCart;
+        public TextView txtProductName, txtProductPrice, txtProductSalePrice, txtProductCartCount;
+        public ImageView imgProduct;
     }
 
     private class OnItemClickListener implements View.OnClickListener {

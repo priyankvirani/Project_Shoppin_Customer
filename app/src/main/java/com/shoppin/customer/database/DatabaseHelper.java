@@ -38,10 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.i(TAG, "create new database");
         try {
             db.execSQL(IDatabase.IMap.CREATE_TABLE_MAP);
-            db.execSQL(IDatabase.ILocation.CREATE_TABLE_lOCATION);
-            db.execSQL(IDatabase.ICategory.CREATE_TABLE_CATEGORY);
-            db.execSQL(IDatabase.ISubCategory.CREATE_TABLE_SUB_CATEGORY);
-            db.execSQL(IDatabase.IProduct.CREATE_TABLE_PRODUCT);
+            db.execSQL(IDatabase.ICart.CREATE_TABLE_CART);
         } catch (Exception e) {
             e.printStackTrace();
         }

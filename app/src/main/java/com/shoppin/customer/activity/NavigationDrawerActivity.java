@@ -24,6 +24,7 @@ import com.shoppin.customer.R;
 import com.shoppin.customer.adapter.NavigationDrawerMenuAdapter;
 import com.shoppin.customer.database.DBAdapter;
 import com.shoppin.customer.fragment.BaseFragment;
+import com.shoppin.customer.fragment.CartFragment;
 import com.shoppin.customer.fragment.HomeFragment;
 import com.shoppin.customer.fragment.IUpdateFragment;
 import com.shoppin.customer.fragment.MyAccountFragment;
@@ -31,6 +32,9 @@ import com.shoppin.customer.fragment.OfferFragment;
 import com.shoppin.customer.fragment.StoreListFragment;
 import com.shoppin.customer.fragment.UnderDevelopmentFragment;
 import com.shoppin.customer.model.NavigationDrawerMenuItem;
+import com.shoppin.customer.model.Product;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +49,8 @@ public class NavigationDrawerActivity extends BaseActivity {
 
     @BindView(R.id.txtFragmentTitle)
     public TextView txtFragmentTitle;
+    @BindView(R.id.txtCartCount)
+    public TextView txtCartCount;
 
     /**
      * Container for all fragments
@@ -120,7 +126,7 @@ public class NavigationDrawerActivity extends BaseActivity {
                         break;
 
                     case IDrawerMenu.CART_ID:
-                        newContent = new UnderDevelopmentFragment();
+                        newContent = new CartFragment();
                         break;
 
                     case IDrawerMenu.OFFERS_ID:
@@ -170,13 +176,15 @@ public class NavigationDrawerActivity extends BaseActivity {
         }
         getSupportFragmentManager().addOnBackStackChangedListener(
                 onBackStackChangedListener);
+
+        updateCartCount();
     }
 
 
 //    @Override
-//    public boolean onCreateOptionsMenu(Menu menu_address) {
-//        // Inflate the menu_address; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu_address.menu_app_global, menu_address);
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_app_global, menu);
 //        return true;
 //    }
 //
@@ -207,7 +215,7 @@ public class NavigationDrawerActivity extends BaseActivity {
 
     @OnClick(R.id.imgCart)
     public void openCart() {
-        switchContent(new UnderDevelopmentFragment(), true);
+        switchContent(new CartFragment(), true);
     }
 
     private void setMenuAdapter() {
@@ -393,5 +401,14 @@ public class NavigationDrawerActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    public int updateCartCount() {
+        int cartCount = 0;
+        ArrayList<Product> productArrayList = DBAdapter.getAllProductFromCart(NavigationDrawerActivity.this);
+        if (productArrayList != null) {
+            cartCount = productArrayList.size();
+        }
+        txtCartCount.setText("" + cartCount);
+        return cartCount;
+    }
 
 }

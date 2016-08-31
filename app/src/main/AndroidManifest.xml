@@ -15,6 +15,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- [END Internet permissions] -->
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -46,10 +49,8 @@
             android:name=".activity.NavigationDrawerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.AddressEditActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait" />
+        <activity android:name=".activity.CheckOutActivity" />
+        <activity android:name=".activity.PaymentActivity"></activity>
     </application>
 
 </manifest>

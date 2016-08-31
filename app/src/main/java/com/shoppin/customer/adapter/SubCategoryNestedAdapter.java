@@ -63,9 +63,9 @@ public class SubCategoryNestedAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.txtSubcategory.setText(subCategoryArrayList.get(position).subcategory_name);
+        holder.txtSubcategory.setText(subCategoryArrayList.get(position).subcategoryName);
         Glide.with(context)
-                .load(subCategoryArrayList.get(position).image)
+                .load(subCategoryArrayList.get(position).subcategoryImage)
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)
                 .into(holder.imgSubcategory);
@@ -94,9 +94,8 @@ public class SubCategoryNestedAdapter extends BaseAdapter {
 
         @Override
         public void onClick(View arg0) {
-//            Utils.showToastShort(context, "Under Development : " + listModelSubCategoryArr.subcat_name);
-            if (context != null && context instanceof NavigationDrawerActivity) {
-                NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
+            NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
+            if (navigationDrawerActivity != null) {
                 navigationDrawerActivity.switchContent(ProductListFragment.newInstance(subCategoryPosition, subCategoryArrayList), false);
             }
         }
