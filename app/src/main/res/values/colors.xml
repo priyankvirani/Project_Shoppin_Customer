@@ -11,7 +11,7 @@
     <color name="app_theme_1">#80cc28</color>
     <color name="app_theme_2">#649f1f</color>
     <!--<color name="app_theme_3">#FF4081</color>-->
-    <color name="app_theme_3">#ffffff</color>
+    <color name="app_theme_3">#000000</color>
 
     <color name="white">#ffffff</color>
     <color name="white_50">#80ffffff</color>

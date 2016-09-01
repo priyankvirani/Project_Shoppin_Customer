@@ -2,7 +2,6 @@ package com.shoppin.customer.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.shoppin.customer.R;
 import com.shoppin.customer.activity.AddressEditActivity;
-import com.shoppin.customer.activity.NavigationDrawerActivity;
 import com.shoppin.customer.fragment.MyAccountFragment;
 import com.shoppin.customer.model.Address;
 import com.shoppin.customer.utils.IConstants;
@@ -71,7 +69,7 @@ public class AddressRecyleAdapter extends RecyclerView.Adapter<AddressRecyleAdap
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         //        @Nullable
-        @BindView(R.id.txtName)
+        @BindView(R.id.txtCustomerName)
         TextView txtName;
         //        @Nullable
         @BindView(R.id.txtPhone)
@@ -86,7 +84,7 @@ public class AddressRecyleAdapter extends RecyclerView.Adapter<AddressRecyleAdap
         @BindView(R.id.txtPostCode)
         TextView txtPostCode;
 
-        @BindView(R.id.imgEdit)
+        @BindView(R.id.imgEditAddress)
         ImageView imgEdit;
 
         MyViewHolder(View view) {

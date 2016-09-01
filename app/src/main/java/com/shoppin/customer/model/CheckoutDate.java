@@ -1,5 +1,7 @@
 package com.shoppin.customer.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -7,9 +9,10 @@ import java.util.ArrayList;
  */
 
 public class CheckoutDate {
-    private boolean isSelected;
-    private String Date;
-    private ArrayList<CheckoutTime> checkoutTimesArrayList;
+    boolean isSelected;
+    String date;
+    @SerializedName("slot_list")
+    ArrayList<CheckoutTime> checkoutTimesArrayList;
 
     public boolean isSelected() {
         return isSelected;
@@ -29,10 +32,10 @@ public class CheckoutDate {
     }
 
     public String getDate() {
-        return Date;
+        return date;
     }
 
     public void setDate(String date) {
-        Date = date;
+        this.date = date;
     }
 }

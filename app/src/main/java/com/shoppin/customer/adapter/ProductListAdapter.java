@@ -89,7 +89,7 @@ public class ProductListAdapter extends BaseAdapter {
 //                    Utils.showToastShort(context, "Under Development : " + productArrayList.get(position).productName);
                     NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
                     if (navigationDrawerActivity != null) {
-                        DBAdapter.insertUpdateCart(context, productArrayList.get(position), true);
+                        DBAdapter.insertUpdateDeleteCart(context, productArrayList.get(position), true);
                         navigationDrawerActivity.updateCartCount();
                     }
                 }

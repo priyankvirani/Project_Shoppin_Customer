@@ -49,8 +49,19 @@
             android:name=".activity.NavigationDrawerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.CheckOutActivity" />
-        <activity android:name=".activity.PaymentActivity"></activity>
+        <activity
+            android:name=".activity.CheckOutActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.PaymentActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AddressEditActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

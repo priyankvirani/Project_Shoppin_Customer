@@ -215,7 +215,7 @@ public class NavigationDrawerActivity extends BaseActivity {
 
     @OnClick(R.id.imgCart)
     public void openCart() {
-        switchContent(new CartFragment(), true);
+        switchContent(new CartFragment(), false);
     }
 
     private void setMenuAdapter() {

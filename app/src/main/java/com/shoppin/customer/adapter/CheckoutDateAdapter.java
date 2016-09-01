@@ -3,11 +3,11 @@ package com.shoppin.customer.adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shoppin.customer.R;
 import com.shoppin.customer.model.CheckoutDate;
@@ -19,20 +19,24 @@ import java.util.ArrayList;
  */
 
 public class CheckoutDateAdapter extends RecyclerView.Adapter<CheckoutDateAdapter.MyViewHolder> {
+    private static final String TAG = CheckoutDateAdapter.class.getSimpleName();
 
     public RecyclerView timeRecyclerView;
     private ArrayList<CheckoutDate> checkoutDateArrayList;
-    private String TAG = CheckoutDateAdapter.class.getSimpleName();
-    private Context mContext;
-    private CheckoutDate checkoutDateTempValues = null;
+    private Context context;
     private CheckoutTimeAdapter checkoutTimeAdapter;
 
+    public CheckoutDateAdapter(Context context, ArrayList<CheckoutDate> checkoutDateArrayList
+            , RecyclerView timeRecyclerView) {
+        this.context = context;
+        this.checkoutDateArrayList = checkoutDateArrayList;
+        this.timeRecyclerView = timeRecyclerView;
 
-    public CheckoutDateAdapter(Context context, ArrayList<CheckoutDate> checkoutDatearrayList
-            , RecyclerView recyclerView) {
-        mContext = context;
-        checkoutDateArrayList = checkoutDatearrayList;
-        timeRecyclerView = recyclerView;
+        checkoutTimeAdapter = new CheckoutTimeAdapter(context, null);
+        LinearLayoutManager horizontalLayoutManagaerdate
+                = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        this.timeRecyclerView.setLayoutManager(horizontalLayoutManagaerdate);
+        this.timeRecyclerView.setAdapter(checkoutTimeAdapter);
     }
 
     @Override
@@ -45,26 +49,24 @@ public class CheckoutDateAdapter extends RecyclerView.Adapter<CheckoutDateAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        checkoutDateTempValues = null;
-        checkoutDateTempValues = checkoutDateArrayList.get(position);
 
-        holder.txtDate.setText(checkoutDateTempValues.getDate());
+        holder.txtDate.setText(checkoutDateArrayList.get(position).getDate());
 
         //Log.e(TAG, "isSelected : = " + checkoutDateTempValues.isSelected());
-        if (!checkoutDateTempValues.isSelected()) {
-            holder.txtDate.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+        Log.e(TAG, "isSelected = " + checkoutDateArrayList.get(position).isSelected() + ",position =" + position);
+        if (checkoutDateArrayList.get(position).isSelected()) {
+            holder.txtDate.setBackgroundColor(context.getResources().getColor(R.color.app_theme_1));
+            checkoutTimeAdapter.setCheckoutTimeArrayList(checkoutDateArrayList.get(position).getCheckoutTimesArrayList());
         } else {
-            holder.txtDate.setBackgroundColor(mContext.getResources().getColor(R.color.app_theme_1));
+            holder.txtDate.setBackgroundColor(context.getResources().getColor(R.color.white));
         }
 
-        holder.txtDate.setOnClickListener(new OnItemClickListener(checkoutDateTempValues, position, holder.txtDate));
-
-
+        holder.txtDate.setOnClickListener(new OnItemClickListener(checkoutDateArrayList.get(position), position, holder.txtDate));
     }
 
     @Override
     public int getItemCount() {
-        return checkoutDateArrayList.size();
+        return checkoutDateArrayList == null ? 0 : checkoutDateArrayList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -73,53 +75,37 @@ public class CheckoutDateAdapter extends RecyclerView.Adapter<CheckoutDateAdapte
 
         public MyViewHolder(View vi) {
             super(vi);
-            txtDate = (TextView) vi
-                    .findViewById(R.id.txtdate);
+            txtDate = (TextView) vi.findViewById(R.id.txtDate);
         }
     }
 
     private class OnItemClickListener implements View.OnClickListener {
-        private CheckoutDate tempValues1;
-        private int mposition;
+        private CheckoutDate checkoutDate;
+        private int position;
         private TextView txtDate;
 
-        OnItemClickListener(CheckoutDate checkoutDate, int position, TextView txtdate) {
-            tempValues1 = checkoutDate;
-            mposition = position;
-            txtDate = txtdate;
+        OnItemClickListener(CheckoutDate checkoutDate, int position, TextView txtDate) {
+            this.checkoutDate = checkoutDate;
+            this.position = position;
+            this.txtDate = txtDate;
         }
 
         @Override
         public void onClick(View arg0) {
-
-            txtDate.setBackgroundColor(mContext.getResources().getColor(R.color.app_theme_1));
-            checkoutDateTempValues = checkoutDateArrayList.get(mposition);
-
-            checkoutTimeAdapter = new CheckoutTimeAdapter(mContext, checkoutDateTempValues.getCheckoutTimesArrayList(), false);
-            LinearLayoutManager horizontalLayoutManagaerdate
-                    = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-            timeRecyclerView.setLayoutManager(horizontalLayoutManagaerdate);
-            timeRecyclerView.setAdapter(checkoutTimeAdapter);
-
+//            txtDate.setBackgroundColor(context.getResources().getColor(R.color.app_theme_1));
+//            checkoutTimeAdapter = new CheckoutTimeAdapter(context, checkoutDateArrayList.get(position).getCheckoutTimesArrayList(), false);
+//            LinearLayoutManager horizontalLayoutManagaerdate
+//                    = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+//            timeRecyclerView.setLayoutManager(horizontalLayoutManagaerdate);
+//            timeRecyclerView.setAdapter(checkoutTimeAdapter);
             for (int i = 0; i < checkoutDateArrayList.size(); i++) {
-                checkoutDateTempValues = checkoutDateArrayList.get(i);
-                if (i != mposition) {
-                    checkoutDateTempValues.setSelected(false);
+                if (i != position) {
+                    checkoutDateArrayList.get(i).setSelected(false);
                 } else {
-                    checkoutDateTempValues.setSelected(true);
+                    checkoutDateArrayList.get(i).setSelected(true);
                 }
-
             }
             notifyDataSetChanged();
-
-            Toast.makeText(
-
-                    mContext,
-                    "Click : " + tempValues1.getDate(), Toast.LENGTH_LONG)
-                    .show();
-
-
-            //Log.e(TAG, " :    " + tempValues1.getItemCellCategoryName() + "," + tempValues1.getSubcat_name());
         }
     }
 }

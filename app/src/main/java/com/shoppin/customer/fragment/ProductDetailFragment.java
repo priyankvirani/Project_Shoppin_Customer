@@ -75,12 +75,10 @@ public class ProductDetailFragment extends BaseFragment {
     @BindView(R.id.txtOption4)
     TextView txtOption4;
 
-    //    productImageViewPager
     @BindView(R.id.imageViewPager)
     AutoScrollViewPager productImageViewPager;
     @BindView(R.id.imageViewPagerIndicator)
     LinearLayout productImageViewPagerIndicator;
-
     private ImageSlideAdapter productImageAdapter;
     private ArrayList<String> productImageArrayList;
 
@@ -123,59 +121,11 @@ public class ProductDetailFragment extends BaseFragment {
         productImageViewPager.startAutoScroll();
     }
 
-    @OnClick(R.id.txtOption0)
-    void onClickOption5() {
-        showAlertOption(OPTION_0);
-    }
-
-    @OnClick(R.id.txtOption1)
-    void onClickOption1() {
-        showAlertOption(OPTION_1);
-    }
-
-    @OnClick(R.id.txtOption2)
-    void onClickOption2() {
-        showAlertOption(OPTION_2);
-    }
-
-    @OnClick(R.id.txtOption3)
-    void onClickOption3() {
-        showAlertOption(OPTION_3);
-    }
-
-    @OnClick(R.id.txtOption4)
-    void onClickOption4() {
-        showAlertOption(OPTION_4);
-    }
-
-    private void initProductImageSlider() {
-        productImageArrayList = new ArrayList<>();
-        productImageAdapter = new ImageSlideAdapter(getActivity(), productImageArrayList, null);
-        productImageViewPager.setAdapter(productImageAdapter);
-        productImageViewPager.setCurrentItem(0);
-        productImageViewPager.setInterval(3000);
-        productImageViewPager.setCurrentItem(0);
-        productImageViewPager.startAutoScroll(3000);
-        productImageViewPager.setCycle(true);
-        productImageViewPager.setStopScrollWhenTouch(true);
-        productImageViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int arg) {
-                productImageAdapter.setIndicator(arg);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    }
-
+    /**
+     * Get product detail json and set value in UI
+     *
+     * @param productId
+     */
     private void getProductDetail(String productId) {
         try {
             JSONObject loginParam = new JSONObject();
@@ -210,12 +160,16 @@ public class ProductDetailFragment extends BaseFragment {
         }
     }
 
+    /**
+     * Set product detail value
+     */
     private void updateProductDetail() {
         txtProductName.setText(productDetail.productName);
 
-        txtProductPrice.setText("$ " + String.valueOf(productDetail.productPrice));
-        txtProductPrice.setPaintFlags(txtProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        txtProductSalePrice.setText("$ " + String.valueOf(productDetail.productSalePrice));
+//        txtProductPrice.setText("$ " + String.valueOf(productDetail.productPrice));
+//        txtProductPrice.setPaintFlags(txtProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+//        txtProductSalePrice.setText("$ " + String.valueOf(productDetail.productSalePrice));
+
         txtDescription.setText(productDetail.productDescription);
 
         if (productDetail.productImages != null && productDetail.productImages.size() > 0) {
@@ -236,6 +190,7 @@ public class ProductDetailFragment extends BaseFragment {
         }
 
         for (int i = 0; i < optionSize; i++) {
+            productDetail.productHasOption = true;
             if (i == OPTION_0) {
                 txtOption0.setVisibility(View.VISIBLE);
                 productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).selected = true;
@@ -258,6 +213,64 @@ public class ProductDetailFragment extends BaseFragment {
                 txtOption4.setText(productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).optionValueName);
             }
         }
+
+        updatePriceAsSelectedOption();
+    }
+
+    /**
+     * Product option drop downs
+     */
+    private void initProductImageSlider() {
+        productImageArrayList = new ArrayList<>();
+        productImageAdapter = new ImageSlideAdapter(getActivity(), productImageArrayList, null);
+        productImageViewPager.setAdapter(productImageAdapter);
+        productImageViewPager.setCurrentItem(0);
+        productImageViewPager.setInterval(3000);
+        productImageViewPager.setCurrentItem(0);
+        productImageViewPager.startAutoScroll(3000);
+        productImageViewPager.setCycle(true);
+        productImageViewPager.setStopScrollWhenTouch(true);
+        productImageViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int arg) {
+                productImageAdapter.setIndicator(arg);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    @OnClick(R.id.txtOption0)
+    void onClickOption5() {
+        showAlertOption(OPTION_0);
+    }
+
+    @OnClick(R.id.txtOption1)
+    void onClickOption1() {
+        showAlertOption(OPTION_1);
+    }
+
+    @OnClick(R.id.txtOption2)
+    void onClickOption2() {
+        showAlertOption(OPTION_2);
+    }
+
+    @OnClick(R.id.txtOption3)
+    void onClickOption3() {
+        showAlertOption(OPTION_3);
+    }
+
+    @OnClick(R.id.txtOption4)
+    void onClickOption4() {
+        showAlertOption(OPTION_4);
     }
 
     private void showAlertOption(int optionIndex) {
@@ -341,6 +354,9 @@ public class ProductDetailFragment extends BaseFragment {
                                         productOption.productOptionValueArrayList.get(position).selected = true;
                                         txtOption.setText(productOption.productOptionValueArrayList.get(position).optionValueName);
                                         filterStateAdapter.notifyDataSetChanged();
+
+                                        updatePriceAsSelectedOption();
+
                                         alertDialog.dismiss();
                                     }
                                 });
@@ -353,13 +369,57 @@ public class ProductDetailFragment extends BaseFragment {
         alertDialog.show();
     }
 
+//    private void updatePriceAsSelectedOption() {
+//        double salePrice = 0;
+//        salePrice += productDetail.productSalePrice;
+//        Log.d(TAG,"price productDetail.productSalePrice = " + productDetail.productSalePrice);
+//
+//        int optionSize = 0;
+//        if (productDetail.productHasOption && productDetail.productOptionArrayList != null && productDetail.productOptionArrayList.size() > 0) {
+//            optionSize = productDetail.productOptionArrayList.size();
+//        }
+//
+//        for (int iOption = 0; iOption < optionSize; iOption++) {
+//            for (int jOptionValue = 0;
+//                 jOptionValue < productDetail.productOptionArrayList.get(iOption).productOptionValueArrayList.size();
+//                 jOptionValue++) {
+//                if (productDetail.productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).selected) {
+//                    salePrice += productDetail.productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).optionValuePrice;
+//                    Log.d(TAG,"price optionValueName = " + productDetail.productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).optionValueName);
+//                    Log.d(TAG,"price optionValuePrice = " + productDetail.productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).optionValuePrice);
+//                    break;
+//                }
+//            }
+//        }
+//
+//        txtProductPrice.setText("$ " + String.valueOf(productDetail.productPrice));
+//        txtProductPrice.setPaintFlags(txtProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+//
+//        // multiply sale price and quantity
+//        Log.d(TAG,"price  productDetail.productQuantity = " +  productDetail.productQuantity);
+//        salePrice = salePrice * (productDetail.productQuantity == 0 ? 1 : productDetail.productQuantity);
+//        txtProductSalePrice.setText("$ " + String.valueOf(salePrice));
+//    }
+
+    private void updatePriceAsSelectedOption() {
+        txtProductPrice.setText("$ " + String.valueOf(productDetail.productPrice));
+        txtProductPrice.setPaintFlags(txtProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+        txtProductSalePrice.setText("$ " + String.valueOf(productDetail.getPriceAsPerSelection()));
+    }
+
+    /**
+     * Logic for cart in local database
+     */
+
     @OnClick(R.id.imgIncrementProductCart)
     void increaseCart() {
         NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) getActivity();
         if (navigationDrawerActivity != null) {
-            DBAdapter.insertUpdateCart(getActivity(), productDetail, true);
+            DBAdapter.insertUpdateDeleteCart(getActivity(), productDetail, true);
             navigationDrawerActivity.updateCartCount();
             txtProductCartCount.setText("" + productDetail.productQuantity);
+            updatePriceAsSelectedOption();
         }
     }
 
@@ -367,9 +427,10 @@ public class ProductDetailFragment extends BaseFragment {
     void decreaseCart() {
         NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) getActivity();
         if (navigationDrawerActivity != null) {
-            DBAdapter.insertUpdateCart(getActivity(), productDetail, false);
+            DBAdapter.insertUpdateDeleteCart(getActivity(), productDetail, false);
             navigationDrawerActivity.updateCartCount();
             txtProductCartCount.setText("" + productDetail.productQuantity);
+            updatePriceAsSelectedOption();
         }
     }
 }

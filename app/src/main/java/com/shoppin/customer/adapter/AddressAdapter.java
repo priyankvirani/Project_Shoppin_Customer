@@ -1,19 +1,13 @@
 package com.shoppin.customer.adapter;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.shoppin.customer.R;
-import com.shoppin.customer.activity.AddressEditActivity;
-import com.shoppin.customer.fragment.MyAccountFragment;
 import com.shoppin.customer.model.Address;
-import com.shoppin.customer.utils.IConstants;
 
 import java.util.ArrayList;
 
@@ -54,7 +48,7 @@ public class AddressAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = View.inflate(context, R.layout.cell_address, null);
             holder = new ViewHolder();
-            holder.txtName = (TextView) convertView.findViewById(R.id.txtName);
+            holder.txtName = (TextView) convertView.findViewById(R.id.txtCustomerName);
             holder.txtPhone = (TextView) convertView.findViewById(R.id.txtPhone);
             holder.txtStreet = (TextView) convertView.findViewById(R.id.txtStreet);
             holder.txtSuburb = (TextView) convertView.findViewById(R.id.txtSuburb);

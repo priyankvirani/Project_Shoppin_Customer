@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.shoppin.customer.R;
 import com.shoppin.customer.activity.CheckOutActivity;
 import com.shoppin.customer.activity.NavigationDrawerActivity;
+import com.shoppin.customer.activity.SigninActivity;
 import com.shoppin.customer.adapter.CartProductListAdapter;
 import com.shoppin.customer.database.DBAdapter;
+import com.shoppin.customer.database.IDatabase;
 import com.shoppin.customer.model.Product;
 
 import java.util.ArrayList;
@@ -34,6 +37,9 @@ public class CartFragment extends BaseFragment {
 
     @BindView(R.id.listProduct)
     ListView listProduct;
+
+    @BindView(R.id.txtCartSalePriceTotal)
+    TextView txtCartSalePriceTotal;
 
 //    ImageView imgCart;
 //    TextView txtCartCount;
@@ -63,6 +69,7 @@ public class CartFragment extends BaseFragment {
 
 //        initAdapter();
 //        initView();
+        setCartSalePriceTotal();
         return layoutView;
     }
 
@@ -118,8 +125,23 @@ public class CartFragment extends BaseFragment {
 
     @OnClick(R.id.txtCheckOut)
     void checkOut() {
-        Intent intent = new Intent(getActivity(), CheckOutActivity.class);
-        startActivity(intent);
+        if (DBAdapter.getMapKeyValueBoolean(getActivity(), IDatabase.IMap.IS_LOGIN)) {
+            Intent intent = new Intent(getActivity(), CheckOutActivity.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(getActivity(), SigninActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private void setCartSalePriceTotal() {
+        double cartSalePriceTotal = 0;
+        if (productArrayList != null) {
+            for (int i = 0; i < productArrayList.size(); i++) {
+                cartSalePriceTotal += productArrayList.get(i).getPriceAsPerSelection();
+            }
+        }
+        txtCartSalePriceTotal.setText("Total : $ " + cartSalePriceTotal);
     }
 
 }

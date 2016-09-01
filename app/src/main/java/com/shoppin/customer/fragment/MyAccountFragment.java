@@ -21,14 +21,12 @@ import com.shoppin.customer.R;
 import com.shoppin.customer.activity.AddressEditActivity;
 import com.shoppin.customer.activity.NavigationDrawerActivity;
 import com.shoppin.customer.activity.SigninActivity;
-import com.shoppin.customer.activity.SignupActivity;
 import com.shoppin.customer.adapter.AddressRecyleAdapter;
 import com.shoppin.customer.database.DBAdapter;
 import com.shoppin.customer.model.Address;
 import com.shoppin.customer.model.Suburb;
 import com.shoppin.customer.network.DataRequest;
 import com.shoppin.customer.network.IWebService;
-import com.shoppin.customer.utils.IConstants;
 import com.shoppin.customer.utils.Utils;
 
 import org.json.JSONException;
@@ -36,15 +34,11 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.shoppin.customer.R.id.atxSuburb;
-import static com.shoppin.customer.R.id.etxPhone;
-import static com.shoppin.customer.R.id.rlvGlobalProgressbar;
 import static com.shoppin.customer.database.IDatabase.IMap;
 
 /**
@@ -93,7 +87,6 @@ public class MyAccountFragment extends BaseFragment {
     private Suburb selectedSuburb;
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -120,7 +113,7 @@ public class MyAccountFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddressEditActivity.class);
-                intent.putExtra(IConstants.IRequestCode.KEY_ADDRESS_LIST, (Serializable) addressArrayList);
+                intent.putExtra(AddressEditActivity.KEY_ADDRESS_LIST, (Serializable) addressArrayList);
                 startActivityNew(intent);
             }
         });
@@ -144,6 +137,7 @@ public class MyAccountFragment extends BaseFragment {
         DBAdapter.insertUpdateMap(getActivity(), IMap.SUBURB_NAME, "");
         DBAdapter.insertUpdateMap(getActivity(), IMap.CUSTOMER_ID, "");
         DBAdapter.insertUpdateMap(getActivity(), IMap.CUSTOMER_ADDRESS_ID, "");
+        DBAdapter.setMapKeyValueBoolean(getActivity(), IMap.IS_LOGIN, false);
 
         Intent intent = new Intent(getActivity(), SigninActivity.class);
         startActivity(intent);
@@ -172,14 +166,14 @@ public class MyAccountFragment extends BaseFragment {
 //    @OnClick(R.id.txtAddNewAddress)
 
     public void startActivityNew(Intent intent) {
-        startActivityForResult(intent, IConstants.IRequestCode.REQUEST_CODE_ADDRESS);
+        startActivityForResult(intent, AddressEditActivity.REQUEST_CODE_ADDRESS);
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == IConstants.IRequestCode.REQUEST_CODE_ADDRESS) {
+        if (requestCode == AddressEditActivity.REQUEST_CODE_ADDRESS) {
             getAddressList();
             if (data != null) {
 //                addressArrayList.clear();
@@ -267,24 +261,22 @@ public class MyAccountFragment extends BaseFragment {
 
     private void updateMyAccountDetails() {
         DataRequest updateDataRequest = new DataRequest(getActivity());
-        JSONObject updateParms = new JSONObject();
+        JSONObject updateParams = new JSONObject();
         try {
-            updateParms.put(IWebService.KEY_RES_CUSTOMER_ID,
+            updateParams.put(IWebService.KEY_RES_CUSTOMER_ID,
                     DBAdapter.getMapKeyValueString(getActivity(), IMap.CUSTOMER_ID));
-            updateParms.put(IWebService.KEY_REQ_ADDRESS_ID,
+            updateParams.put(IWebService.KEY_REQ_ADDRESS_ID,
                     DBAdapter.getMapKeyValueString(getActivity(), IMap.CUSTOMER_ADDRESS_ID));
-            updateParms.put(IWebService.KEY_REQ_CUSTOMER_NAME, etxName.getText().toString());
+            updateParams.put(IWebService.KEY_REQ_CUSTOMER_NAME, etxName.getText().toString());
 //            updateParms.put(IWebService.KEY_REQ_CUSTOMER_MOBILE, etxPhoneNumber.getText().toString());
-            updateParms.put(IWebService.KEY_REQ_CUSTOMER_STREET, etxStreet.getText().toString());
-            updateParms.put(IWebService.KEY_REQ_CUSTOMER_SUBURB_ID, selectedSuburb.suburb_id);
-            updateParms.put(IWebService.KEY_REQ_CUSTOMER_POSTCODE, etxPostcode.getText().toString());
-            updateParms.put(IWebService.KEY_REQ_CUSTOMER_PASSWORD, etxPassword.getText().toString());
-
-
+            updateParams.put(IWebService.KEY_REQ_CUSTOMER_STREET, etxStreet.getText().toString());
+            updateParams.put(IWebService.KEY_REQ_CUSTOMER_SUBURB_ID, selectedSuburb.suburb_id);
+            updateParams.put(IWebService.KEY_REQ_CUSTOMER_POSTCODE, etxPostcode.getText().toString());
+            updateParams.put(IWebService.KEY_REQ_CUSTOMER_PASSWORD, etxPassword.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        updateDataRequest.execute(IWebService.CUSTOMER_ACCOUNT_UPDATE, updateParms.toString(), new DataRequest.CallBack() {
+        updateDataRequest.execute(IWebService.CUSTOMER_ACCOUNT_UPDATE, updateParams.toString(), new DataRequest.CallBack() {
             @Override
             public void onPreExecute() {
                 rlvGlobalProgressbar.setVisibility(View.VISIBLE);
@@ -295,7 +287,6 @@ public class MyAccountFragment extends BaseFragment {
                 rlvGlobalProgressbar.setVisibility(View.GONE);
                 Log.d(TAG, "response = " + response);
                 if (!DataRequest.hasError(getActivity(), response, true)) {
-
                     try {
                         JSONObject responseJObject = new JSONObject(response);
                         Utils.showToastShort(getActivity(), responseJObject.getString(IWebService.KEY_RES_MESSAGE));
@@ -393,4 +384,9 @@ public class MyAccountFragment extends BaseFragment {
         });
     }
 
+
+    @OnClick(R.id.btnExport)
+    void btnExport() {
+        DBAdapter.exportDB(getActivity());
+    }
 }

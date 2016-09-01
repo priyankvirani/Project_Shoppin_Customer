@@ -28,6 +28,10 @@ public interface IWebService {
 
     String GET_PRODUCT_BY_SUB_CATEGORY = MAIN_URL + "category/GetProductsBySubCatID";
 
+    String GET_PRODUCT_DETAIL = MAIN_URL + "product/GetProductDetail";
+
+    String GET_CHECKOUT_DETAIL = MAIN_URL + "checkout/GetCheckOutDetails";
+
     /**
      * Request Params
      */
@@ -45,6 +49,9 @@ public interface IWebService {
     String KEY_REQ_SUB_CATEGORY_ID = "sub_cat_id";
     String KEY_REQ_ADDRESS_ID = "customer_address_id";
     String KEY_REQ_CUSTOMER_SUBURB_NAME = "customer_suburb_name";
+    String KEY_REQ_PRODUCT_ID = "product_id";
+    String KEY_REQ_CUSTOMER_ID = "customer_id";
+    String KEY_REQ_CUSTOMER__SUBURB_ID = "customer_suburb_id";
 
     /**
      * Response Params
@@ -57,5 +64,7 @@ public interface IWebService {
     String KEY_RES_OFFER_LIST = "offer_list";
     String KEY_RES_PRODUCT_LIST = "product_list";
     String KEY_RES_ADDRESS_LIST = "address_list";
+    String KEY_RES_DATE_LIST = "date_list";
+    String KEY_RES_STORE_LIST = "store_list";
 
 }

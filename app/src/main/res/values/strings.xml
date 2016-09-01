@@ -13,6 +13,8 @@
         <string name="drawer_menu_offers">Offers</string>
         <string name="drawer_menu_about_us">About Us</string>-->
 
+    <string name="under_development">Under Development</string>
+
     <!-- Other -->
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
@@ -40,6 +42,7 @@
     <string name="text_discount_and_saving">Discount n Saving</string>
     <string name="text_coupon_discount">Coupon Discount</string>
     <string name="text_total">Total</string>
+    <string name="text_apply">Apply</string>
 
     <!-- Edit text hint-->
     <string name="edittext_hint_mobile_number">Mobile Number</string>
@@ -50,6 +53,7 @@
     <string name="edittext_hint_town">Town</string>
     <string name="edittext_hint_postcode">Postcode</string>
     <string name="edittext_hint_confirm_password">Confirm Password</string>
+    <string name="edittext_hint_coupon_code">Coupon Code</string>
 
     <!-- Button text -->
     <string name="button_signin">Sign In</string>

@@ -33,10 +33,9 @@ public interface IConstants {
         int ABOUT_US_ID = 1008;
     }
 
-    interface IRequestCode {
-
-        int REQUEST_CODE_ADDRESS = 1001;
-        String KEY_ADDRESS_LIST = "address_list";
-        String KEY_ADDRESS_POSITION = "position";
-    }
+//    interface IRequestCode {
+//        int REQUEST_CODE_ADDRESS = 1001;
+//        String KEY_ADDRESS_LIST = "address_list";
+//        String KEY_ADDRESS_POSITION = "position";
+//    }
 }

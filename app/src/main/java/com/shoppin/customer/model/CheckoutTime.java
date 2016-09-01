@@ -1,13 +1,17 @@
 package com.shoppin.customer.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by ubuntu on 11/8/16.
  */
 
 public class CheckoutTime {
-    private String time;
-    private String date;
-    private boolean isSelected;
+    @SerializedName("value")
+    String time;
+    @SerializedName("slot_id")
+    String date;
+    boolean isSelected;
 
     public boolean isSelected() {
         return isSelected;

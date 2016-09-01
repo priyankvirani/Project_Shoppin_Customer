@@ -33,6 +33,15 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/txtProductOptionSelection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_tiny"
+            android:text="txtProductOptionSelection"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_edittext" />
+
+        <TextView
             android:id="@+id/txtProductPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

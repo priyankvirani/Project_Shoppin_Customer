@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
-import static android.R.attr.value;
 import static com.shoppin.customer.database.IDatabase.ICart;
 import static com.shoppin.customer.database.IDatabase.IMap;
 
@@ -86,13 +85,13 @@ public class DBAdapter {
     }
 
 
-    public static void insertUpdateCart(Context context, Product product, boolean increase) {
+    public static void insertUpdateDeleteCart(Context context, Product product, boolean increase) {
+        Log.e(TAG, "==== insertUpdateDeleteCart product.productId = " + product.productId + " ====");
         SQLiteDatabase db = DatabaseHelper.getInstance(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(ICart.KEY_PRODUCT_ID, product.productId);
 
         Gson gson = new Gson();
-//        String productJson = gson.toJson(product);
 
         Cursor cursor = db.query(ICart.TABLE_CART, new String[]{ICart.KEY_ID, ICart.KEY_PRODUCT_JSON}, ICart.KEY_PRODUCT_ID + " = '" + product.productId + "'", null, null, null, null, null);
         int index = -1;
@@ -103,26 +102,35 @@ public class DBAdapter {
         }
 
         if (index == -1) {
-            // new product
-            contentValues.put(ICart.KEY_PRODUCT_ID, product.productId);
-            contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
-            db.insert(ICart.TABLE_CART, null, contentValues);
+            // Only if product need to add
+            // else product is for delete from cart
+            if (increase) {
+                // new product
+                product.productQuantity = product.productQuantity == 0 ? 1 : product.productQuantity;
+                contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+                db.insert(ICart.TABLE_CART, null, contentValues);
+            }
         } else {
             if (cursor != null && cursor.getCount() > 0) {
 //                cursor.moveToFirst();
                 Product cartProduct = null;
+                boolean isHandledInLoop = false;
+                boolean isCheckedWithAllProductCart = false;
 
                 do {
+                    Log.d(TAG,"============START=================");
                     try {
                         cartProduct = gson.fromJson(new JSONObject(cursor.getString(cursor.getColumnIndex(ICart.KEY_PRODUCT_JSON))).toString(), Product.class);
                         if (cartProduct != null) {
                             // Product with option
+                            Log.e(TAG, "cartProduct.productHasOption = " + cartProduct.productHasOption);
                             if (cartProduct.productHasOption) {
 //                            Log.e(TAG,"original  product = " + product.productOptionArrayList.size());
 //                            Log.e(TAG,"cart product = " + cartProduct.productOptionArrayList.size());
                                 // same product & different options list
                                 if (product.productOptionArrayList.size() != cartProduct.productOptionArrayList.size()) {
                                     db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+                                    isHandledInLoop = true;
                                     break;
                                 }
                                 // same product
@@ -135,6 +143,8 @@ public class DBAdapter {
                                         // Cart product option
                                         for (int optionCartProduct = 0; optionCartProduct < cartProduct.productOptionArrayList.size(); optionCartProduct++) {
                                             // Original and Cart product option id match
+                                            Log.e(TAG, "[" + optionProduct + "]optionProduct = " + product.productOptionArrayList.get(optionProduct).optionId);
+                                            Log.e(TAG, "[" + optionCartProduct + "]optionCartProduct = " + cartProduct.productOptionArrayList.get(optionCartProduct).optionId);
                                             if (product.productOptionArrayList.get(optionProduct).optionId
                                                     .equals(cartProduct.productOptionArrayList.get(optionCartProduct).optionId)) {
                                                 // Original product option value
@@ -143,10 +153,15 @@ public class DBAdapter {
                                                     for (int valueCartProduct = 0; valueCartProduct < cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.size(); valueCartProduct++) {
                                                         // Both value id got matched
                                                         // and both are selected
+                                                        Log.e(TAG, "[" + optionProduct + "]optionProduct, [" + valueProduct + "]valueProduct = " + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId
+                                                                + "," + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected);
+                                                        Log.e(TAG, "[" + optionCartProduct + "]optionCartProduct [" + valueCartProduct + "]valueCartProduct = " + cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).optionValueId
+                                                                + "," + cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).selected);
                                                         if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId
                                                                 .equals(cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).optionValueId)
                                                                 && product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected
                                                                 && cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).selected) {
+                                                            Log.e(TAG, "================MATCH==================");
                                                             optionMatchCount++;
                                                             break;
                                                         }
@@ -160,26 +175,37 @@ public class DBAdapter {
                                     // same option
                                     // same option value
                                     // update product quantity
+                                    Log.e(TAG, "optionMatchCount = " + optionMatchCount);
+                                    Log.e(TAG, "product.productOptionArrayList.size() = " + product.productOptionArrayList.size());
                                     if (optionMatchCount == product.productOptionArrayList.size()) {
                                         // increase cart
                                         if (increase) {
                                             cartProduct.productQuantity++;
                                             product.productQuantity = cartProduct.productQuantity;
+                                            Log.e(TAG, "1 cartProduct.productQuantity = " + cartProduct.productQuantity);
                                             contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
                                             db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+                                            isHandledInLoop = true;
+                                            break;
                                         }
                                         // decrease cart
                                         else {
                                             cartProduct.productQuantity--;
-                                            if (product.productQuantity <= 0) {
+                                            if (cartProduct.productQuantity <= 0) {
                                                 // Remove product from cart
                                                 product.productQuantity = 0;
                                                 contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+                                                Log.e(TAG, "2 cartProduct.productQuantity = " + cartProduct.productQuantity);
                                                 db.delete(ICart.TABLE_CART, ICart.KEY_PRODUCT_ID + " = '" + product.productId + "'", null);
+                                                isHandledInLoop = true;
+                                                break;
                                             } else {
                                                 product.productQuantity = cartProduct.productQuantity;
+                                                Log.e(TAG, "3 cartProduct.productQuantity = " + cartProduct.productQuantity);
                                                 contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
                                                 db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+                                                isHandledInLoop = true;
+                                                break;
                                             }
                                         }
                                     }
@@ -188,9 +214,14 @@ public class DBAdapter {
                                     // different option value
                                     // add product as new
                                     else {
-                                        contentValues.put(ICart.KEY_PRODUCT_ID, product.productId);
-                                        contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
-                                        db.insert(ICart.TABLE_CART, null, contentValues);
+                                        // Only after comparing with all products
+                                        if (cursor.isLast()) {
+                                            Log.e(TAG, "cursor.isLast() " + cursor.isLast());
+                                            product.productQuantity = product.productQuantity == 0 ? 1 : product.productQuantity;
+                                            contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+                                            db.insert(ICart.TABLE_CART, null, contentValues);
+                                            break;
+                                        }
                                     }
                                 }
 
@@ -202,6 +233,8 @@ public class DBAdapter {
                                     product.productQuantity = cartProduct.productQuantity;
                                     contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
                                     db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+                                    isHandledInLoop = true;
+                                    break;
                                 }
                                 // decrease cart
                                 else {
@@ -211,10 +244,14 @@ public class DBAdapter {
                                         product.productQuantity = 0;
                                         contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
                                         db.delete(ICart.TABLE_CART, ICart.KEY_PRODUCT_ID + " = '" + product.productId + "'", null);
+                                        isHandledInLoop = true;
+                                        break;
                                     } else {
                                         product.productQuantity = cartProduct.productQuantity;
                                         contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
                                         db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+                                        isHandledInLoop = true;
+                                        break;
                                     }
                                 }
                             }
@@ -223,11 +260,16 @@ public class DBAdapter {
                         e.printStackTrace();
                     }
                     cartProduct = null;
+                    if (isHandledInLoop) {
+                        break;
+                    }
+                    Log.d(TAG,"============END=================");
                 } while (cursor.moveToNext());
+
                 cursor.close(); // that's important too, otherwise you're gonna leak cursors
             }
         }
-        Log.d(TAG, "insertUpdateCart product.productId = " + product.productId + ", value = " + value);
+        Log.e(TAG, "==== insertUpdateDeleteCart product.productId = " + product.productId + " ====");
     }
 
     public static Product getProductFromCart(Context context, String ProductId) {

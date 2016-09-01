@@ -4,16 +4,32 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.shoppin.customer.R;
 import com.shoppin.customer.adapter.CheckoutDateAdapter;
+import com.shoppin.customer.database.DBAdapter;
+import com.shoppin.customer.database.IDatabase.IMap;
+import com.shoppin.customer.model.Address;
 import com.shoppin.customer.model.CheckoutDate;
-import com.shoppin.customer.model.CheckoutTime;
+import com.shoppin.customer.model.Store;
+import com.shoppin.customer.network.DataRequest;
+import com.shoppin.customer.network.IWebService;
 import com.shoppin.customer.utils.Utils;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -26,20 +42,43 @@ public class CheckOutActivity extends AppCompatActivity {
     public static final String RESPONSE_PAYMENT_ID = "payment_id";
     private static final String TAG = CheckOutActivity.class.getSimpleName();
 
-    private int numberOfCell = 20;
-
+    @BindView(R.id.toolbarCheckOut)
+    Toolbar toolbar;
     @BindView(R.id.rlvGlobalProgressbar)
     RelativeLayout rlvGlobalProgressbar;
 
-    private ArrayList<CheckoutDate> checkoutDateArrayList;
-    private CheckoutDateAdapter checkoutDateAdapter;
+    @BindView(R.id.txtCustomerName)
+    TextView txtCustomerName;
+    @BindView(R.id.txtPhone)
+    TextView txtPhone;
+    @BindView(R.id.txtStreet)
+    TextView txtStreet;
+    @BindView(R.id.txtSuburb)
+    TextView txtSuburb;
+    @BindView(R.id.txtPostCode)
+    TextView txtPostCode;
+    @BindView(R.id.imgEditAddress)
+    ImageView imgEditAddress;
+    @BindView(R.id.imgAddNewAddress)
+    ImageView imgAddNewAddress;
+
+
+    @BindView(R.id.etxCoupon)
+    EditText etxCoupon;
+
+    @BindView(R.id.cardStore)
+    CardView cardStore;
+
+
     @BindView(R.id.dateRecyclerView)
     RecyclerView dateRecyclerView;
-
-    private ArrayList<CheckoutTime> checkoutTimeArrayList;
-//    private CheckoutTimeAdapter checkoutTimeAdapter;
     @BindView(R.id.timeRecyclerView)
     RecyclerView timeRecyclerView;
+    private ArrayList<CheckoutDate> checkoutDateArrayList;
+    private CheckoutDateAdapter checkoutDateAdapter;
+
+    private ArrayList<Address> addressArrayList;
+    private ArrayList<Store> storeArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +86,38 @@ public class CheckOutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_check_out);
         ButterKnife.bind(this);
 
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setTitle("");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+
+        imgAddNewAddress.setVisibility(View.VISIBLE);
+
+
         checkoutDateArrayList = new ArrayList<CheckoutDate>();
-        checkoutDateAdapter = new CheckoutDateAdapter(CheckOutActivity.this, checkoutDateArrayList,timeRecyclerView);
+        checkoutDateAdapter = new CheckoutDateAdapter(CheckOutActivity.this, checkoutDateArrayList, timeRecyclerView);
         LinearLayoutManager horizontalLayoutManagaerdate
                 = new LinearLayoutManager(CheckOutActivity.this, LinearLayoutManager.HORIZONTAL, false);
         dateRecyclerView.setLayoutManager(horizontalLayoutManagaerdate);
         dateRecyclerView.setAdapter(checkoutDateAdapter);
-        UpdateCheckOutDate();
 
+        addressArrayList = new ArrayList<>();
+        storeArrayList = new ArrayList<>();
+
+        getCheckOutDetail();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -72,33 +135,131 @@ public class CheckOutActivity extends AppCompatActivity {
         }
     }
 
+//    @OnClick(R.id.txtApplyCoupon)
+//    void applyCoupon() {
+//        Utils.showToastShort(CheckOutActivity.this, getString(R.string.under_development));
+//    }
+//
+//    @OnClick(R.id.txtApplyCoupon)
+//    void applyCoupon() {
+//        Utils.showToastShort(CheckOutActivity.this, getString(R.string.under_development));
+//    }
+
     @OnClick(R.id.txtPay)
     void makePayment() {
         Intent intent = new Intent(CheckOutActivity.this, PaymentActivity.class);
         startActivityForResult(intent, REQUEST_PAYMENT);
     }
 
-    private void UpdateCheckOutDate() {
+    private void getCheckOutDetail() {
+        try {
+            JSONObject loginParam = new JSONObject();
+            loginParam.put(IWebService.KEY_REQ_CUSTOMER_ID,
+                    DBAdapter.getMapKeyValueString(CheckOutActivity.this, IMap.CUSTOMER_ID));
+            loginParam.put(IWebService.KEY_REQ_CUSTOMER__SUBURB_ID,
+                    DBAdapter.getMapKeyValueString(CheckOutActivity.this, IMap.SUBURB_ID));
 
-        for (int i = 1; i < numberOfCell; i++) {
-            //Log.e(TAG, "I : " + i);
-            CheckoutDate itemSched = new CheckoutDate();
-            itemSched.setDate("Date :" + i);
-            itemSched.setSelected(false);
-            checkoutTimeArrayList = new ArrayList<>();
+            DataRequest signinDataRequest = new DataRequest(CheckOutActivity.this);
+            signinDataRequest.execute(IWebService.GET_CHECKOUT_DETAIL, loginParam.toString(), new DataRequest.CallBack() {
+                public void onPreExecute() {
+                    rlvGlobalProgressbar.setVisibility(View.VISIBLE);
+                }
 
-            for (int j = 1; j < numberOfCell; j++) {
-                //Log.e(TAG, "(" + i + "," + j + ")");
-                CheckoutTime itemSubSched = new CheckoutTime();
-                itemSubSched.setDate("Date:" + i);
-                itemSubSched.setTime("Time:" + j);
-                itemSubSched.setSelected(false);
-                checkoutTimeArrayList.add(itemSubSched);
-                itemSched.setCheckoutTimesArrayList(checkoutTimeArrayList);
-            }
+                public void onPostExecute(String response) {
+                    try {
+                        rlvGlobalProgressbar.setVisibility(View.GONE);
+                        if (!DataRequest.hasError(CheckOutActivity.this, response, true)) {
 
-            checkoutDateArrayList.add(itemSched);
+                            JSONObject dataJObject = DataRequest.getJObjWebdata(response);
+
+                            Gson gson = new Gson();
+
+                            ArrayList<CheckoutDate> tmpCheckoutDateAdapter = gson.fromJson(
+                                    dataJObject.getJSONArray(IWebService.KEY_RES_DATE_LIST).toString(),
+                                    new TypeToken<ArrayList<CheckoutDate>>() {
+                                    }.getType());
+                            if (tmpCheckoutDateAdapter != null) {
+                                checkoutDateArrayList.clear();
+                                checkoutDateArrayList.addAll(tmpCheckoutDateAdapter);
+                                checkoutDateArrayList.get(0).setSelected(true);
+                                checkoutDateArrayList.get(0).getCheckoutTimesArrayList().get(0).setSelected(true);
+                                checkoutDateAdapter.notifyDataSetChanged();
+                                Log.d(TAG, "checkoutDateArrayList.size() = " + checkoutDateArrayList.size());
+                            }
+
+                            ArrayList<Address> tmpAddressArrayList = gson.fromJson(
+                                    dataJObject.getJSONArray(IWebService.KEY_RES_ADDRESS_LIST).toString(),
+                                    new TypeToken<ArrayList<Address>>() {
+                                    }.getType());
+                            if (tmpAddressArrayList != null) {
+                                addressArrayList.clear();
+                                addressArrayList.addAll(tmpAddressArrayList);
+                                Log.d(TAG, "addressArrayList.size() = " + addressArrayList.size());
+                            }
+
+                            ArrayList<Store> tmpStoreArrayList = gson.fromJson(
+                                    dataJObject.getJSONArray(IWebService.KEY_RES_STORE_LIST).toString(),
+                                    new TypeToken<ArrayList<Store>>() {
+                                    }.getType());
+                            if (tmpAddressArrayList != null) {
+                                storeArrayList.clear();
+                                storeArrayList.addAll(tmpStoreArrayList);
+                                Log.d(TAG, "storeArrayList.size() = " + storeArrayList.size());
+                            }
+
+                            setCheckoutDetailOnUi();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+//
+//    private void UpdateCheckOutDate() {
+//
+//        for (int i = 1; i < numberOfCell; i++) {
+//            //Log.e(TAG, "I : " + i);
+//            CheckoutDate itemSched = new CheckoutDate();
+//            itemSched.setDate("Date :" + i);
+//            itemSched.setSelected(false);
+//            checkoutTimeArrayList = new ArrayList<>();
+//
+//            for (int j = 1; j < numberOfCell; j++) {
+//                //Log.e(TAG, "(" + i + "," + j + ")");
+//                CheckoutTime itemSubSched = new CheckoutTime();
+//                itemSubSched.setDate("Date:" + i);
+//                itemSubSched.setTime("Time:" + j);
+//                itemSubSched.setSelected(false);
+//                checkoutTimeArrayList.add(itemSubSched);
+//                itemSched.setCheckoutTimesArrayList(checkoutTimeArrayList);
+//            }
+//
+//            checkoutDateArrayList.add(itemSched);
+//        }
+//    }
+
+    private void setCheckoutDetailOnUi() {
+        if (addressArrayList != null && addressArrayList.size() > 0) {
+            setCurrentAddress(addressArrayList.get(0));
+        }
+
+        if (storeArrayList != null && storeArrayList.size() > 0) {
+            cardStore.setVisibility(View.VISIBLE);
+        } else {
+            cardStore.setVisibility(View.GONE);
         }
     }
 
+    private void setCurrentAddress(Address currentAddress) {
+        txtCustomerName.setText(currentAddress.name);
+        txtPhone.setText(currentAddress.phoneNumber);
+        txtStreet.setText(currentAddress.street);
+        txtSuburb.setText(currentAddress.suburbName);
+        txtPostCode.setText(currentAddress.postCode);
+    }
 }

@@ -1,117 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_margin="@dimen/margin_tiny"
+    card_view:cardCornerRadius="@dimen/margin_tiny">
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/margin_tiny"
-        card_view:cardCornerRadius="4dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_small">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtCustomerName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_tiny"
+                android:layout_weight="8"
+                android:text="Name"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/font_size_edittext"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imgEditAddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/app_theme_1"
+                android:src="@drawable/edit" />
+
+            <ImageView
+                android:id="@+id/imgAddNewAddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:background="@color/app_theme_1"
+                android:src="@drawable/edit" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/txtPhone"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_medium"
-                android:layout_marginRight="@dimen/margin_medium"
-                android:layout_marginTop="@dimen/margin_medium">
+                android:layout_margin="@dimen/margin_tiny"
+                android:text="txtPhone"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/font_size_edittext" />
 
-                <TextView
-                    android:id="@+id/txtName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text="Name"
-                    android:textColor="@color/text_black"
-                    android:textSize="@dimen/font_size_title"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/imgEdit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:background="@color/app_theme_1"
-                    android:padding="@dimen/margin_tiny"
-                    android:src="@drawable/edit" />
-
-                <!--<TextView-->
-                <!--android:id="@+id/txtEdit"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:background="@color/app_theme_1"-->
-                <!--android:drawablePadding="@dimen/margin_small"-->
-                <!--android:drawableRight="@drawable/edit"-->
-                <!--android:textSize="@dimen/font_size_title" />-->
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/txtStreet"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_medium"
-                android:orientation="vertical">
+                android:layout_margin="@dimen/margin_tiny"
+                android:text="txtStreet"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/font_size_edittext" />
 
-                <TextView
-                    android:id="@+id/txtPhone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_tiny"
-                    android:text="Phone number"
-                    android:textColor="@color/text_black"
-                    android:textSize="@dimen/font_size_title" />
+            <TextView
+                android:id="@+id/txtSuburb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_tiny"
+                android:text="txtSuburb"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/font_size_edittext" />
 
-                <TextView
-                    android:id="@+id/txtStreet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_tiny"
-                    android:layout_marginTop="@dimen/margin_tiny"
-                    android:text="Street"
-                    android:textColor="@color/text_black"
-                    android:textSize="@dimen/font_size_title" />
+            <TextView
+                android:id="@+id/txtPostCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_tiny"
+                android:text="Post Code"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/font_size_edittext" />
 
-                <TextView
-                    android:id="@+id/txtSuburb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_tiny"
-                    android:layout_marginTop="@dimen/margin_tiny"
-                    android:text="Suburb"
-                    android:textColor="@color/text_black"
-                    android:textSize="@dimen/font_size_title" />
-
-                <!--<TextView-->
-                <!--android:id="@+id/txtTown"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="@dimen/margin_tiny"-->
-                <!--android:layout_marginTop="@dimen/margin_tiny"-->
-                <!--android:text="Town"-->
-                <!--android:textColor="@color/text_black"-->
-                <!--android:textSize="@dimen/font_size_title" />-->
-
-                <TextView
-                    android:id="@+id/txtPostCode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_tiny"
-                    android:layout_marginTop="@dimen/margin_tiny"
-                    android:text="Post Code"
-                    android:textColor="@color/text_black"
-                    android:textSize="@dimen/font_size_title" />
-            </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

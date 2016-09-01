@@ -26,13 +26,11 @@ import com.shoppin.customer.model.Address;
 import com.shoppin.customer.model.Suburb;
 import com.shoppin.customer.network.DataRequest;
 import com.shoppin.customer.network.IWebService;
-import com.shoppin.customer.utils.IConstants;
 import com.shoppin.customer.utils.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -44,32 +42,30 @@ import butterknife.ButterKnife;
  */
 
 public class AddressEditActivity extends AppCompatActivity {
+    public static final int REQUEST_CODE_ADDRESS = 1001;
+    public static final String KEY_ADDRESS_LIST = "address_list";
+    public static final String KEY_ADDRESS_POSITION = "position";
     private static final String TAG = AddressEditActivity.class.getSimpleName();
+
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     @BindView(R.id.rlvGlobalProgressbar)
     RelativeLayout rlvGlobalProgressbar;
-
     @BindView(R.id.etxName)
     EditText etxName;
-
     @BindView(R.id.etxPhone)
     EditText etxPhone;
-
     @BindView(R.id.etxStreet)
     EditText etxStreet;
-
     @BindView(R.id.atxSuburb)
     AutoCompleteTextView atxSuburb;
-
     @BindView(R.id.etxPostcode)
     EditText etxPostCode;
 
-    private ArrayList<Address> addressArrayList;
-    private static int ADDRESS_POSITION;
 
+    private int addressPosition;
+    private ArrayList<Address> addressArrayList;
     private ArrayList<Suburb> suburbArrayList;
     private ArrayAdapter<Suburb> suburbArrayAdapter;
     private Suburb selectedSuburb;
@@ -92,13 +88,13 @@ public class AddressEditActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             addressArrayList = new ArrayList<>();
-            addressArrayList.addAll((Collection<? extends Address>) intent.getSerializableExtra(IConstants.IRequestCode.KEY_ADDRESS_LIST));
+            addressArrayList.addAll((Collection<? extends Address>) intent.getSerializableExtra(KEY_ADDRESS_LIST));
             Log.d(TAG, "addressArrayList.size() = " + addressArrayList.size());
-            ADDRESS_POSITION = intent.getIntExtra(IConstants.IRequestCode.KEY_ADDRESS_POSITION, -1);
-            Log.d(TAG, "postion = " + ADDRESS_POSITION);
+            addressPosition = intent.getIntExtra(KEY_ADDRESS_POSITION, -1);
+            Log.d(TAG, "postion = " + addressPosition);
 
-            if (addressArrayList != null && ADDRESS_POSITION >= 0) {
-                loadAddress();
+            if (addressArrayList != null && addressPosition >= 0) {
+                loadAddress(addressArrayList.get(addressPosition));
             }
 
         }
@@ -109,12 +105,12 @@ public class AddressEditActivity extends AppCompatActivity {
         getSuburbs();
     }
 
-    private void loadAddress() {
-        etxName.setText(addressArrayList.get(ADDRESS_POSITION).name);
-        etxPhone.setText(addressArrayList.get(ADDRESS_POSITION).phoneNumber);
-        etxStreet.setText(addressArrayList.get(ADDRESS_POSITION).street);
-        atxSuburb.setText(addressArrayList.get(ADDRESS_POSITION).suburbName);
-        etxPostCode.setText(addressArrayList.get(ADDRESS_POSITION).postCode);
+    private void loadAddress(Address currentAddress) {
+        etxName.setText(currentAddress.name);
+        etxPhone.setText(currentAddress.phoneNumber);
+        etxStreet.setText(currentAddress.street);
+        atxSuburb.setText(currentAddress.suburbName);
+        etxPostCode.setText(currentAddress.postCode);
     }
 
     private void getSuburbs() {
@@ -169,7 +165,7 @@ public class AddressEditActivity extends AppCompatActivity {
 //                    data.putExtra(IConstants.IRequestCode.KEY_ADDRESS_LIST, (Serializable) addressArrayList);
 //                    setResult(IConstants.IRequestCode.REQUEST_CODE_ADDRESS, data);
 //                    updateAddress();
-                    if (ADDRESS_POSITION >= 0) {
+                    if (addressPosition >= 0) {
                         updateAddress();
                     } else {
                         addAddress();
@@ -178,7 +174,7 @@ public class AddressEditActivity extends AppCompatActivity {
                 }
                 return true;
             case R.id.action_delete:
-                if (ADDRESS_POSITION >= 0) {
+                if (addressPosition >= 0) {
                     deleteAddress();
                 }
                 return true;
@@ -240,10 +236,10 @@ public class AddressEditActivity extends AppCompatActivity {
         String suburb = atxSuburb.getText().toString().trim();
         String postcode = etxPostCode.getText().toString().trim();
         Address address = new Address(name, phoneNumber, street, suburb, postcode);
-        if (ADDRESS_POSITION >= 0) {
+        if (addressPosition >= 0) {
 
-            addressArrayList.remove(ADDRESS_POSITION);
-            addressArrayList.add(ADDRESS_POSITION, address);
+            addressArrayList.remove(addressPosition);
+            addressArrayList.add(addressPosition, address);
 
         } else {
             addressArrayList.add(address);
@@ -254,7 +250,7 @@ public class AddressEditActivity extends AppCompatActivity {
         DataRequest deleteDataRequest = new DataRequest(AddressEditActivity.this);
         JSONObject deleteParams = new JSONObject();
         try {
-            deleteParams.put(IWebService.KEY_REQ_ADDRESS_ID, addressArrayList.get(ADDRESS_POSITION).addressId);
+            deleteParams.put(IWebService.KEY_REQ_ADDRESS_ID, addressArrayList.get(addressPosition).addressId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -330,7 +326,7 @@ public class AddressEditActivity extends AppCompatActivity {
         DataRequest updateDataRequest = new DataRequest(AddressEditActivity.this);
         JSONObject updateParams = new JSONObject();
         try {
-            updateParams.put(IWebService.KEY_REQ_ADDRESS_ID, addressArrayList.get(ADDRESS_POSITION).addressId);
+            updateParams.put(IWebService.KEY_REQ_ADDRESS_ID, addressArrayList.get(addressPosition).addressId);
             updateParams.put(IWebService.KEY_REQ_CUSTOMER_NAME, etxName.getText().toString().trim());
             updateParams.put(IWebService.KEY_REQ_CUSTOMER_MOBILE, etxPhone.getText().toString().trim());
             updateParams.put(IWebService.KEY_REQ_CUSTOMER_STREET, etxStreet.getText().toString().trim());

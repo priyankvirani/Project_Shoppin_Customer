@@ -53,6 +53,7 @@ public class CartProductListAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.lltCell = (LinearLayout) convertView.findViewById(R.id.lltCell);
             holder.txtProductName = (TextView) convertView.findViewById(R.id.txtProductName);
+            holder.txtProductOptionSelection = (TextView) convertView.findViewById(R.id.txtProductOptionSelection);
             holder.txtProductPrice = (TextView) convertView.findViewById(R.id.txtProductPrice);
             holder.txtProductSalePrice = (TextView) convertView.findViewById(R.id.txtProductSalePrice);
             holder.txtProductCartCount = (TextView) convertView.findViewById(txtProductCartCount);
@@ -66,9 +67,15 @@ public class CartProductListAdapter extends BaseAdapter {
 
         holder.txtProductName.setText(productArrayList.get(position).productName);
 
+        if (Utils.isNullOrEmpty(productArrayList.get(position).getSelectedOptions())) {
+            holder.txtProductOptionSelection.setVisibility(View.GONE);
+        } else {
+            holder.txtProductOptionSelection.setVisibility(View.VISIBLE);
+            holder.txtProductOptionSelection.setText(productArrayList.get(position).getSelectedOptions());
+        }
         holder.txtProductPrice.setText("$ " + String.valueOf(productArrayList.get(position).productPrice));
         holder.txtProductPrice.setPaintFlags(holder.txtProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.txtProductSalePrice.setText("$ " + String.valueOf(productArrayList.get(position).productSalePrice));
+        holder.txtProductSalePrice.setText("$ " + String.valueOf(productArrayList.get(position).getPriceAsPerSelection()));
         holder.txtProductCartCount.setText("" + String.valueOf(productArrayList.get(position).productQuantity));
 
         if (productArrayList.get(position).productImages != null && productArrayList.get(position).productImages.size() > 0) {
@@ -85,7 +92,7 @@ public class CartProductListAdapter extends BaseAdapter {
 
     class ViewHolder {
         public LinearLayout lltCell;
-        public TextView txtProductName, txtProductPrice, txtProductSalePrice, txtProductCartCount;
+        public TextView txtProductName, txtProductOptionSelection, txtProductPrice, txtProductSalePrice, txtProductCartCount;
         public ImageView imgProduct;
     }
 

@@ -32,20 +32,6 @@
             android:textSize="@dimen/font_size_title"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/txtPay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="right|center_vertical"
-            android:background="?attr/selectableItemBackground"
-            android:ellipsize="end"
-            android:padding="@dimen/margin_tiny"
-            android:singleLine="true"
-            android:text="@string/text_pay"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_size_title"
-            android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
 
 
@@ -53,218 +39,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/lltPriceReview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/margin_tiny"
-                android:weightSum="10">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
-                        android:padding="@dimen/margin_tiny"
-                        android:text="@string/text_price"
-                        android:textColor="@color/text_black"
-                        android:textSize="@dimen/font_size_edittext" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
-                        android:padding="@dimen/margin_tiny"
-                        android:text="@string/text_discount_and_saving"
-                        android:textColor="@color/text_black"
-                        android:textSize="@dimen/font_size_edittext" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
-                        android:padding="@dimen/margin_tiny"
-                        android:text="@string/text_coupon_discount"
-                        android:textColor="@color/text_black"
-                        android:textSize="@dimen/font_size_edittext" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
-                        android:padding="@dimen/margin_tiny"
-                        android:text="@string/text_total"
-                        android:textColor="@color/text_black"
-                        android:textSize="@dimen/font_size_edittext"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical"
-                        android:gravity="right"
-                        android:padding="@dimen/margin_tiny"
-                        android:paddingRight="@dimen/margin_small"
-                        android:text="$1000"
-                        android:textColor="@color/text_black"
-                        android:textSize="@dimen/font_size_edittext" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical"
-                        android:gravity="right"
-                        android:padding="@dimen/margin_tiny"
-                        android:paddingRight="@dimen/margin_small"
-                        android:text="$1000"
-                        android:textColor="@color/text_black"
-                        android:textSize="@dimen/font_size_edittext" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical"
-                        android:gravity="right"
-                        android:padding="@dimen/margin_tiny"
-                        android:paddingRight="@dimen/margin_small"
-                        android:text="$1000"
-                        android:textColor="@color/text_black"
-                        android:textSize="@dimen/font_size_edittext" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical"
-                        android:gravity="right"
-                        android:padding="@dimen/margin_tiny"
-                        android:paddingRight="@dimen/margin_small"
-                        android:text="$1000"
-                        android:textColor="@color/text_black"
-                        android:textSize="@dimen/font_size_edittext"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/app_theme_1" />
-        </LinearLayout>
-
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/lltPriceReview">
+            android:layout_above="@+id/rlvBottomBar">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_tiny"
-                    android:background="@color/gray"
-                    card_view:cardCornerRadius="@dimen/card_view_radius">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/margin_small">
-
-                            <TextView
-                                android:id="@+id/txtName"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:text="Name"
-                                android:textColor="@color/text_black"
-                                android:textSize="@dimen/font_size_title"
-                                android:textStyle="bold" />
-
-                            <ImageView
-                                android:id="@+id/imgEdit"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:background="@color/app_theme_1"
-                                android:padding="@dimen/margin_tiny"
-                                android:src="@drawable/edit" />
-                        </RelativeLayout>
-
-
-                        <TextView
-                            android:id="@+id/txtPhone"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/margin_tiny"
-                            android:text="Phone number"
-                            android:textColor="@color/text_black"
-                            android:textSize="@dimen/font_size_title" />
-
-                        <TextView
-                            android:id="@+id/txtStreet"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/margin_tiny"
-                            android:layout_marginTop="@dimen/margin_tiny"
-                            android:text="Street"
-                            android:textColor="@color/text_black"
-                            android:textSize="@dimen/font_size_title" />
-
-                        <TextView
-                            android:id="@+id/txtSuburb"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/margin_tiny"
-                            android:layout_marginTop="@dimen/margin_tiny"
-                            android:text="Suburb"
-                            android:textColor="@color/text_black"
-                            android:textSize="@dimen/font_size_title" />
-
-                        <TextView
-                            android:id="@+id/txtPostCode"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/margin_tiny"
-                            android:layout_marginTop="@dimen/margin_tiny"
-                            android:text="Post Code"
-                            android:textColor="@color/text_black"
-                            android:textSize="@dimen/font_size_title" />
-
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
+                <include layout="@layout/cell_address" />
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_tiny"
-                    android:background="@color/gray"
                     card_view:cardCornerRadius="@dimen/card_view_radius">
 
                     <RelativeLayout
@@ -276,31 +66,38 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
                             android:background="@drawable/button_background_green"
                             android:maxLines="1"
-                            android:padding="@dimen/margin_tiny"
+                            android:paddingBottom="@dimen/margin_small"
+                            android:paddingLeft="@dimen/margin_medium"
+                            android:paddingRight="@dimen/margin_medium"
+                            android:paddingTop="@dimen/margin_small"
                             android:singleLine="true"
-                            android:text="txtStore"
-                            android:textColor="@color/text_black"
-                            android:textSize="@dimen/font_size_edittext" />
+                            android:text="@string/text_apply"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/font_size_edittext"
+                            android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/etxCoupon"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
                             android:layout_margin="@dimen/margin_small"
-                            android:layout_toLeftOf="@+id/txtApplyCoupon"
-                            android:background="@color/white"
+                            android:layout_toLeftOf="@id/txtApplyCoupon"
+                            android:background="@drawable/bg_option_dropdown"
+                            android:hint="@string/edittext_hint_coupon_code"
                             android:maxLines="1"
                             android:padding="@dimen/margin_tiny"
                             android:singleLine="true"
-                            android:text="txtStore"
                             android:textColor="@color/text_black"
                             android:textSize="@dimen/font_size_edittext" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/cardStore"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_tiny"
@@ -337,7 +134,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/margin_small"
-                            android:background="@drawable/bg_option_dropdown"
                             android:padding="@dimen/margin_tiny"
                             android:singleLine="true"
                             android:text="Chose Delivery Date and Time"
@@ -358,8 +154,164 @@
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
+                <LinearLayout
+                    android:id="@+id/lltPriceReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/margin_tiny"
+                        android:weightSum="10">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="7"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center_vertical"
+                                android:padding="@dimen/margin_tiny"
+                                android:text="@string/text_price"
+                                android:textColor="@color/text_black"
+                                android:textSize="@dimen/font_size_edittext" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center_vertical"
+                                android:padding="@dimen/margin_tiny"
+                                android:text="@string/text_discount_and_saving"
+                                android:textColor="@color/text_black"
+                                android:textSize="@dimen/font_size_edittext" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center_vertical"
+                                android:padding="@dimen/margin_tiny"
+                                android:text="@string/text_coupon_discount"
+                                android:textColor="@color/text_black"
+                                android:textSize="@dimen/font_size_edittext" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center_vertical"
+                                android:padding="@dimen/margin_tiny"
+                                android:text="@string/text_total"
+                                android:textColor="@color/text_black"
+                                android:textSize="@dimen/font_size_edittext"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right|center_vertical"
+                                android:gravity="right"
+                                android:padding="@dimen/margin_tiny"
+                                android:paddingRight="@dimen/margin_small"
+                                android:text="$1000"
+                                android:textColor="@color/text_black"
+                                android:textSize="@dimen/font_size_edittext" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right|center_vertical"
+                                android:gravity="right"
+                                android:padding="@dimen/margin_tiny"
+                                android:paddingRight="@dimen/margin_small"
+                                android:text="$1000"
+                                android:textColor="@color/text_black"
+                                android:textSize="@dimen/font_size_edittext" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right|center_vertical"
+                                android:gravity="right"
+                                android:padding="@dimen/margin_tiny"
+                                android:paddingRight="@dimen/margin_small"
+                                android:text="$1000"
+                                android:textColor="@color/text_black"
+                                android:textSize="@dimen/font_size_edittext" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right|center_vertical"
+                                android:gravity="right"
+                                android:padding="@dimen/margin_tiny"
+                                android:paddingRight="@dimen/margin_small"
+                                android:text="$1000"
+                                android:textColor="@color/text_black"
+                                android:textSize="@dimen/font_size_edittext"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/app_theme_1" />
+                </LinearLayout>
+
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
+
+
+        <RelativeLayout
+            android:id="@+id/rlvBottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_theme_1">
+
+            <TextView
+                android:id="@+id/txtCartSalePriceTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/margin_small"
+                android:text="$ x"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_title"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtPay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/margin_small"
+                android:background="?attr/selectableItemBackground"
+                android:ellipsize="end"
+                android:padding="@dimen/margin_small"
+                android:singleLine="true"
+                android:text="@string/text_pay"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_title"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
         <include layout="@layout/progressbar" />
     </RelativeLayout>
