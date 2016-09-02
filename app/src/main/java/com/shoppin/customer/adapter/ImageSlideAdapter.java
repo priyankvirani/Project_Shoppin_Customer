@@ -86,7 +86,7 @@ public class ImageSlideAdapter extends PagerAdapter {
 
             for (int i = 0; i < imageArrayList.size(); i++) {
                 dots[i] = new ImageView(context);
-                dots[i].setImageDrawable(ContextCompat.getDrawable(context, R.drawable.non_selected_dot));
+                dots[i].setImageDrawable(ContextCompat.getDrawable(context, R.drawable.dot_non_selected));
 
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -98,16 +98,16 @@ public class ImageSlideAdapter extends PagerAdapter {
                 offerViewPagerIndicator.addView(dots[i], params);
             }
 
-            dots[0].setImageDrawable(ContextCompat.getDrawable(context, R.drawable.selected_dot));
+            dots[0].setImageDrawable(ContextCompat.getDrawable(context, R.drawable.dot_selected));
         }
     }
 
     public void setIndicator(int position) {
         if (offerViewPagerIndicator != null && imageArrayList != null && imageArrayList.size() > 0) {
             for (int i = 0; i < imageArrayList.size(); i++) {
-                dots[i].setImageDrawable(ContextCompat.getDrawable(context, R.drawable.non_selected_dot));
+                dots[i].setImageDrawable(ContextCompat.getDrawable(context, R.drawable.dot_non_selected));
             }
-            dots[position].setImageDrawable(ContextCompat.getDrawable(context, R.drawable.selected_dot));
+            dots[position].setImageDrawable(ContextCompat.getDrawable(context, R.drawable.dot_selected));
         }
     }
 

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.shoppin.customer.R;
 import com.shoppin.customer.model.CheckoutTime;
+import com.shoppin.customer.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -22,39 +23,30 @@ public class CheckoutTimeAdapter extends RecyclerView.Adapter<CheckoutTimeAdapte
 
     private Context context;
     private ArrayList<CheckoutTime> checkoutTimeArrayList;
-//    private boolean isDateSelected1 = true;
-
-//    public CheckoutTimeAdapter(Context context, ArrayList<CheckoutTime> checkoutTimeArrayList, boolean isDateSelected) {
-//        this.context = context;
-//        this.checkoutTimeArrayList = checkoutTimeArrayList;
-//        this.isDateSelected = isDateSelected;
-//    }
 
     public CheckoutTimeAdapter(Context context, ArrayList<CheckoutTime> checkoutTimeArrayList) {
         this.context = context;
         this.checkoutTimeArrayList = checkoutTimeArrayList;
     }
 
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cell_checkout_time, parent, false);
+                .inflate(R.layout.cell_checkout_date_time, parent, false);
 
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
-
         holder.txtTime.setText(checkoutTimeArrayList.get(position).getTime());
-
         Log.e(TAG, "isSelected = " + checkoutTimeArrayList.get(position).isSelected() + ",position =" + position);
         if (checkoutTimeArrayList.get(position).isSelected()) {
-            holder.txtTime.setBackgroundColor(context.getResources().getColor(R.color.app_theme_1));
+//            holder.txtTime.setBackgroundColor(context.getResources().getColor(R.color.app_theme_1));
+            holder.txtTime.setBackground(Utils.getDrawable(context, R.drawable.bg_date_time_selected));
         } else {
-            holder.txtTime.setBackgroundColor(context.getResources().getColor(R.color.white));
+//            holder.txtTime.setBackgroundColor(context.getResources().getColor(R.color.white));
+            holder.txtTime.setBackground(Utils.getDrawable(context, R.drawable.bg_date_time_non_selected));
         }
         holder.txtTime.setOnClickListener(new OnItemClickListener(checkoutTimeArrayList.get(position), position, holder.txtTime));
     }
@@ -65,7 +57,6 @@ public class CheckoutTimeAdapter extends RecyclerView.Adapter<CheckoutTimeAdapte
     }
 
     protected void setCheckoutTimeArrayList(ArrayList<CheckoutTime> tmpCheckoutTimeArrayList) {
-//        this.checkoutTimeArrayList = null;
         checkoutTimeArrayList = tmpCheckoutTimeArrayList;
         for (int i = 0; i < checkoutTimeArrayList.size(); i++) {
             checkoutTimeArrayList.get(i).setSelected(false);
@@ -79,7 +70,7 @@ public class CheckoutTimeAdapter extends RecyclerView.Adapter<CheckoutTimeAdapte
 
         public MyViewHolder(View vi) {
             super(vi);
-            txtTime = (TextView) vi.findViewById(R.id.txtTime);
+            txtTime = (TextView) vi.findViewById(R.id.txtDateTime);
         }
     }
 

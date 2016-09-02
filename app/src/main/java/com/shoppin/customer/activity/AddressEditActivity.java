@@ -1,6 +1,6 @@
 package com.shoppin.customer.activity;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -32,7 +31,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,11 +40,10 @@ import butterknife.ButterKnife;
  */
 
 public class AddressEditActivity extends AppCompatActivity {
-    public static final int REQUEST_CODE_ADDRESS = 1001;
-    public static final String KEY_ADDRESS_LIST = "address_list";
-    public static final String KEY_ADDRESS_POSITION = "position";
-    private static final String TAG = AddressEditActivity.class.getSimpleName();
+    public static final int REQUEST_CODE_ADDRESS = 1003;
+    public static final String KEY_ADDRESS = "address";
 
+    private static final String TAG = AddressEditActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -64,8 +61,9 @@ public class AddressEditActivity extends AppCompatActivity {
     EditText etxPostCode;
 
 
-    private int addressPosition;
-    private ArrayList<Address> addressArrayList;
+    private int addressPosition1;
+    //    private ArrayList<Address> addressArrayList;
+    private Address address;
     private ArrayList<Suburb> suburbArrayList;
     private ArrayAdapter<Suburb> suburbArrayAdapter;
     private Suburb selectedSuburb;
@@ -76,6 +74,25 @@ public class AddressEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_address);
         ButterKnife.bind(this);
 
+//        Intent intent = getIntent();
+//        if (intent != null) {
+//            addressArrayList = intent.getParcelableArrayListExtra(KEY_ADDRESS_LIST);
+//            Log.d(TAG, "addressArrayList.size() = " + addressArrayList.size());
+//            addressPosition = intent.getIntExtra(KEY_ADDRESS_POSITION, -1);
+//            Log.d(TAG, "postion = " + addressPosition);
+//
+//            if (addressArrayList != null && addressPosition >= 0) {
+//                loadAddress(addressArrayList.get(addressPosition));
+//            }
+//        }
+
+        if (getIntent() != null && getIntent().hasExtra(KEY_ADDRESS)) {
+            address = getIntent().getParcelableExtra(KEY_ADDRESS);
+            if (address != null) {
+                loadAddress(address);
+            }
+        }
+
         if (toolbar != null) {
 //            toolbar.setNavigationIcon(R.drawable.menu_icon);
 //            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.menu_icon));
@@ -83,20 +100,6 @@ public class AddressEditActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(getResources().getString(R.string.activity_address));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
-
-        Intent intent = getIntent();
-        if (intent != null) {
-            addressArrayList = new ArrayList<>();
-            addressArrayList.addAll((Collection<? extends Address>) intent.getSerializableExtra(KEY_ADDRESS_LIST));
-            Log.d(TAG, "addressArrayList.size() = " + addressArrayList.size());
-            addressPosition = intent.getIntExtra(KEY_ADDRESS_POSITION, -1);
-            Log.d(TAG, "postion = " + addressPosition);
-
-            if (addressArrayList != null && addressPosition >= 0) {
-                loadAddress(addressArrayList.get(addressPosition));
-            }
-
         }
 
         suburbArrayList = new ArrayList<>();
@@ -146,10 +149,8 @@ public class AddressEditActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_address, menu);
+        inflater.inflate(R.menu.menu_activity_address_edit, menu);
         return true;
     }
 
@@ -157,38 +158,25 @@ public class AddressEditActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                finish();
                 return true;
             case R.id.action_save:
                 if (validData()) {
-//                    Intent data = new Intent();
-//                    data.putExtra(IConstants.IRequestCode.KEY_ADDRESS_LIST, (Serializable) addressArrayList);
-//                    setResult(IConstants.IRequestCode.REQUEST_CODE_ADDRESS, data);
-//                    updateAddress();
-                    if (addressPosition >= 0) {
+                    if (address != null) {
                         updateAddress();
                     } else {
                         addAddress();
                     }
-//                    onBackPressed();
                 }
                 return true;
             case R.id.action_delete:
-                if (addressPosition >= 0) {
+                if (address != null) {
                     deleteAddress();
                 }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        InputMethodManager imm = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(etxName.getWindowToken(), 0);
-        finish();
     }
 
     private boolean validData() {
@@ -229,28 +217,11 @@ public class AddressEditActivity extends AppCompatActivity {
         return isValid;
     }
 
-   /* private void updateAddress() {
-        String name = etxName.getText().toString().trim();
-        String phoneNumber = etxPhone.getText().toString().trim();
-        String street = etxStreet.getText().toString().trim();
-        String suburb = atxSuburb.getText().toString().trim();
-        String postcode = etxPostCode.getText().toString().trim();
-        Address address = new Address(name, phoneNumber, street, suburb, postcode);
-        if (addressPosition >= 0) {
-
-            addressArrayList.remove(addressPosition);
-            addressArrayList.add(addressPosition, address);
-
-        } else {
-            addressArrayList.add(address);
-        }
-    }*/
-
     private void deleteAddress() {
         DataRequest deleteDataRequest = new DataRequest(AddressEditActivity.this);
         JSONObject deleteParams = new JSONObject();
         try {
-            deleteParams.put(IWebService.KEY_REQ_ADDRESS_ID, addressArrayList.get(addressPosition).addressId);
+            deleteParams.put(IWebService.KEY_REQ_ADDRESS_ID, address.addressId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -263,13 +234,12 @@ public class AddressEditActivity extends AppCompatActivity {
 
             @Override
             public void onPostExecute(String response) {
-                Log.d(TAG, "response = " + response);
                 rlvGlobalProgressbar.setVisibility(View.GONE);
                 if (!DataRequest.hasError(AddressEditActivity.this, response, true)) {
                     try {
                         JSONObject responseJObject = new JSONObject(response);
                         Utils.showToastShort(AddressEditActivity.this, responseJObject.getString(IWebService.KEY_RES_MESSAGE));
-                        onBackPressed();
+                        backSuccess();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -280,7 +250,7 @@ public class AddressEditActivity extends AppCompatActivity {
     }
 
     private void addAddress() {
-        DataRequest addressDataRequest = new DataRequest(AddressEditActivity.this);
+        DataRequest addNewAddressDataRequest = new DataRequest(AddressEditActivity.this);
         JSONObject addressParams = new JSONObject();
 
         try {
@@ -296,7 +266,7 @@ public class AddressEditActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        addressDataRequest.execute(IWebService.CUSTOMER_ADD_ADDRESS, addressParams.toString(), new DataRequest.CallBack() {
+        addNewAddressDataRequest.execute(IWebService.CUSTOMER_ADD_ADDRESS, addressParams.toString(), new DataRequest.CallBack() {
             @Override
             public void onPreExecute() {
                 rlvGlobalProgressbar.setVisibility(View.VISIBLE);
@@ -305,28 +275,25 @@ public class AddressEditActivity extends AppCompatActivity {
             @Override
             public void onPostExecute(String response) {
                 rlvGlobalProgressbar.setVisibility(View.GONE);
-                Log.d(TAG, "response = " + response);
-
                 if (!DataRequest.hasError(AddressEditActivity.this, response, true)) {
                     JSONObject responseJObject = null;
                     try {
                         responseJObject = new JSONObject(response);
                         Utils.showToastShort(AddressEditActivity.this, responseJObject.getString(IWebService.KEY_RES_MESSAGE));
-                        onBackPressed();
+                        backSuccess();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
         });
     }
 
     private void updateAddress() {
-        DataRequest updateDataRequest = new DataRequest(AddressEditActivity.this);
+        DataRequest updateAddressDataRequest = new DataRequest(AddressEditActivity.this);
         JSONObject updateParams = new JSONObject();
         try {
-            updateParams.put(IWebService.KEY_REQ_ADDRESS_ID, addressArrayList.get(addressPosition).addressId);
+            updateParams.put(IWebService.KEY_REQ_ADDRESS_ID, address.addressId);
             updateParams.put(IWebService.KEY_REQ_CUSTOMER_NAME, etxName.getText().toString().trim());
             updateParams.put(IWebService.KEY_REQ_CUSTOMER_MOBILE, etxPhone.getText().toString().trim());
             updateParams.put(IWebService.KEY_REQ_CUSTOMER_STREET, etxStreet.getText().toString().trim());
@@ -336,7 +303,7 @@ public class AddressEditActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        updateDataRequest.execute(IWebService.CUSTOMER_UPDATE_ADDRESS, updateParams.toString(), new DataRequest.CallBack() {
+        updateAddressDataRequest.execute(IWebService.CUSTOMER_UPDATE_ADDRESS, updateParams.toString(), new DataRequest.CallBack() {
             @Override
             public void onPreExecute() {
                 rlvGlobalProgressbar.setVisibility(View.VISIBLE);
@@ -345,13 +312,11 @@ public class AddressEditActivity extends AppCompatActivity {
             @Override
             public void onPostExecute(String response) {
                 rlvGlobalProgressbar.setVisibility(View.GONE);
-                Log.d(TAG, "response = " + response);
-
                 if (!DataRequest.hasError(AddressEditActivity.this, response, true)) {
                     try {
                         JSONObject responseJObject = new JSONObject(response);
                         Utils.showToastShort(AddressEditActivity.this, responseJObject.getString(IWebService.KEY_RES_MESSAGE));
-                        onBackPressed();
+                        backSuccess();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -361,6 +326,11 @@ public class AddressEditActivity extends AppCompatActivity {
 
     }
 
+    private void backSuccess() {
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+    }
 
 }
 

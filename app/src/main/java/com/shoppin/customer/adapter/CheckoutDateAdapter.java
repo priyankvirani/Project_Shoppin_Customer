@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.shoppin.customer.R;
 import com.shoppin.customer.model.CheckoutDate;
+import com.shoppin.customer.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -42,23 +43,21 @@ public class CheckoutDateAdapter extends RecyclerView.Adapter<CheckoutDateAdapte
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cell_checkout_date, parent, false);
+                .inflate(R.layout.cell_checkout_date_time, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
-
         holder.txtDate.setText(checkoutDateArrayList.get(position).getDate());
-
-        //Log.e(TAG, "isSelected : = " + checkoutDateTempValues.isSelected());
         Log.e(TAG, "isSelected = " + checkoutDateArrayList.get(position).isSelected() + ",position =" + position);
         if (checkoutDateArrayList.get(position).isSelected()) {
-            holder.txtDate.setBackgroundColor(context.getResources().getColor(R.color.app_theme_1));
+//            holder.txtDate.setBackgroundColor(context.getResources().getColor(R.color.app_theme_1));
+            holder.txtDate.setBackground(Utils.getDrawable(context,R.drawable.bg_date_time_selected));
             checkoutTimeAdapter.setCheckoutTimeArrayList(checkoutDateArrayList.get(position).getCheckoutTimesArrayList());
         } else {
-            holder.txtDate.setBackgroundColor(context.getResources().getColor(R.color.white));
+//            holder.txtDate.setBackgroundColor(context.getResources().getColor(R.color.white));
+            holder.txtDate.setBackground(Utils.getDrawable(context,R.drawable.bg_date_time_non_selected));
         }
 
         holder.txtDate.setOnClickListener(new OnItemClickListener(checkoutDateArrayList.get(position), position, holder.txtDate));
@@ -75,7 +74,7 @@ public class CheckoutDateAdapter extends RecyclerView.Adapter<CheckoutDateAdapte
 
         public MyViewHolder(View vi) {
             super(vi);
-            txtDate = (TextView) vi.findViewById(R.id.txtDate);
+            txtDate = (TextView) vi.findViewById(R.id.txtDateTime);
         }
     }
 
@@ -92,12 +91,6 @@ public class CheckoutDateAdapter extends RecyclerView.Adapter<CheckoutDateAdapte
 
         @Override
         public void onClick(View arg0) {
-//            txtDate.setBackgroundColor(context.getResources().getColor(R.color.app_theme_1));
-//            checkoutTimeAdapter = new CheckoutTimeAdapter(context, checkoutDateArrayList.get(position).getCheckoutTimesArrayList(), false);
-//            LinearLayoutManager horizontalLayoutManagaerdate
-//                    = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-//            timeRecyclerView.setLayoutManager(horizontalLayoutManagaerdate);
-//            timeRecyclerView.setAdapter(checkoutTimeAdapter);
             for (int i = 0; i < checkoutDateArrayList.size(); i++) {
                 if (i != position) {
                     checkoutDateArrayList.get(i).setSelected(false);

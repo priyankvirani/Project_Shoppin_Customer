@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarCheckOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +42,8 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/rlvBottomBar">
+            android:layout_above="@+id/rlvBottomBar"
+            android:layout_alignParentTop="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -86,7 +87,7 @@
                             android:layout_centerVertical="true"
                             android:layout_margin="@dimen/margin_small"
                             android:layout_toLeftOf="@id/txtApplyCoupon"
-                            android:background="@drawable/bg_option_dropdown"
+                            android:background="@drawable/bg_edittext_transparent"
                             android:hint="@string/edittext_hint_coupon_code"
                             android:maxLines="1"
                             android:padding="@dimen/margin_tiny"
@@ -122,7 +123,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_tiny"
-                    android:background="@color/gray"
                     card_view:cardCornerRadius="@dimen/card_view_radius">
 
                     <LinearLayout
@@ -133,9 +133,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/margin_small"
                             android:padding="@dimen/margin_tiny"
-                            android:singleLine="true"
                             android:text="Chose Delivery Date and Time"
                             android:textColor="@color/text_black"
                             android:textSize="@dimen/font_size_edittext" />
@@ -154,122 +152,123 @@
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
-                <LinearLayout
-                    android:id="@+id/lltPriceReview"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardPriceReview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_margin="@dimen/margin_tiny"
+                    card_view:cardCornerRadius="@dimen/card_view_radius">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/margin_tiny"
-                        android:weightSum="10">
+                        android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="7"
-                            android:orientation="vertical">
+                            android:orientation="horizontal"
+                            android:padding="@dimen/margin_tiny"
+                            android:weightSum="10">
 
-                            <TextView
-                                android:layout_width="match_parent"
+                            <LinearLayout
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:padding="@dimen/margin_tiny"
-                                android:text="@string/text_price"
-                                android:textColor="@color/text_black"
-                                android:textSize="@dimen/font_size_edittext" />
+                                android:layout_weight="7"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="match_parent"
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left|center_vertical"
+                                    android:padding="@dimen/margin_tiny"
+                                    android:text="@string/text_price"
+                                    android:textColor="@color/text_black"
+                                    android:textSize="@dimen/font_size_edittext" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left|center_vertical"
+                                    android:padding="@dimen/margin_tiny"
+                                    android:text="@string/text_discount_and_saving"
+                                    android:textColor="@color/text_black"
+                                    android:textSize="@dimen/font_size_edittext" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left|center_vertical"
+                                    android:padding="@dimen/margin_tiny"
+                                    android:text="@string/text_coupon_discount"
+                                    android:textColor="@color/text_black"
+                                    android:textSize="@dimen/font_size_edittext" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left|center_vertical"
+                                    android:padding="@dimen/margin_tiny"
+                                    android:text="@string/text_total"
+                                    android:textColor="@color/text_black"
+                                    android:textSize="@dimen/font_size_edittext"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:padding="@dimen/margin_tiny"
-                                android:text="@string/text_discount_and_saving"
-                                android:textColor="@color/text_black"
-                                android:textSize="@dimen/font_size_edittext" />
+                                android:layout_weight="3"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:padding="@dimen/margin_tiny"
-                                android:text="@string/text_coupon_discount"
-                                android:textColor="@color/text_black"
-                                android:textSize="@dimen/font_size_edittext" />
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right|center_vertical"
+                                    android:gravity="right"
+                                    android:padding="@dimen/margin_tiny"
+                                    android:paddingRight="@dimen/margin_small"
+                                    android:text="$1000"
+                                    android:textColor="@color/text_black"
+                                    android:textSize="@dimen/font_size_edittext" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:padding="@dimen/margin_tiny"
-                                android:text="@string/text_total"
-                                android:textColor="@color/text_black"
-                                android:textSize="@dimen/font_size_edittext"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right|center_vertical"
+                                    android:gravity="right"
+                                    android:padding="@dimen/margin_tiny"
+                                    android:paddingRight="@dimen/margin_small"
+                                    android:text="$1000"
+                                    android:textColor="@color/text_black"
+                                    android:textSize="@dimen/font_size_edittext" />
 
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right|center_vertical"
+                                    android:gravity="right"
+                                    android:padding="@dimen/margin_tiny"
+                                    android:paddingRight="@dimen/margin_small"
+                                    android:text="$1000"
+                                    android:textColor="@color/text_black"
+                                    android:textSize="@dimen/font_size_edittext" />
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="3"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:gravity="right"
-                                android:padding="@dimen/margin_tiny"
-                                android:paddingRight="@dimen/margin_small"
-                                android:text="$1000"
-                                android:textColor="@color/text_black"
-                                android:textSize="@dimen/font_size_edittext" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:gravity="right"
-                                android:padding="@dimen/margin_tiny"
-                                android:paddingRight="@dimen/margin_small"
-                                android:text="$1000"
-                                android:textColor="@color/text_black"
-                                android:textSize="@dimen/font_size_edittext" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:gravity="right"
-                                android:padding="@dimen/margin_tiny"
-                                android:paddingRight="@dimen/margin_small"
-                                android:text="$1000"
-                                android:textColor="@color/text_black"
-                                android:textSize="@dimen/font_size_edittext" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:gravity="right"
-                                android:padding="@dimen/margin_tiny"
-                                android:paddingRight="@dimen/margin_small"
-                                android:text="$1000"
-                                android:textColor="@color/text_black"
-                                android:textSize="@dimen/font_size_edittext"
-                                android:textStyle="bold" />
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right|center_vertical"
+                                    android:gravity="right"
+                                    android:padding="@dimen/margin_tiny"
+                                    android:paddingRight="@dimen/margin_small"
+                                    android:text="$1000"
+                                    android:textColor="@color/text_black"
+                                    android:textSize="@dimen/font_size_edittext"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/app_theme_1" />
-                </LinearLayout>
+                </android.support.v7.widget.CardView>
 
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>

@@ -33,7 +33,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.shoppin.customer.database.IDatabase.IMap;
-import static com.shoppin.customer.utils.Utils.getSelectedSuburb;
 
 public class SigninActivity extends AppCompatActivity {
 
@@ -177,11 +176,10 @@ public class SigninActivity extends AppCompatActivity {
 
     @OnClick(R.id.txtGuest)
     void guestLogin() {
-        showAlertForLocation();
+        showAlertGuestLogin();
     }
 
-    // For custom alert dialog of location
-    private void showAlertForLocation() {
+    private void showAlertGuestLogin() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SigninActivity.this);
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_guest_suburb, null);
@@ -203,7 +201,7 @@ public class SigninActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 atxSuburbDialog.setError(null);
-                selectedSuburb = getSelectedSuburb(suburbArrayList, atxSuburbDialog.getText().toString());
+                selectedSuburb = Utils.getSelectedSuburb(suburbArrayList, atxSuburbDialog.getText().toString());
                 if (selectedSuburb == null) {
                     atxSuburbDialog.setError(getString(R.string.error_valid_suburb));
                     atxSuburbDialog.requestFocus();

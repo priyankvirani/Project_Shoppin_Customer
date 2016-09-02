@@ -1,5 +1,6 @@
 package com.shoppin.customer.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -21,24 +21,25 @@ import com.shoppin.customer.R;
 import com.shoppin.customer.activity.AddressEditActivity;
 import com.shoppin.customer.activity.NavigationDrawerActivity;
 import com.shoppin.customer.activity.SigninActivity;
-import com.shoppin.customer.adapter.AddressRecyleAdapter;
+import com.shoppin.customer.adapter.AddressAdapter;
 import com.shoppin.customer.database.DBAdapter;
 import com.shoppin.customer.model.Address;
 import com.shoppin.customer.model.Suburb;
 import com.shoppin.customer.network.DataRequest;
 import com.shoppin.customer.network.IWebService;
+import com.shoppin.customer.utils.Customer;
 import com.shoppin.customer.utils.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.shoppin.customer.R.id.txtUpdate;
 import static com.shoppin.customer.database.IDatabase.IMap;
 
 /**
@@ -52,11 +53,8 @@ public class MyAccountFragment extends BaseFragment {
     @BindView(R.id.rlvGlobalProgressbar)
     RelativeLayout rlvGlobalProgressbar;
 
-    @BindView(R.id.lstAddress)
-    RecyclerView lstAddress;
-
-    @BindView(R.id.txtAddNewAddress)
-    TextView txtAddNewAddress;
+    @BindView(R.id.rclAddress)
+    RecyclerView rclAddress;
 
     @BindView(R.id.etxName)
     EditText etxName;
@@ -76,11 +74,8 @@ public class MyAccountFragment extends BaseFragment {
     @BindView(R.id.etxPassword)
     EditText etxPassword;
 
-    @BindView(R.id.txtUpdate)
-    TextView txtUpdate;
-
     private ArrayList<Address> addressArrayList;
-    private AddressRecyleAdapter addressAdapter;
+    private AddressAdapter addressAdapter;
 
     private ArrayList<Suburb> suburbArrayList;
     private ArrayAdapter<Suburb> suburbArrayAdapter;
@@ -95,53 +90,17 @@ public class MyAccountFragment extends BaseFragment {
         ButterKnife.bind(this, layoutView);
 
         addressArrayList = new ArrayList<>();
-        addressAdapter = new AddressRecyleAdapter(getActivity(), addressArrayList, MyAccountFragment.this);
+        addressAdapter = new AddressAdapter(getActivity(), addressArrayList, MyAccountFragment.this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        lstAddress.setLayoutManager(mLayoutManager);
-        lstAddress.setAdapter(addressAdapter);
+        rclAddress.setLayoutManager(mLayoutManager);
+        rclAddress.setAdapter(addressAdapter);
 
         suburbArrayList = new ArrayList<>();
         suburbArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, suburbArrayList);
         atxSuburb.setAdapter(suburbArrayAdapter);
         getSuburbs();
 
-
-        Log.d(TAG, "customer_id = " + DBAdapter.getMapKeyValueString(getActivity(), IMap.CUSTOMER_ID));
-//        dummyData();
-
-        txtAddNewAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AddressEditActivity.class);
-                intent.putExtra(AddressEditActivity.KEY_ADDRESS_LIST, (Serializable) addressArrayList);
-                startActivityNew(intent);
-            }
-        });
-
-        txtUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (signupValidation()) {
-                    updateMyAccountDetails();
-                }
-            }
-        });
-
         return layoutView;
-    }
-
-
-    @OnClick(R.id.btnLogOut)
-    void logOut() {
-        DBAdapter.insertUpdateMap(getActivity(), IMap.SUBURB_ID, "");
-        DBAdapter.insertUpdateMap(getActivity(), IMap.SUBURB_NAME, "");
-        DBAdapter.insertUpdateMap(getActivity(), IMap.CUSTOMER_ID, "");
-        DBAdapter.insertUpdateMap(getActivity(), IMap.CUSTOMER_ADDRESS_ID, "");
-        DBAdapter.setMapKeyValueBoolean(getActivity(), IMap.IS_LOGIN, false);
-
-        Intent intent = new Intent(getActivity(), SigninActivity.class);
-        startActivity(intent);
-        getActivity().finish();
     }
 
     @Override
@@ -153,36 +112,44 @@ public class MyAccountFragment extends BaseFragment {
         }
     }
 
-//    private void dummyData() {
-//        Address address1 = new Address("Peter Parker", "1234567890", "Surat", "Surat", "345678");
-//        addressArrayList.add(address1);
-//
-//        Address address2 = new Address("Peter Parker", "1234567890", "Surat", "Surat", "345678");
-//        addressArrayList.add(address2);
-//
-//        addressAdapter.notifyDataSetChanged();
-//    }
 
-//    @OnClick(R.id.txtAddNewAddress)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG,"resultCode = " + requestCode);
+        if (requestCode == AddressEditActivity.REQUEST_CODE_ADDRESS) {
+            Log.d(TAG,"resultCode = " + resultCode);
+            if (resultCode == Activity.RESULT_OK) {
+                getAddressList();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
-    public void startActivityNew(Intent intent) {
+    @OnClick(txtUpdate)
+    void updateAddress() {
+        if (signupValidation()) {
+            updateMyAccountDetails();
+        }
+    }
+
+    @OnClick(R.id.txtAddNewAddress)
+    void addNewAddress() {
+        Intent intent = new Intent(getActivity(), AddressEditActivity.class);
         startActivityForResult(intent, AddressEditActivity.REQUEST_CODE_ADDRESS);
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @OnClick(R.id.btnLogOut)
+    void logOut() {
+        Customer.singOut(getActivity());
+        Intent intent = new Intent(getActivity(), SigninActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
 
-        if (requestCode == AddressEditActivity.REQUEST_CODE_ADDRESS) {
-            getAddressList();
-            if (data != null) {
-//                addressArrayList.clear();
-//                addressArrayList.addAll((Collection<? extends Address>) data.getSerializableExtra(IConstants.IRequestCode.KEY_ADDRESS_LIST));
-//                Log.d(TAG, "addressArrayList.size() = " + addressArrayList.size());
-//                addressAdapter.notifyDataSetChanged();
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
+    @OnClick(R.id.btnExport)
+    void btnExport() {
+        DBAdapter.exportDB(getActivity());
     }
 
     private void getSuburbs() {
@@ -213,6 +180,86 @@ public class MyAccountFragment extends BaseFragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getMyProfileDetails() {
+        DataRequest profileDataRequest = new DataRequest(getActivity());
+        JSONObject profileParams = new JSONObject();
+
+        try {
+            profileParams.put(IWebService.KEY_RES_CUSTOMER_ID, DBAdapter.getMapKeyValueString(getActivity(), IMap.CUSTOMER_ID));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        profileDataRequest.execute(IWebService.CUSTOMER_PROFILE, profileParams.toString(), new DataRequest.CallBack() {
+            @Override
+            public void onPreExecute() {
+                rlvGlobalProgressbar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPostExecute(String response) {
+                rlvGlobalProgressbar.setVisibility(View.GONE);
+                if (!DataRequest.hasError(getActivity(), response, true)) {
+                    JSONObject dataJObject = DataRequest.getJObjWebdata(response);
+                    try {
+                        etxName.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_NAME));
+                        etxPhoneNumber.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_MOBILE));
+                        etxStreet.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_STREET));
+                        atxSuburb.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_SUBURB_NAME));
+                        etxPostcode.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_POSTCODE));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    //webservice call for fetching address
+                    getAddressList();
+                }
+            }
+        });
+    }
+
+    private void getAddressList() {
+        DataRequest addressDataRequest = new DataRequest(getActivity());
+        JSONObject addressParams = new JSONObject();
+
+        try {
+            addressParams.put(IWebService.KEY_RES_CUSTOMER_ID, DBAdapter.getMapKeyValueString(getActivity(), IMap.CUSTOMER_ID));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        addressDataRequest.execute(IWebService.CUSTOMER_ADDRESS_LIST, addressParams.toString(), new DataRequest.CallBack() {
+            @Override
+            public void onPreExecute() {
+                rlvGlobalProgressbar.setVisibility(View.VISIBLE);
+                addressArrayList.clear();
+                addressAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onPostExecute(String response) {
+                Log.d(TAG, "response = " + response);
+                rlvGlobalProgressbar.setVisibility(View.GONE);
+                if (!DataRequest.hasError(getActivity(), response, true)) {
+                    addressArrayList.clear();
+                    Gson gson = new Gson();
+                    JSONObject dataJObject = DataRequest.getJObjWebdata(response);
+                    try {
+                        ArrayList<Address> tmpAddressArrayList = gson.fromJson(
+                                dataJObject.getJSONArray(IWebService.KEY_RES_ADDRESS_LIST).toString(),
+                                new TypeToken<ArrayList<Address>>() {
+                                }.getType());
+                        if (tmpAddressArrayList != null) {
+                            Log.e(TAG, "size = " + tmpAddressArrayList.size());
+                            addressArrayList.addAll(tmpAddressArrayList);
+                            addressAdapter.notifyDataSetChanged();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
         });
@@ -260,7 +307,7 @@ public class MyAccountFragment extends BaseFragment {
     }
 
     private void updateMyAccountDetails() {
-        DataRequest updateDataRequest = new DataRequest(getActivity());
+        DataRequest updateProfileDataRequest = new DataRequest(getActivity());
         JSONObject updateParams = new JSONObject();
         try {
             updateParams.put(IWebService.KEY_RES_CUSTOMER_ID,
@@ -276,7 +323,7 @@ public class MyAccountFragment extends BaseFragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        updateDataRequest.execute(IWebService.CUSTOMER_ACCOUNT_UPDATE, updateParams.toString(), new DataRequest.CallBack() {
+        updateProfileDataRequest.execute(IWebService.CUSTOMER_ACCOUNT_UPDATE, updateParams.toString(), new DataRequest.CallBack() {
             @Override
             public void onPreExecute() {
                 rlvGlobalProgressbar.setVisibility(View.VISIBLE);
@@ -297,96 +344,5 @@ public class MyAccountFragment extends BaseFragment {
                 }
             }
         });
-    }
-
-    private void getAddressList() {
-        DataRequest addressDataRequest = new DataRequest(getActivity());
-        JSONObject addressParams = new JSONObject();
-
-        try {
-            addressParams.put(IWebService.KEY_RES_CUSTOMER_ID, DBAdapter.getMapKeyValueString(getActivity(), IMap.CUSTOMER_ID));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        addressDataRequest.execute(IWebService.CUSTOMER_ADDRESS_LIST, addressParams.toString(), new DataRequest.CallBack() {
-            @Override
-            public void onPreExecute() {
-
-            }
-
-            @Override
-            public void onPostExecute(String response) {
-                Log.d(TAG, "response = " + response);
-                rlvGlobalProgressbar.setVisibility(View.GONE);
-                if (!DataRequest.hasError(getActivity(), response, true)) {
-                    addressArrayList.clear();
-                    Gson gson = new Gson();
-                    JSONObject dataJObject = DataRequest.getJObjWebdata(response);
-
-                    try {
-                        ArrayList<Address> tmpAddressArrayList = gson.fromJson(
-                                dataJObject.getJSONArray(IWebService.KEY_RES_ADDRESS_LIST).toString(),
-                                new TypeToken<ArrayList<Address>>() {
-                                }.getType());
-                        if (tmpAddressArrayList != null) {
-                            Log.e(TAG, "size = " + tmpAddressArrayList.size());
-                            addressArrayList.addAll(tmpAddressArrayList);
-                            addressAdapter.notifyDataSetChanged();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        });
-    }
-
-
-    private void getMyProfileDetails() {
-        DataRequest profileDataRequest = new DataRequest(getActivity());
-        JSONObject profileParams = new JSONObject();
-
-        try {
-            profileParams.put(IWebService.KEY_RES_CUSTOMER_ID, DBAdapter.getMapKeyValueString(getActivity(), IMap.CUSTOMER_ID));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        profileDataRequest.execute(IWebService.CUSTOMER_PROFILE, profileParams.toString(), new DataRequest.CallBack() {
-            @Override
-            public void onPreExecute() {
-//                rlvGlobalProgressbar.setVisibility(View.VISIBLE);
-
-            }
-
-            @Override
-            public void onPostExecute(String response) {
-                Log.d(TAG, "response = " + response);
-//                rlvGlobalProgressbar.setVisibility(View.GONE);
-                if (!DataRequest.hasError(getActivity(), response, true)) {
-                    JSONObject dataJObject = DataRequest.getJObjWebdata(response);
-                    try {
-                        etxName.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_NAME));
-                        etxPhoneNumber.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_MOBILE));
-                        etxStreet.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_STREET));
-                        atxSuburb.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_SUBURB_NAME));
-                        etxPostcode.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_POSTCODE));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    //webservice call for fetching address
-                    getAddressList();
-                }
-            }
-        });
-    }
-
-
-    @OnClick(R.id.btnExport)
-    void btnExport() {
-        DBAdapter.exportDB(getActivity());
     }
 }

@@ -40,6 +40,8 @@ import butterknife.OnClick;
 public class CheckOutActivity extends AppCompatActivity {
     public static final int REQUEST_PAYMENT = 1001;
     public static final String RESPONSE_PAYMENT_ID = "payment_id";
+    public static final String KEY_ADDRESS = "address";
+
     private static final String TAG = CheckOutActivity.class.getSimpleName();
 
     @BindView(R.id.toolbarCheckOut)
@@ -49,16 +51,22 @@ public class CheckOutActivity extends AppCompatActivity {
 
     @BindView(R.id.txtCustomerName)
     TextView txtCustomerName;
+
     @BindView(R.id.txtPhone)
     TextView txtPhone;
+
     @BindView(R.id.txtStreet)
     TextView txtStreet;
+
     @BindView(R.id.txtSuburb)
     TextView txtSuburb;
+
     @BindView(R.id.txtPostCode)
     TextView txtPostCode;
+
     @BindView(R.id.imgEditAddress)
     ImageView imgEditAddress;
+
     @BindView(R.id.imgAddNewAddress)
     ImageView imgAddNewAddress;
 
@@ -69,7 +77,6 @@ public class CheckOutActivity extends AppCompatActivity {
     @BindView(R.id.cardStore)
     CardView cardStore;
 
-
     @BindView(R.id.dateRecyclerView)
     RecyclerView dateRecyclerView;
     @BindView(R.id.timeRecyclerView)
@@ -79,6 +86,8 @@ public class CheckOutActivity extends AppCompatActivity {
 
     private ArrayList<Address> addressArrayList;
     private ArrayList<Store> storeArrayList;
+
+    private Address currentAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +102,8 @@ public class CheckOutActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-
+        imgEditAddress.setVisibility(View.GONE);
         imgAddNewAddress.setVisibility(View.VISIBLE);
-
 
         checkoutDateArrayList = new ArrayList<CheckoutDate>();
         checkoutDateAdapter = new CheckoutDateAdapter(CheckOutActivity.this, checkoutDateArrayList, timeRecyclerView);
@@ -116,7 +124,6 @@ public class CheckOutActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             finish(); // close this activity and return to preview activity (if there is any)
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -132,18 +139,28 @@ public class CheckOutActivity extends AppCompatActivity {
                 //Write your code if there's no result
                 Utils.showToastShort(CheckOutActivity.this, "Unsuccessfully");
             }
+        } else if (requestCode == AddressEditActivity.REQUEST_CODE_ADDRESS) {
+            if (resultCode == Activity.RESULT_OK) {
+//                String paymentId = data.getStringExtra(RESPONSE_PAYMENT_ID);
+                if (data != null && data.hasExtra(KEY_ADDRESS)) {
+                    Address address = data.getParcelableExtra(KEY_ADDRESS);
+                    setCurrentAddress(address);
+                }
+            }
         }
     }
 
-//    @OnClick(R.id.txtApplyCoupon)
-//    void applyCoupon() {
-//        Utils.showToastShort(CheckOutActivity.this, getString(R.string.under_development));
-//    }
-//
-//    @OnClick(R.id.txtApplyCoupon)
-//    void applyCoupon() {
-//        Utils.showToastShort(CheckOutActivity.this, getString(R.string.under_development));
-//    }
+    @OnClick(R.id.imgAddNewAddress)
+    void addNewAddress() {
+        Intent intent = new Intent(CheckOutActivity.this, ChooseDeliveryActivity.class);
+        startActivityForResult(intent, AddressEditActivity.REQUEST_CODE_ADDRESS);
+    }
+
+
+    @OnClick(R.id.txtApplyCoupon)
+    void applyCoupon() {
+        Utils.showToastShort(CheckOutActivity.this, getString(R.string.under_development));
+    }
 
     @OnClick(R.id.txtPay)
     void makePayment() {
@@ -159,8 +176,8 @@ public class CheckOutActivity extends AppCompatActivity {
             loginParam.put(IWebService.KEY_REQ_CUSTOMER__SUBURB_ID,
                     DBAdapter.getMapKeyValueString(CheckOutActivity.this, IMap.SUBURB_ID));
 
-            DataRequest signinDataRequest = new DataRequest(CheckOutActivity.this);
-            signinDataRequest.execute(IWebService.GET_CHECKOUT_DETAIL, loginParam.toString(), new DataRequest.CallBack() {
+            DataRequest checkOutDetailDataRequest = new DataRequest(CheckOutActivity.this);
+            checkOutDetailDataRequest.execute(IWebService.GET_CHECKOUT_DETAIL, loginParam.toString(), new DataRequest.CallBack() {
                 public void onPreExecute() {
                     rlvGlobalProgressbar.setVisibility(View.VISIBLE);
                 }
@@ -219,29 +236,6 @@ public class CheckOutActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-//
-//    private void UpdateCheckOutDate() {
-//
-//        for (int i = 1; i < numberOfCell; i++) {
-//            //Log.e(TAG, "I : " + i);
-//            CheckoutDate itemSched = new CheckoutDate();
-//            itemSched.setDate("Date :" + i);
-//            itemSched.setSelected(false);
-//            checkoutTimeArrayList = new ArrayList<>();
-//
-//            for (int j = 1; j < numberOfCell; j++) {
-//                //Log.e(TAG, "(" + i + "," + j + ")");
-//                CheckoutTime itemSubSched = new CheckoutTime();
-//                itemSubSched.setDate("Date:" + i);
-//                itemSubSched.setTime("Time:" + j);
-//                itemSubSched.setSelected(false);
-//                checkoutTimeArrayList.add(itemSubSched);
-//                itemSched.setCheckoutTimesArrayList(checkoutTimeArrayList);
-//            }
-//
-//            checkoutDateArrayList.add(itemSched);
-//        }
-//    }
 
     private void setCheckoutDetailOnUi() {
         if (addressArrayList != null && addressArrayList.size() > 0) {
@@ -255,7 +249,9 @@ public class CheckOutActivity extends AppCompatActivity {
         }
     }
 
-    private void setCurrentAddress(Address currentAddress) {
+    private void setCurrentAddress(Address tmpCurrentAddress) {
+        this.currentAddress = null;
+        this.currentAddress = tmpCurrentAddress;
         txtCustomerName.setText(currentAddress.name);
         txtPhone.setText(currentAddress.phoneNumber);
         txtStreet.setText(currentAddress.street);
