@@ -52,11 +52,11 @@ public class CheckoutDateAdapter extends RecyclerView.Adapter<CheckoutDateAdapte
         holder.txtDate.setText(checkoutDateArrayList.get(position).getDate());
         Log.e(TAG, "isSelected = " + checkoutDateArrayList.get(position).isSelected() + ",position =" + position);
         if (checkoutDateArrayList.get(position).isSelected()) {
-//            holder.txtDate.setBackgroundColor(context.getResources().getColor(R.color.app_theme_1));
+            holder.txtDate.setTextColor(context.getResources().getColor(R.color.white));
             holder.txtDate.setBackground(Utils.getDrawable(context,R.drawable.bg_date_time_selected));
             checkoutTimeAdapter.setCheckoutTimeArrayList(checkoutDateArrayList.get(position).getCheckoutTimesArrayList());
         } else {
-//            holder.txtDate.setBackgroundColor(context.getResources().getColor(R.color.white));
+            holder.txtDate.setTextColor(context.getResources().getColor(R.color.text_black));
             holder.txtDate.setBackground(Utils.getDrawable(context,R.drawable.bg_date_time_non_selected));
         }
 

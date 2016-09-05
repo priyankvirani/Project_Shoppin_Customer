@@ -1,9 +1,10 @@
 package com.shoppin.customer.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,8 +22,7 @@ import java.util.ArrayList;
  * Created by ubuntu on 8/8/16.
  */
 
-public class SubCategoryNestedAdapter extends BaseAdapter {
-
+public class SubCategoryNestedAdapter extends RecyclerView.Adapter<SubCategoryNestedAdapter.MyViewHolder> {
     private static final String TAG = SubCategoryNestedAdapter.class.getSimpleName();
 
     private Context context;
@@ -36,68 +36,47 @@ public class SubCategoryNestedAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return subCategoryArrayList == null ? 0 : subCategoryArrayList.size();
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.cell_subcategory_home, parent, false);
+//        Log.d(TAG, "cellWidth = " + cellWidth);
+        itemView.setLayoutParams(new GridView.LayoutParams(cellWidth, cellWidth));
+        return new MyViewHolder(itemView);
     }
 
     @Override
-    public Object getItem(int position) {
-        return subCategoryArrayList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            convertView = View.inflate(context, R.layout.cell_subcategory_home, null);
-            holder = new ViewHolder();
-            holder.txtSubcategory = (TextView) convertView.findViewById(R.id.txtSubcategory);
-            holder.imgSubcategory = (ImageView) convertView.findViewById(R.id.imgSubcategory);
-            convertView.setTag(holder);
-
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        holder.txtSubcategory.setText(subCategoryArrayList.get(position).subcategoryName);
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        holder.txtSubCategory.setText(subCategoryArrayList.get(position).subcategoryName);
         Glide.with(context)
                 .load(subCategoryArrayList.get(position).subcategoryImage)
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)
                 .into(holder.imgSubcategory);
-        holder.imgSubcategory.setOnClickListener(new OnItemClickListener(position, subCategoryArrayList.get(position)));
-
-//        convertView.setLayoutParams(new GridView.LayoutParams(
-//                GridView.AUTO_FIT, Utils.dpToPx(cellWidth)));
-//        Log.d(TAG, "cellWidth = " + cellWidth);
-        convertView.setLayoutParams(new GridView.LayoutParams(cellWidth, cellWidth));
-        return convertView;
-    }
-
-    public static class ViewHolder {
-        public TextView txtSubcategory;
-        public ImageView imgSubcategory;
-    }
-
-    private class OnItemClickListener implements View.OnClickListener {
-        private SubCategory listModelSubCategoryArr;
-        private int subCategoryPosition;
-
-        OnItemClickListener(int subCategoryPosition, SubCategory listModelSubCategory) {
-            this.listModelSubCategoryArr = listModelSubCategory;
-            this.subCategoryPosition = subCategoryPosition;
-        }
-
-        @Override
-        public void onClick(View arg0) {
-            NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
-            if (navigationDrawerActivity != null) {
-                navigationDrawerActivity.switchContent(ProductListFragment.newInstance(subCategoryPosition, subCategoryArrayList), false);
+        holder.imgSubcategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
+                if (navigationDrawerActivity != null) {
+                    navigationDrawerActivity.switchContent(ProductListFragment.newInstance(position, subCategoryArrayList), false);
+                }
             }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return subCategoryArrayList == null ? 0 : subCategoryArrayList.size();
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView txtSubCategory;
+        ImageView imgSubcategory;
+
+        MyViewHolder(View vi) {
+            super(vi);
+            txtSubCategory = (TextView) vi
+                    .findViewById(R.id.txtSubcategory);
+            imgSubcategory = (ImageView) vi.findViewById(R.id.imgSubcategory);
         }
     }
 }

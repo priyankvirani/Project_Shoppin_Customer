@@ -87,7 +87,7 @@ public class HomeFragment extends BaseFragment {
     private void initView() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         ViewGroup headerView = (ViewGroup) inflater.inflate(
-                R.layout.image_viewpager, null);
+                R.layout.image_viewpager_offer, null);
         offerViewPager = (AutoScrollViewPager) headerView.findViewById(R.id.imageViewPager);
         offerViewPagerIndicator = (LinearLayout) headerView.findViewById(R.id.imageViewPagerIndicator);
         lstCategory.addHeaderView(headerView);

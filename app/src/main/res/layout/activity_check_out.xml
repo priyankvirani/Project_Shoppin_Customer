@@ -50,43 +50,32 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <include layout="@layout/cell_address" />
+                <include
+                    layout="@layout/cell_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_small" />
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_tiny"
+                    android:layout_margin="@dimen/margin_small"
                     card_view:cardCornerRadius="@dimen/card_view_radius">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/txtApplyCoupon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/button_background_green"
-                            android:maxLines="1"
-                            android:paddingBottom="@dimen/margin_small"
-                            android:paddingLeft="@dimen/margin_medium"
-                            android:paddingRight="@dimen/margin_medium"
-                            android:paddingTop="@dimen/margin_small"
-                            android:singleLine="true"
-                            android:text="@string/text_apply"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/font_size_edittext"
-                            android:textStyle="bold" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/margin_small"
+                        android:weightSum="10">
 
                         <EditText
                             android:id="@+id/etxCoupon"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="@dimen/margin_small"
-                            android:layout_toLeftOf="@id/txtApplyCoupon"
+                            android:layout_marginLeft="@dimen/margin_tiny"
+                            android:layout_marginRight="@dimen/margin_small"
+                            android:layout_weight="7"
                             android:background="@drawable/bg_edittext_transparent"
                             android:hint="@string/edittext_hint_coupon_code"
                             android:maxLines="1"
@@ -94,14 +83,29 @@
                             android:singleLine="true"
                             android:textColor="@color/text_black"
                             android:textSize="@dimen/font_size_edittext" />
-                    </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/txtApplyCoupon"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:background="@drawable/button_background_green"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:padding="@dimen/margin_small"
+                            android:singleLine="true"
+                            android:text="@string/text_apply"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/font_size_edittext"
+                            android:textStyle="bold" />
+                    </LinearLayout>
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/cardStore"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_tiny"
+                    android:layout_margin="@dimen/margin_small"
                     android:background="@color/gray"
                     card_view:cardCornerRadius="@dimen/card_view_radius">
 
@@ -122,13 +126,14 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_tiny"
+                    android:layout_margin="@dimen/margin_small"
                     card_view:cardCornerRadius="@dimen/card_view_radius">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="@dimen/margin_small">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -156,13 +161,14 @@
                     android:id="@+id/cardPriceReview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_tiny"
+                    android:layout_margin="@dimen/margin_small"
                     card_view:cardCornerRadius="@dimen/card_view_radius">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="@dimen/margin_small">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -288,7 +294,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackground"
-                android:padding="@dimen/margin_small"
+                android:padding="@dimen/margin_medium"
                 android:text="$ x"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_title"
@@ -304,7 +310,7 @@
                 android:layout_marginRight="@dimen/margin_small"
                 android:background="?attr/selectableItemBackground"
                 android:ellipsize="end"
-                android:padding="@dimen/margin_small"
+                android:padding="@dimen/margin_medium"
                 android:singleLine="true"
                 android:text="@string/text_pay"
                 android:textColor="@color/white"

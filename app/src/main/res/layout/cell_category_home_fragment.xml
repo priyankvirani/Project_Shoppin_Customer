@@ -12,7 +12,7 @@
             android:id="@+id/rlvCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/app_theme_1"
+            android:background="#649f1f"
             android:padding="@dimen/margin_small">
 
             <TextView

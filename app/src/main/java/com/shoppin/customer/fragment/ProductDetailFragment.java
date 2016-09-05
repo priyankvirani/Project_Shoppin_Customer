@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,49 +35,52 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 
+import static com.shoppin.customer.database.IDatabase.ICart;
+
 public class ProductDetailFragment extends BaseFragment {
     public static final String PRODUCT_ID = "product_id";
-
-    private static final int OPTION_0 = 0;
-    private static final int OPTION_1 = 1;
-    private static final int OPTION_2 = 2;
-    private static final int OPTION_3 = 3;
-    private static final int OPTION_4 = 4;
-
 
     private static final String TAG = ProductDetailFragment.class.getSimpleName();
 
     @BindView(R.id.rlvGlobalProgressbar)
     View rlvGlobalProgressbar;
+
     @BindView(R.id.viewContainer)
     View viewContainer;
+
     @BindView(R.id.txtProductCartCount)
     TextView txtProductCartCount;
 
     @BindView(R.id.txtProductName)
     TextView txtProductName;
+
     @BindView(R.id.txtProductPrice)
     TextView txtProductPrice;
+
     @BindView(R.id.txtProductSalePrice)
     TextView txtProductSalePrice;
+
     @BindView(R.id.txtDescription)
     TextView txtDescription;
 
     @BindView(R.id.txtOption0)
     TextView txtOption0;
+
     @BindView(R.id.txtOption1)
     TextView txtOption1;
+
     @BindView(R.id.txtOption2)
     TextView txtOption2;
+
     @BindView(R.id.txtOption3)
     TextView txtOption3;
+
     @BindView(R.id.txtOption4)
     TextView txtOption4;
 
     @BindView(R.id.imageViewPager)
     AutoScrollViewPager productImageViewPager;
-    @BindView(R.id.imageViewPagerIndicator)
-    LinearLayout productImageViewPagerIndicator;
+
     private ImageSlideAdapter productImageAdapter;
     private ArrayList<String> productImageArrayList;
 
@@ -191,23 +193,23 @@ public class ProductDetailFragment extends BaseFragment {
 
         for (int i = 0; i < optionSize; i++) {
             productDetail.productHasOption = true;
-            if (i == OPTION_0) {
+            if (i == ICart.OPTION_0) {
                 txtOption0.setVisibility(View.VISIBLE);
                 productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).selected = true;
                 txtOption0.setText(productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).optionValueName);
-            } else if (i == OPTION_1) {
+            } else if (i == ICart.OPTION_1) {
                 txtOption1.setVisibility(View.VISIBLE);
                 productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).selected = true;
                 txtOption1.setText(productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).optionValueName);
-            } else if (i == OPTION_2) {
+            } else if (i == ICart.OPTION_2) {
                 txtOption2.setVisibility(View.VISIBLE);
                 productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).selected = true;
                 txtOption2.setText(productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).optionValueName);
-            } else if (i == OPTION_3) {
+            } else if (i == ICart.OPTION_3) {
                 txtOption3.setVisibility(View.VISIBLE);
                 productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).selected = true;
                 txtOption3.setText(productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).optionValueName);
-            } else if (i == OPTION_4) {
+            } else if (i == ICart.OPTION_4) {
                 txtOption4.setVisibility(View.VISIBLE);
                 productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).selected = true;
                 txtOption4.setText(productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).optionValueName);
@@ -250,44 +252,44 @@ public class ProductDetailFragment extends BaseFragment {
 
     @OnClick(R.id.txtOption0)
     void onClickOption5() {
-        showAlertOption(OPTION_0);
+        showAlertOption(ICart.OPTION_0);
     }
 
     @OnClick(R.id.txtOption1)
     void onClickOption1() {
-        showAlertOption(OPTION_1);
+        showAlertOption(ICart.OPTION_1);
     }
 
     @OnClick(R.id.txtOption2)
     void onClickOption2() {
-        showAlertOption(OPTION_2);
+        showAlertOption(ICart.OPTION_2);
     }
 
     @OnClick(R.id.txtOption3)
     void onClickOption3() {
-        showAlertOption(OPTION_3);
+        showAlertOption(ICart.OPTION_3);
     }
 
     @OnClick(R.id.txtOption4)
     void onClickOption4() {
-        showAlertOption(OPTION_4);
+        showAlertOption(ICart.OPTION_4);
     }
 
     private void showAlertOption(int optionIndex) {
         switch (optionIndex) {
-            case OPTION_0:
+            case ICart.OPTION_0:
                 showAlertOption(productDetail.productOptionArrayList.get(0), txtOption0);
                 break;
-            case OPTION_1:
+            case ICart.OPTION_1:
                 showAlertOption(productDetail.productOptionArrayList.get(1), txtOption1);
                 break;
-            case OPTION_2:
+            case ICart.OPTION_2:
                 showAlertOption(productDetail.productOptionArrayList.get(2), txtOption2);
                 break;
-            case OPTION_3:
+            case ICart.OPTION_3:
                 showAlertOption(productDetail.productOptionArrayList.get(3), txtOption3);
                 break;
-            case OPTION_4:
+            case ICart.OPTION_4:
                 showAlertOption(productDetail.productOptionArrayList.get(4), txtOption4);
                 break;
         }

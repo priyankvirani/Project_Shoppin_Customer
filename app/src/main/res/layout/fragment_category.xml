@@ -11,18 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/tab_height"
         android:background="@color/app_theme_1"
-        app:stl_defaultTabTextColor="@color/white"
+        app:stl_defaultTabTextAllCaps="false"
+        app:stl_defaultTabTextColor="@color/tab_text_color"
         app:stl_defaultTabTextHorizontalPadding="@dimen/margin_medium"
+        app:stl_defaultTabTextSize="@dimen/font_size_edittext"
         app:stl_indicatorColor="@color/white"
         app:stl_indicatorInterpolation="linear"
         app:stl_indicatorThickness="@dimen/margin_tiny"
         app:stl_titleOffset="auto_center"
-        app:stl_underlineThickness="1dp" />
+        app:stl_underlineThickness="0dp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/categoryViewPager"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/categorySmartTabLayout" />
 
 </RelativeLayout>

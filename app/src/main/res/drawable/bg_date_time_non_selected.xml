@@ -11,7 +11,7 @@
 
                     <corners android:radius="0dp" />
 
-                    <padding android:bottom="4dp" android:left="4dp" android:right="4dp" android:top="4dp" />
+                    <padding android:bottom="@dimen/margin_tiny" android:left="@dimen/margin_medium" android:right="@dimen/margin_medium" android:top="@dimen/margin_tiny" />
                 </shape>
             </item>
         </layer-list>

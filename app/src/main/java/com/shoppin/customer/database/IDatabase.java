@@ -31,19 +31,58 @@ public interface IDatabase {
                 + KEY_MAP_VALUE + " text not null);";
     }
 
+//    interface ICart {
+//        String TABLE_CART = "cart";
+//
+//        String KEY_ID = "_id";
+//        String KEY_PRODUCT_ID = "product_id";
+////        String KEY_LOCATION_NAME = "location";
+//        String KEY_PRODUCT_JSON = "product_json";
+//
+//        String CREATE_TABLE_CART = "create table " + TABLE_CART + " ("
+//                + KEY_ID + " integer primary key autoincrement, "
+//                + KEY_PRODUCT_ID + " text not null, "
+////                + KEY_LOCATION_NAME + " text, "
+//                + KEY_PRODUCT_JSON + " text);";
+//    }
+
     interface ICart {
         String TABLE_CART = "cart";
 
         String KEY_ID = "_id";
         String KEY_PRODUCT_ID = "product_id";
-//        String KEY_LOCATION_NAME = "location";
         String KEY_PRODUCT_JSON = "product_json";
+        String KEY_OPTION_ID_0 = "option_id_0";
+        String KEY_OPTION_VALUE_ID_0 = "option_value_id_0";
+        String KEY_OPTION_ID_1 = "option_id_1";
+        String KEY_OPTION_VALUE_ID_1 = "option_value_id_1";
+        String KEY_OPTION_ID_2 = "option_id_2";
+        String KEY_OPTION_VALUE_ID_2 = "option_value_id_2";
+        String KEY_OPTION_ID_3 = "option_id_3";
+        String KEY_OPTION_VALUE_ID_3 = "option_value_id_3";
+        String KEY_OPTION_ID_4 = "option_id_4";
+        String KEY_OPTION_VALUE_ID_4 = "option_value_id_4";
 
         String CREATE_TABLE_CART = "create table " + TABLE_CART + " ("
                 + KEY_ID + " integer primary key autoincrement, "
                 + KEY_PRODUCT_ID + " text not null, "
-//                + KEY_LOCATION_NAME + " text, "
-                + KEY_PRODUCT_JSON + " text);";
+                + KEY_PRODUCT_JSON + " text, "
+                + KEY_OPTION_ID_0 + " text, "
+                + KEY_OPTION_VALUE_ID_0 + " text, "
+                + KEY_OPTION_ID_1 + " text, "
+                + KEY_OPTION_VALUE_ID_1 + " text, "
+                + KEY_OPTION_ID_2 + " text, "
+                + KEY_OPTION_VALUE_ID_2 + " text, "
+                + KEY_OPTION_ID_3 + " text, "
+                + KEY_OPTION_VALUE_ID_3 + " text, "
+                + KEY_OPTION_ID_4 + " text, "
+                + KEY_OPTION_VALUE_ID_4 + " text);";
+
+        int OPTION_0 = 0;
+        int OPTION_1 = 1;
+        int OPTION_2 = 2;
+        int OPTION_3 = 3;
+        int OPTION_4 = 4;
     }
 
     interface ILocation {

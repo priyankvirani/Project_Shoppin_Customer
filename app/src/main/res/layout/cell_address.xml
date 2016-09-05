@@ -35,8 +35,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/app_theme_1"
-                android:src="@drawable/edit" />
+                android:src="@drawable/edit_green" />
 
             <ImageView
                 android:id="@+id/imgAddNewAddress"
@@ -44,8 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_medium"
                 android:layout_weight="1"
-                android:background="@color/app_theme_1"
-                android:src="@drawable/edit"
+                android:src="@drawable/plus_round_green"
                 android:visibility="gone" />
         </LinearLayout>
 

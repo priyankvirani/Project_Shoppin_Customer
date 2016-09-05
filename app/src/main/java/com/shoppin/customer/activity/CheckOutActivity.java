@@ -70,7 +70,6 @@ public class CheckOutActivity extends AppCompatActivity {
     @BindView(R.id.imgAddNewAddress)
     ImageView imgAddNewAddress;
 
-
     @BindView(R.id.etxCoupon)
     EditText etxCoupon;
 
@@ -79,8 +78,10 @@ public class CheckOutActivity extends AppCompatActivity {
 
     @BindView(R.id.dateRecyclerView)
     RecyclerView dateRecyclerView;
+
     @BindView(R.id.timeRecyclerView)
     RecyclerView timeRecyclerView;
+
     private ArrayList<CheckoutDate> checkoutDateArrayList;
     private CheckoutDateAdapter checkoutDateAdapter;
 
@@ -134,7 +135,8 @@ public class CheckOutActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 String paymentId = data.getStringExtra(RESPONSE_PAYMENT_ID);
                 Log.d(TAG, "paymentId = " + paymentId);
-                Utils.showToastShort(CheckOutActivity.this, "Successfully");
+                Utils.showToastShort(CheckOutActivity.this, "Successfully.. clear cart");
+                finish();
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
                 Utils.showToastShort(CheckOutActivity.this, "Unsuccessfully");

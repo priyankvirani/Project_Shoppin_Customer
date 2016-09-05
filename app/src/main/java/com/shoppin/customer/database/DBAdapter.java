@@ -85,15 +85,234 @@ public class DBAdapter {
     }
 
 
+//    public static void insertUpdateDeleteCart(Context context, Product product, boolean increase) {
+//        Log.e(TAG, "==== insertUpdateDeleteCart product.productId = " + product.productId + " ====");
+//        SQLiteDatabase db = DatabaseHelper.getInstance(context).getWritableDatabase();
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put(ICart.KEY_PRODUCT_ID, product.productId);
+//
+//        Gson gson = new Gson();
+//
+//        Cursor cursor = db.query(ICart.TABLE_CART, new String[]{ICart.KEY_ID, ICart.KEY_PRODUCT_JSON}, ICart.KEY_PRODUCT_ID + " = '" + product.productId + "'", null, null, null, null, null);
+//        int index = -1;
+//        if (cursor != null && cursor.getCount() > 0) { //if the row exist then return the id
+//            cursor.moveToFirst();
+//            index = cursor.getInt(cursor.getColumnIndex(IMap.KEY_ID));
+////            cursor.close();
+//        }
+//
+//        if (index == -1) {
+//            // Only if product need to add
+//            // else product is for delete from cart
+//            if (increase) {
+//                // new product
+//                product.productQuantity = product.productQuantity == 0 ? 1 : product.productQuantity;
+//                contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+//                db.insert(ICart.TABLE_CART, null, contentValues);
+//            }
+//        } else {
+//
+//            if (cursor != null && cursor.getCount() > 0) {
+////                cursor.moveToFirst();
+//                Product cartProduct = null;
+//                boolean isHandledInLoop = false;
+//                boolean isCheckedWithAllProductCart = false;
+//
+//                do {
+//                    Log.d(TAG,"============DO-WHILE START=================");
+//                    try {
+//                        cartProduct = gson.fromJson(new JSONObject(cursor.getString(cursor.getColumnIndex(ICart.KEY_PRODUCT_JSON))).toString(), Product.class);
+//                        if (cartProduct != null) {
+//                            // Product with option
+//                            Log.e(TAG, "cartProduct.productHasOption = " + cartProduct.productHasOption);
+//                            if (cartProduct.productHasOption) {
+////                            Log.e(TAG,"original  product = " + product.productOptionArrayList.size());
+////                            Log.e(TAG,"cart product = " + cartProduct.productOptionArrayList.size());
+//                                // same product & different options list
+//                                if (product.productOptionArrayList.size() != cartProduct.productOptionArrayList.size()) {
+//                                    db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+//                                    isHandledInLoop = true;
+//                                    break;
+//                                }
+//                                // same product
+//                                // options list size are same
+//                                // now compare them
+//                                else {
+//                                    int optionMatchCount = 0;
+//                                    // Original product option
+//                                    for (int optionProduct = 0; optionProduct < product.productOptionArrayList.size(); optionProduct++) {
+//                                        // Cart product option
+//                                        for (int optionCartProduct = 0; optionCartProduct < cartProduct.productOptionArrayList.size(); optionCartProduct++) {
+//                                            // Original and Cart product option id match
+//                                            Log.e(TAG, "[" + optionProduct + "]optionProduct = " + product.productOptionArrayList.get(optionProduct).optionId);
+//                                            Log.e(TAG, "[" + optionCartProduct + "]optionCartProduct = " + cartProduct.productOptionArrayList.get(optionCartProduct).optionId);
+//                                            if (product.productOptionArrayList.get(optionProduct).optionId
+//                                                    .equals(cartProduct.productOptionArrayList.get(optionCartProduct).optionId)) {
+//                                                // Original product option value
+//                                                for (int valueProduct = 0; valueProduct < product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.size(); valueProduct++) {
+//                                                    // Cart product option value
+//                                                    for (int valueCartProduct = 0; valueCartProduct < cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.size(); valueCartProduct++) {
+//                                                        // Both value id got matched
+//                                                        // and both are selected
+//                                                        Log.e(TAG, "[" + optionProduct + "]optionProduct, [" + valueProduct + "]valueProduct = " + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId
+//                                                                + "," + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected);
+//                                                        Log.e(TAG, "[" + optionCartProduct + "]optionCartProduct [" + valueCartProduct + "]valueCartProduct = " + cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).optionValueId
+//                                                                + "," + cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).selected);
+//
+//                                                        if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId
+//                                                                .equals(cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).optionValueId)
+//                                                                && product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected
+//                                                                && cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).selected) {
+//                                                            Log.e(TAG, "================MATCH==================");
+//                                                            optionMatchCount++;
+//                                                            break;
+//                                                        }
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//
+//                                    // Same product
+//                                    // same option
+//                                    // same option value
+//                                    // update product quantity
+//                                    Log.e(TAG, "optionMatchCount = " + optionMatchCount);
+//                                    Log.e(TAG, "product.productOptionArrayList.size() = " + product.productOptionArrayList.size());
+//                                    if (optionMatchCount == product.productOptionArrayList.size()) {
+//                                        // increase cart
+//                                        if (increase) {
+//                                            cartProduct.productQuantity++;
+//                                            product.productQuantity = cartProduct.productQuantity;
+//                                            Log.e(TAG, "1 cartProduct.productQuantity = " + cartProduct.productQuantity);
+//                                            contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+//                                            db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+//                                            isHandledInLoop = true;
+//                                            break;
+//                                        }
+//                                        // decrease cart
+//                                        else {
+//                                            cartProduct.productQuantity--;
+//                                            if (cartProduct.productQuantity <= 0) {
+//                                                // Remove product from cart
+//                                                product.productQuantity = 0;
+//                                                contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+//                                                Log.e(TAG, "2 cartProduct.productQuantity = " + cartProduct.productQuantity);
+//                                                db.delete(ICart.TABLE_CART, ICart.KEY_PRODUCT_ID + " = '" + product.productId + "'", null);
+//                                                isHandledInLoop = true;
+//                                                break;
+//                                            } else {
+//                                                product.productQuantity = cartProduct.productQuantity;
+//                                                Log.e(TAG, "3 cartProduct.productQuantity = " + cartProduct.productQuantity);
+//                                                contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+//                                                db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+//                                                isHandledInLoop = true;
+//                                                break;
+//                                            }
+//                                        }
+//                                    }
+//                                    // Same product
+//                                    // same option
+//                                    // different option value
+//                                    // add product as new
+//                                    else {
+//                                        // Only after comparing with all products
+//                                        if (cursor.isLast()) {
+//                                            Log.e(TAG, "cursor.isLast() " + cursor.isLast());
+//                                            product.productQuantity = product.productQuantity == 0 ? 1 : product.productQuantity;
+//                                            contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+//                                            db.insert(ICart.TABLE_CART, null, contentValues);
+//                                            break;
+//                                        }
+//                                    }
+//                                }
+//
+//                            }
+//                            // Product without option
+//                            else {
+//                                if (increase) {
+//                                    cartProduct.productQuantity++;
+//                                    product.productQuantity = cartProduct.productQuantity;
+//                                    contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+//                                    db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+//                                    isHandledInLoop = true;
+//                                    break;
+//                                }
+//                                // decrease cart
+//                                else {
+//                                    cartProduct.productQuantity--;
+//                                    if (product.productQuantity <= 0) {
+//                                        // Remove product from cart
+//                                        product.productQuantity = 0;
+//                                        contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+//                                        db.delete(ICart.TABLE_CART, ICart.KEY_PRODUCT_ID + " = '" + product.productId + "'", null);
+//                                        isHandledInLoop = true;
+//                                        break;
+//                                    } else {
+//                                        product.productQuantity = cartProduct.productQuantity;
+//                                        contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+//                                        db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+//                                        isHandledInLoop = true;
+//                                        break;
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                    cartProduct = null;
+//                    if (isHandledInLoop) {
+//                        break;
+//                    }
+//                    Log.d(TAG,"============DO-WHILE END=================");
+//                } while (cursor.moveToNext());
+//
+//                cursor.close(); // that's important too, otherwise you're gonna leak cursors
+//            }
+//        }
+//        Log.e(TAG, "==== insertUpdateDeleteCart product.productId = " + product.productId + " ====");
+//    }
+
     public static void insertUpdateDeleteCart(Context context, Product product, boolean increase) {
         Log.e(TAG, "==== insertUpdateDeleteCart product.productId = " + product.productId + " ====");
         SQLiteDatabase db = DatabaseHelper.getInstance(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ICart.KEY_PRODUCT_ID, product.productId);
 
         Gson gson = new Gson();
 
-        Cursor cursor = db.query(ICart.TABLE_CART, new String[]{ICart.KEY_ID, ICart.KEY_PRODUCT_JSON}, ICart.KEY_PRODUCT_ID + " = '" + product.productId + "'", null, null, null, null, null);
+        String query = "select * from " + ICart.TABLE_CART + " ";
+        query += "WHERE " + ICart.KEY_PRODUCT_ID + " = '" + product.productId + "' ";
+        for (int optionProduct = 0; optionProduct < product.productOptionArrayList.size(); optionProduct++) {
+            for (int valueProduct = 0; valueProduct < product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.size(); valueProduct++) {
+                if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected) {
+                    switch (optionProduct) {
+                        case ICart.OPTION_0:
+                            query += "AND " + ICart.KEY_OPTION_ID_0 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                            query += "AND " + ICart.KEY_OPTION_VALUE_ID_0 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                            break;
+                        case ICart.OPTION_1:
+                            query += "AND " + ICart.KEY_OPTION_ID_1 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                            query += "AND " + ICart.KEY_OPTION_VALUE_ID_1 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                            break;
+                        case ICart.OPTION_2:
+                            query += "AND " + ICart.KEY_OPTION_ID_2 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                            query += "AND " + ICart.KEY_OPTION_VALUE_ID_2 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                            break;
+                        case ICart.OPTION_3:
+                            query += "AND " + ICart.KEY_OPTION_ID_3 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                            query += "AND " + ICart.KEY_OPTION_VALUE_ID_3 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                            break;
+                        case ICart.OPTION_4:
+                            query += "AND " + ICart.KEY_OPTION_ID_4 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                            query += "AND " + ICart.KEY_OPTION_VALUE_ID_4 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                            break;
+                    }
+                }
+            }
+        }
+        Log.d(TAG, "query = " + query);
+        Cursor cursor = db.rawQuery(query, null);
         int index = -1;
         if (cursor != null && cursor.getCount() > 0) { //if the row exist then return the id
             cursor.moveToFirst();
@@ -107,165 +326,69 @@ public class DBAdapter {
             if (increase) {
                 // new product
                 product.productQuantity = product.productQuantity == 0 ? 1 : product.productQuantity;
+                contentValues.put(ICart.KEY_PRODUCT_ID, product.productId);
                 contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+
+                for (int optionProduct = 0; optionProduct < product.productOptionArrayList.size(); optionProduct++) {
+                    for (int valueProduct = 0; valueProduct < product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.size(); valueProduct++) {
+                        if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected) {
+                            switch (optionProduct) {
+                                case ICart.OPTION_0:
+                                    contentValues.put(ICart.KEY_OPTION_ID_0, product.productOptionArrayList.get(optionProduct).optionId);
+                                    contentValues.put(ICart.KEY_OPTION_VALUE_ID_0, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
+                                    break;
+                                case ICart.OPTION_1:
+                                    contentValues.put(ICart.KEY_OPTION_ID_1, product.productOptionArrayList.get(optionProduct).optionId);
+                                    contentValues.put(ICart.KEY_OPTION_VALUE_ID_1, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
+                                    break;
+                                case ICart.OPTION_2:
+                                    contentValues.put(ICart.KEY_OPTION_ID_2, product.productOptionArrayList.get(optionProduct).optionId);
+                                    contentValues.put(ICart.KEY_OPTION_VALUE_ID_2, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
+                                    break;
+                                case ICart.OPTION_3:
+                                    contentValues.put(ICart.KEY_OPTION_ID_3, product.productOptionArrayList.get(optionProduct).optionId);
+                                    contentValues.put(ICart.KEY_OPTION_VALUE_ID_3, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
+                                    break;
+                                case ICart.OPTION_4:
+                                    contentValues.put(ICart.KEY_OPTION_ID_4, product.productOptionArrayList.get(optionProduct).optionId);
+                                    contentValues.put(ICart.KEY_OPTION_VALUE_ID_4, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
+                                    break;
+                            }
+                        }
+                    }
+                }
                 db.insert(ICart.TABLE_CART, null, contentValues);
             }
         } else {
             if (cursor != null && cursor.getCount() > 0) {
 //                cursor.moveToFirst();
-                Product cartProduct = null;
-                boolean isHandledInLoop = false;
-                boolean isCheckedWithAllProductCart = false;
-
-                do {
-                    Log.d(TAG,"============START=================");
-                    try {
-                        cartProduct = gson.fromJson(new JSONObject(cursor.getString(cursor.getColumnIndex(ICart.KEY_PRODUCT_JSON))).toString(), Product.class);
-                        if (cartProduct != null) {
-                            // Product with option
-                            Log.e(TAG, "cartProduct.productHasOption = " + cartProduct.productHasOption);
-                            if (cartProduct.productHasOption) {
-//                            Log.e(TAG,"original  product = " + product.productOptionArrayList.size());
-//                            Log.e(TAG,"cart product = " + cartProduct.productOptionArrayList.size());
-                                // same product & different options list
-                                if (product.productOptionArrayList.size() != cartProduct.productOptionArrayList.size()) {
-                                    db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
-                                    isHandledInLoop = true;
-                                    break;
-                                }
-                                // same product
-                                // options list size are same
-                                // now compare them
-                                else {
-                                    int optionMatchCount = 0;
-                                    // Original product option
-                                    for (int optionProduct = 0; optionProduct < product.productOptionArrayList.size(); optionProduct++) {
-                                        // Cart product option
-                                        for (int optionCartProduct = 0; optionCartProduct < cartProduct.productOptionArrayList.size(); optionCartProduct++) {
-                                            // Original and Cart product option id match
-                                            Log.e(TAG, "[" + optionProduct + "]optionProduct = " + product.productOptionArrayList.get(optionProduct).optionId);
-                                            Log.e(TAG, "[" + optionCartProduct + "]optionCartProduct = " + cartProduct.productOptionArrayList.get(optionCartProduct).optionId);
-                                            if (product.productOptionArrayList.get(optionProduct).optionId
-                                                    .equals(cartProduct.productOptionArrayList.get(optionCartProduct).optionId)) {
-                                                // Original product option value
-                                                for (int valueProduct = 0; valueProduct < product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.size(); valueProduct++) {
-                                                    // Cart product option value
-                                                    for (int valueCartProduct = 0; valueCartProduct < cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.size(); valueCartProduct++) {
-                                                        // Both value id got matched
-                                                        // and both are selected
-                                                        Log.e(TAG, "[" + optionProduct + "]optionProduct, [" + valueProduct + "]valueProduct = " + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId
-                                                                + "," + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected);
-                                                        Log.e(TAG, "[" + optionCartProduct + "]optionCartProduct [" + valueCartProduct + "]valueCartProduct = " + cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).optionValueId
-                                                                + "," + cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).selected);
-                                                        if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId
-                                                                .equals(cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).optionValueId)
-                                                                && product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected
-                                                                && cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).selected) {
-                                                            Log.e(TAG, "================MATCH==================");
-                                                            optionMatchCount++;
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    // Same product
-                                    // same option
-                                    // same option value
-                                    // update product quantity
-                                    Log.e(TAG, "optionMatchCount = " + optionMatchCount);
-                                    Log.e(TAG, "product.productOptionArrayList.size() = " + product.productOptionArrayList.size());
-                                    if (optionMatchCount == product.productOptionArrayList.size()) {
-                                        // increase cart
-                                        if (increase) {
-                                            cartProduct.productQuantity++;
-                                            product.productQuantity = cartProduct.productQuantity;
-                                            Log.e(TAG, "1 cartProduct.productQuantity = " + cartProduct.productQuantity);
-                                            contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
-                                            db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
-                                            isHandledInLoop = true;
-                                            break;
-                                        }
-                                        // decrease cart
-                                        else {
-                                            cartProduct.productQuantity--;
-                                            if (cartProduct.productQuantity <= 0) {
-                                                // Remove product from cart
-                                                product.productQuantity = 0;
-                                                contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
-                                                Log.e(TAG, "2 cartProduct.productQuantity = " + cartProduct.productQuantity);
-                                                db.delete(ICart.TABLE_CART, ICart.KEY_PRODUCT_ID + " = '" + product.productId + "'", null);
-                                                isHandledInLoop = true;
-                                                break;
-                                            } else {
-                                                product.productQuantity = cartProduct.productQuantity;
-                                                Log.e(TAG, "3 cartProduct.productQuantity = " + cartProduct.productQuantity);
-                                                contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
-                                                db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
-                                                isHandledInLoop = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    // Same product
-                                    // same option
-                                    // different option value
-                                    // add product as new
-                                    else {
-                                        // Only after comparing with all products
-                                        if (cursor.isLast()) {
-                                            Log.e(TAG, "cursor.isLast() " + cursor.isLast());
-                                            product.productQuantity = product.productQuantity == 0 ? 1 : product.productQuantity;
-                                            contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
-                                            db.insert(ICart.TABLE_CART, null, contentValues);
-                                            break;
-                                        }
-                                    }
-                                }
-
-                            }
-                            // Product without option
-                            else {
-                                if (increase) {
-                                    cartProduct.productQuantity++;
-                                    product.productQuantity = cartProduct.productQuantity;
-                                    contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
-                                    db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
-                                    isHandledInLoop = true;
-                                    break;
-                                }
-                                // decrease cart
-                                else {
-                                    cartProduct.productQuantity--;
-                                    if (product.productQuantity <= 0) {
-                                        // Remove product from cart
-                                        product.productQuantity = 0;
-                                        contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
-                                        db.delete(ICart.TABLE_CART, ICart.KEY_PRODUCT_ID + " = '" + product.productId + "'", null);
-                                        isHandledInLoop = true;
-                                        break;
-                                    } else {
-                                        product.productQuantity = cartProduct.productQuantity;
-                                        contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
-                                        db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
-                                        isHandledInLoop = true;
-                                        break;
-                                    }
-                                }
-                            }
+                try {
+                    Product cartProduct = gson.fromJson(new JSONObject(cursor.getString(cursor.getColumnIndex(ICart.KEY_PRODUCT_JSON))).toString(), Product.class);
+                    // Increase cart
+                    if (increase) {
+                        cartProduct.productQuantity++;
+                        product.productQuantity = cartProduct.productQuantity;
+                        contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+                        db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+                    }
+                    // Decrease cart
+                    else {
+                        cartProduct.productQuantity--;
+                        // Remove product from cart
+                        if (cartProduct.productQuantity <= 0) {
+                            db.delete(ICart.TABLE_CART, ICart.KEY_ID + " = '" + index + "'", null);
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    cartProduct = null;
-                    if (isHandledInLoop) {
-                        break;
-                    }
-                    Log.d(TAG,"============END=================");
-                } while (cursor.moveToNext());
+                        // Decrease cart count
+                        else {
 
+                            product.productQuantity = cartProduct.productQuantity;
+                            contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
+                            db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 cursor.close(); // that's important too, otherwise you're gonna leak cursors
             }
         }

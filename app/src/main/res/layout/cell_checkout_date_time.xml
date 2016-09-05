@@ -6,6 +6,6 @@
     android:layout_gravity="center"
     android:background="@drawable/bg_date_time_non_selected"
     android:gravity="center"
-    android:padding="@dimen/margin_medium"
+    android:padding="@dimen/margin_large"
     android:textColor="@color/text_black"
     android:textSize="@dimen/font_size_title" />

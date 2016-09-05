@@ -48,14 +48,21 @@ public class SubCategoryHorizontalAdapter extends RecyclerView.Adapter<SubCatego
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.txtsubCategory.setText(subCategoryArrayList.get(position).subcategoryName);
+        holder.txtSubCategory.setText(subCategoryArrayList.get(position).subcategoryName);
         Glide.with(context)
                 .load(subCategoryArrayList.get(position).subcategoryImage)
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)
                 .into(holder.imgSubcategory);
-        holder.imgSubcategory.setOnClickListener(
-                new OnItemClickListener(position, subCategoryArrayList.get(position)));
+        holder.imgSubcategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
+                if (navigationDrawerActivity != null) {
+                    navigationDrawerActivity.switchContent(ProductListFragment.newInstance(position, subCategoryArrayList), false);
+                }
+            }
+        });
     }
 
     @Override
@@ -64,32 +71,14 @@ public class SubCategoryHorizontalAdapter extends RecyclerView.Adapter<SubCatego
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView txtsubCategory;
+        TextView txtSubCategory;
         ImageView imgSubcategory;
 
         MyViewHolder(View vi) {
             super(vi);
-            txtsubCategory = (TextView) vi
+            txtSubCategory = (TextView) vi
                     .findViewById(R.id.txtSubcategory);
             imgSubcategory = (ImageView) vi.findViewById(R.id.imgSubcategory);
-        }
-    }
-
-    private class OnItemClickListener implements View.OnClickListener {
-        private SubCategory subCategory;
-        private int subCategoryPosition;
-
-        OnItemClickListener(int subCategoryPosition, SubCategory subCategory) {
-            this.subCategoryPosition = subCategoryPosition;
-            this.subCategory = subCategory;
-        }
-
-        @Override
-        public void onClick(View arg0) {
-            NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
-            if (navigationDrawerActivity != null) {
-                navigationDrawerActivity.switchContent(ProductListFragment.newInstance(subCategoryPosition, subCategoryArrayList), false);
-            }
         }
     }
 }

@@ -42,10 +42,10 @@ public class CheckoutTimeAdapter extends RecyclerView.Adapter<CheckoutTimeAdapte
         holder.txtTime.setText(checkoutTimeArrayList.get(position).getTime());
         Log.e(TAG, "isSelected = " + checkoutTimeArrayList.get(position).isSelected() + ",position =" + position);
         if (checkoutTimeArrayList.get(position).isSelected()) {
-//            holder.txtTime.setBackgroundColor(context.getResources().getColor(R.color.app_theme_1));
+            holder.txtTime.setTextColor(context.getResources().getColor(R.color.white));
             holder.txtTime.setBackground(Utils.getDrawable(context, R.drawable.bg_date_time_selected));
         } else {
-//            holder.txtTime.setBackgroundColor(context.getResources().getColor(R.color.white));
+            holder.txtTime.setTextColor(context.getResources().getColor(R.color.text_black));
             holder.txtTime.setBackground(Utils.getDrawable(context, R.drawable.bg_date_time_non_selected));
         }
         holder.txtTime.setOnClickListener(new OnItemClickListener(checkoutTimeArrayList.get(position), position, holder.txtTime));
