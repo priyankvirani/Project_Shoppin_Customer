@@ -65,8 +65,8 @@
                     android:id="@+id/imgCart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
                     android:background="?attr/selectableItemBackground"
                     android:src="@drawable/cart" />
 
@@ -74,13 +74,14 @@
                     android:id="@+id/txtCartCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/cart_count_white"
+                    android:layout_alignBottom="@+id/imgCart"
+                    android:layout_alignRight="@+id/imgCart"
+                    android:background="@drawable/cart_circle_white"
                     android:gravity="center"
                     android:maxLength="3"
-                    android:padding="@dimen/margin_tiny"
-                    android:text="X"
+                    android:text="x"
                     android:textColor="@color/black"
-                    android:layout_centerVertical="true" />
+                    android:textSize="@dimen/font_size_edittext" />
             </RelativeLayout>
 
             <ImageView

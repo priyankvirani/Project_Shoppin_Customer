@@ -50,6 +50,9 @@ public class MyAccountFragment extends BaseFragment {
 
     private static final String TAG = MyAccountFragment.class.getSimpleName();
 
+    @BindView(R.id.rootContainer)
+    View rootContainer;
+
     @BindView(R.id.rlvGlobalProgressbar)
     RelativeLayout rlvGlobalProgressbar;
 
@@ -81,7 +84,6 @@ public class MyAccountFragment extends BaseFragment {
     private ArrayAdapter<Suburb> suburbArrayAdapter;
     private Suburb selectedSuburb;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -98,6 +100,8 @@ public class MyAccountFragment extends BaseFragment {
         suburbArrayList = new ArrayList<>();
         suburbArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, suburbArrayList);
         atxSuburb.setAdapter(suburbArrayAdapter);
+
+        rootContainer.setVisibility(View.GONE);
         getSuburbs();
 
         return layoutView;
@@ -115,9 +119,9 @@ public class MyAccountFragment extends BaseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG,"resultCode = " + requestCode);
+        Log.d(TAG, "resultCode = " + requestCode);
         if (requestCode == AddressEditActivity.REQUEST_CODE_ADDRESS) {
-            Log.d(TAG,"resultCode = " + resultCode);
+            Log.d(TAG, "resultCode = " + resultCode);
             if (resultCode == Activity.RESULT_OK) {
                 getAddressList();
             }
@@ -138,8 +142,7 @@ public class MyAccountFragment extends BaseFragment {
         startActivityForResult(intent, AddressEditActivity.REQUEST_CODE_ADDRESS);
     }
 
-
-    @OnClick(R.id.btnLogOut)
+    @OnClick(R.id.txtLogout)
     void logOut() {
         Customer.singOut(getActivity());
         Intent intent = new Intent(getActivity(), SigninActivity.class);
@@ -204,6 +207,7 @@ public class MyAccountFragment extends BaseFragment {
             public void onPostExecute(String response) {
                 rlvGlobalProgressbar.setVisibility(View.GONE);
                 if (!DataRequest.hasError(getActivity(), response, true)) {
+                    rootContainer.setVisibility(View.VISIBLE);
                     JSONObject dataJObject = DataRequest.getJObjWebdata(response);
                     try {
                         etxName.setText(dataJObject.getString(IWebService.KEY_REQ_CUSTOMER_NAME));
@@ -240,7 +244,6 @@ public class MyAccountFragment extends BaseFragment {
 
             @Override
             public void onPostExecute(String response) {
-                Log.d(TAG, "response = " + response);
                 rlvGlobalProgressbar.setVisibility(View.GONE);
                 if (!DataRequest.hasError(getActivity(), response, true)) {
                     addressArrayList.clear();

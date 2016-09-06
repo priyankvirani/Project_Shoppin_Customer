@@ -17,8 +17,6 @@ import com.shoppin.customer.utils.Utils;
 
 import java.util.ArrayList;
 
-import static com.shoppin.customer.R.id.txtProductCartCount;
-
 public class CartProductListAdapter extends BaseAdapter {
 
     private static final String TAG = CartProductListAdapter.class.getSimpleName();
@@ -56,7 +54,7 @@ public class CartProductListAdapter extends BaseAdapter {
             holder.txtProductOptionSelection = (TextView) convertView.findViewById(R.id.txtProductOptionSelection);
             holder.txtProductPrice = (TextView) convertView.findViewById(R.id.txtProductPrice);
             holder.txtProductSalePrice = (TextView) convertView.findViewById(R.id.txtProductSalePrice);
-            holder.txtProductCartCount = (TextView) convertView.findViewById(txtProductCartCount);
+            holder.txtProductCartCount = (TextView) convertView.findViewById(R.id.txtProductCartCount);
             holder.imgProduct = (ImageView) convertView.findViewById(R.id.imgProduct);
             convertView.setTag(holder);
         } else {
@@ -95,19 +93,4 @@ public class CartProductListAdapter extends BaseAdapter {
         public TextView txtProductName, txtProductOptionSelection, txtProductPrice, txtProductSalePrice, txtProductCartCount;
         public ImageView imgProduct;
     }
-
-    private class OnItemClickListener implements View.OnClickListener {
-        private int position;
-
-        OnItemClickListener(int position) {
-            this.position = position;
-        }
-
-        @Override
-        public void onClick(View arg0) {
-            Utils.showToastShort(context, "Under Development : " + productArrayList.get(position).productName);
-        }
-    }
-
-
 }

@@ -27,7 +27,7 @@
             android:ellipsize="end"
             android:paddingRight="@dimen/margin_small"
             android:singleLine="true"
-            android:text="@string/text_checkout"
+            android:text="@string/activity_checkout"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_title"
             android:textStyle="bold" />
@@ -39,11 +39,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v4.widget.NestedScrollView
+        <RelativeLayout
+            android:id="@+id/rlvBottomBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/rlvBottomBar"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_theme_1">
+
+            <TextView
+                android:id="@+id/txtGrandTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/margin_medium"
+                android:text="$ 0"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_title"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtPay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/margin_small"
+                android:background="?attr/selectableItemBackground"
+                android:ellipsize="end"
+                android:padding="@dimen/margin_medium"
+                android:singleLine="true"
+                android:text="@string/text_pay"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_title"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/rootContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/rlvBottomBar"
+            android:layout_alignParentTop="true"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -115,10 +155,11 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin_small"
                         android:background="@drawable/bg_option_dropdown"
+                        android:gravity="center_vertical"
                         android:maxLines="1"
                         android:padding="@dimen/margin_tiny"
                         android:singleLine="true"
-                        android:text="txtStore"
+                        android:text="@string/text_select_near_by_store"
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/font_size_edittext" />
                 </android.support.v7.widget.CardView>
@@ -199,7 +240,8 @@
                                     android:padding="@dimen/margin_tiny"
                                     android:text="@string/text_discount_and_saving"
                                     android:textColor="@color/text_black"
-                                    android:textSize="@dimen/font_size_edittext" />
+                                    android:textSize="@dimen/font_size_edittext"
+                                    android:visibility="gone" />
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -228,46 +270,47 @@
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/txtAllProductPrice"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right|center_vertical"
                                     android:gravity="right"
                                     android:padding="@dimen/margin_tiny"
                                     android:paddingRight="@dimen/margin_small"
-                                    android:text="$1000"
                                     android:textColor="@color/text_black"
                                     android:textSize="@dimen/font_size_edittext" />
 
                                 <TextView
+                                    android:id="@+id/txtDiscountPrice"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right|center_vertical"
                                     android:gravity="right"
                                     android:padding="@dimen/margin_tiny"
                                     android:paddingRight="@dimen/margin_small"
-                                    android:text="$1000"
+                                    android:textColor="@color/text_black"
+                                    android:textSize="@dimen/font_size_edittext"
+                                    android:visibility="gone" />
+
+                                <TextView
+                                    android:id="@+id/txtCouponPrice"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right|center_vertical"
+                                    android:gravity="right"
+                                    android:padding="@dimen/margin_tiny"
+                                    android:paddingRight="@dimen/margin_small"
                                     android:textColor="@color/text_black"
                                     android:textSize="@dimen/font_size_edittext" />
 
                                 <TextView
+                                    android:id="@+id/txtTotalPrice"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right|center_vertical"
                                     android:gravity="right"
                                     android:padding="@dimen/margin_tiny"
                                     android:paddingRight="@dimen/margin_small"
-                                    android:text="$1000"
-                                    android:textColor="@color/text_black"
-                                    android:textSize="@dimen/font_size_edittext" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="right|center_vertical"
-                                    android:gravity="right"
-                                    android:padding="@dimen/margin_tiny"
-                                    android:paddingRight="@dimen/margin_small"
-                                    android:text="$1000"
                                     android:textColor="@color/text_black"
                                     android:textSize="@dimen/font_size_edittext"
                                     android:textStyle="bold" />
@@ -278,45 +321,6 @@
 
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
-
-
-        <RelativeLayout
-            android:id="@+id/rlvBottomBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/app_theme_1">
-
-            <TextView
-                android:id="@+id/txtCartSalePriceTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:background="?attr/selectableItemBackground"
-                android:padding="@dimen/margin_medium"
-                android:text="$ x"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size_title"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtPay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:layout_marginRight="@dimen/margin_small"
-                android:background="?attr/selectableItemBackground"
-                android:ellipsize="end"
-                android:padding="@dimen/margin_medium"
-                android:singleLine="true"
-                android:text="@string/text_pay"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size_title"
-                android:textStyle="bold" />
-        </RelativeLayout>
 
         <include layout="@layout/progressbar" />
     </RelativeLayout>

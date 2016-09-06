@@ -6,7 +6,7 @@ android {
     buildToolsVersion "24.0.0"
     defaultConfig {
         applicationId "com.shoppin.customer"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -42,11 +42,15 @@ dependencies {
 //    testCompile 'junit:junit:4.12'
     //    apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:design:24.1.1'
+    // For nested scrollview
+//    compile 'com.android.support:support-v4:24.1.1'
+
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha4'
+
     compile 'com.jakewharton:butterknife:8.2.1'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.android.support:design:24.1.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha4'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
 

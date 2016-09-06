@@ -5,13 +5,8 @@
     android:background="@color/white"
     android:clickable="true">
 
-    <ListView
-        android:id="@+id/listProduct"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_tiny" />
-
     <RelativeLayout
+        android:id="@+id/rlvBottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -43,6 +38,14 @@
             android:textSize="@dimen/font_size_toolbar_title"
             android:textStyle="bold" />
     </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/rlvBottomBar"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/margin_tiny" />
 
     <include layout="@layout/progressbar" />
 </RelativeLayout>

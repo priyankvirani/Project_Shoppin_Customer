@@ -33,6 +33,7 @@ import com.shoppin.customer.fragment.StoreListFragment;
 import com.shoppin.customer.fragment.UnderDevelopmentFragment;
 import com.shoppin.customer.model.NavigationDrawerMenuItem;
 import com.shoppin.customer.model.Product;
+import com.shoppin.customer.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -209,8 +210,7 @@ public class NavigationDrawerActivity extends BaseActivity {
 
     @OnClick(R.id.imgSearch)
     public void searchProduct() {
-//        isNavMenuchange = true;
-//        switchContent(new HomeFragment());
+        Utils.showToastShort(NavigationDrawerActivity.this, getString(R.string.under_development));
     }
 
     @OnClick(R.id.imgCart)

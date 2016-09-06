@@ -29,11 +29,21 @@
     <string name="text_explore_guest">Explore as</string>
     <string name="text_checkout">Checkout</string>
     <string name="text_pay">Pay</string>
+    <string name="text_pay_now">Pay Now</string>
     <string name="text_price">Price</string>
     <string name="text_discount_and_saving">Discount n Saving</string>
     <string name="text_coupon_discount">Coupon Discount</string>
     <string name="text_total">Total</string>
     <string name="text_apply">Apply</string>
+    <string name="text_address">Address</string>
+    <string name="text_sign_out">Sign out</string>
+    <string name="text_card_number">Card Number</string>
+    <string name="text_expires">Expires</string>
+    <string name="text_cvv">CVV</string>
+    <string name="text_congratulations">Congratulations!</string>
+    <string name="text_continue_shopping">Continue Shopping</string>
+    <string name="text_payment_success">Thank you for shopping with us. Your order has been successfully placed. Shopper will call you.</string>
+    <string name="text_select_near_by_store">Select Near By Store</string>
 
 
     <!-- Edit text hint-->
@@ -46,6 +56,9 @@
     <string name="edittext_hint_postcode">Postcode</string>
     <string name="edittext_hint_confirm_password">Confirm Password</string>
     <string name="edittext_hint_coupon_code">Coupon Code</string>
+    <string name="edittext_hint_credit_card_number">1234567812345678</string>
+    <string name="edittext_hint_credit_card_expire_date">MM/YY</string>
+    <string name="edittext_hint_credit_card_cvv">123</string>
 
     <!-- Button text -->
     <string name="button_signin">Sign In</string>
@@ -72,7 +85,9 @@
 
     <!--Title -->
     <string name="activity_address">Address</string>
+    <string name="activity_checkout">Checkout</string>
     <string name="activity_choose_delivery_option">Choose Delivery Option</string>
+    <string name="activity_credit_card">Credit Card</string>
     <string name="fragment_myaccount">My Account</string>
 
     <!--Toast message-->

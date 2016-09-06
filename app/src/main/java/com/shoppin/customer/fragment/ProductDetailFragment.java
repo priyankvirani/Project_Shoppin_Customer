@@ -45,8 +45,8 @@ public class ProductDetailFragment extends BaseFragment {
     @BindView(R.id.rlvGlobalProgressbar)
     View rlvGlobalProgressbar;
 
-    @BindView(R.id.viewContainer)
-    View viewContainer;
+    @BindView(R.id.rootContainer)
+    View rootContainer;
 
     @BindView(R.id.txtProductCartCount)
     TextView txtProductCartCount;
@@ -136,6 +136,7 @@ public class ProductDetailFragment extends BaseFragment {
             getSuburbsDataRequest.execute(IWebService.GET_PRODUCT_DETAIL, loginParam.toString(), new DataRequest.CallBack() {
                 public void onPreExecute() {
                     rlvGlobalProgressbar.setVisibility(View.VISIBLE);
+                    rootContainer.setVisibility(View.GONE);
                 }
 
                 public void onPostExecute(String response) {
@@ -148,7 +149,7 @@ public class ProductDetailFragment extends BaseFragment {
                                     new TypeToken<Product>() {
                                     }.getType());
                             if (productDetail != null) {
-                                viewContainer.setVisibility(View.VISIBLE);
+                                rootContainer.setVisibility(View.VISIBLE);
                                 updateProductDetail();
                             }
                         }
@@ -166,6 +167,8 @@ public class ProductDetailFragment extends BaseFragment {
      * Set product detail value
      */
     private void updateProductDetail() {
+//        findProductInCartAndUpdateUi();
+
         txtProductName.setText(productDetail.productName);
 
 //        txtProductPrice.setText("$ " + String.valueOf(productDetail.productPrice));
@@ -175,11 +178,6 @@ public class ProductDetailFragment extends BaseFragment {
         txtDescription.setText(productDetail.productDescription);
 
         if (productDetail.productImages != null && productDetail.productImages.size() > 0) {
-//            Glide.with(getActivity())
-//                    .load(productDetail.productImages.get(0))
-//                    .placeholder(R.drawable.placeholder)
-//                    .error(R.drawable.placeholder)
-//                    .into(imgProduct);
             productImageArrayList.clear();
             productImageArrayList.addAll(productDetail.productImages);
             productImageAdapter.setUiPageViewController();
@@ -371,38 +369,6 @@ public class ProductDetailFragment extends BaseFragment {
         alertDialog.show();
     }
 
-//    private void updatePriceAsSelectedOption() {
-//        double salePrice = 0;
-//        salePrice += productDetail.productSalePrice;
-//        Log.d(TAG,"price productDetail.productSalePrice = " + productDetail.productSalePrice);
-//
-//        int optionSize = 0;
-//        if (productDetail.productHasOption && productDetail.productOptionArrayList != null && productDetail.productOptionArrayList.size() > 0) {
-//            optionSize = productDetail.productOptionArrayList.size();
-//        }
-//
-//        for (int iOption = 0; iOption < optionSize; iOption++) {
-//            for (int jOptionValue = 0;
-//                 jOptionValue < productDetail.productOptionArrayList.get(iOption).productOptionValueArrayList.size();
-//                 jOptionValue++) {
-//                if (productDetail.productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).selected) {
-//                    salePrice += productDetail.productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).optionValuePrice;
-//                    Log.d(TAG,"price optionValueName = " + productDetail.productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).optionValueName);
-//                    Log.d(TAG,"price optionValuePrice = " + productDetail.productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).optionValuePrice);
-//                    break;
-//                }
-//            }
-//        }
-//
-//        txtProductPrice.setText("$ " + String.valueOf(productDetail.productPrice));
-//        txtProductPrice.setPaintFlags(txtProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-//
-//        // multiply sale price and quantity
-//        Log.d(TAG,"price  productDetail.productQuantity = " +  productDetail.productQuantity);
-//        salePrice = salePrice * (productDetail.productQuantity == 0 ? 1 : productDetail.productQuantity);
-//        txtProductSalePrice.setText("$ " + String.valueOf(salePrice));
-//    }
-
     private void updatePriceAsSelectedOption() {
         txtProductPrice.setText("$ " + String.valueOf(productDetail.productPrice));
         txtProductPrice.setPaintFlags(txtProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -413,7 +379,6 @@ public class ProductDetailFragment extends BaseFragment {
     /**
      * Logic for cart in local database
      */
-
     @OnClick(R.id.imgIncrementProductCart)
     void increaseCart() {
         NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) getActivity();
@@ -433,6 +398,14 @@ public class ProductDetailFragment extends BaseFragment {
             navigationDrawerActivity.updateCartCount();
             txtProductCartCount.setText("" + productDetail.productQuantity);
             updatePriceAsSelectedOption();
+        }
+    }
+
+    private void findProductInCartAndUpdateUi() {
+        Product cartProduct = DBAdapter.getProductFromCart(getActivity(), productDetail);
+        if (cartProduct != null) {
+            productDetail.productQuantity = cartProduct.productQuantity;
+            productDetail.productOptionArrayList = cartProduct.productOptionArrayList;
         }
     }
 }

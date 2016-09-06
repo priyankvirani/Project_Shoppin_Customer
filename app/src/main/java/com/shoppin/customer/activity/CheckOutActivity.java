@@ -3,16 +3,20 @@ package com.shoppin.customer.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shoppin.customer.R;
 import com.shoppin.customer.adapter.CheckoutDateAdapter;
+import com.shoppin.customer.adapter.SelectionAdapter;
 import com.shoppin.customer.database.DBAdapter;
 import com.shoppin.customer.database.IDatabase.IMap;
 import com.shoppin.customer.model.Address;
@@ -27,6 +32,7 @@ import com.shoppin.customer.model.CheckoutDate;
 import com.shoppin.customer.model.Store;
 import com.shoppin.customer.network.DataRequest;
 import com.shoppin.customer.network.IWebService;
+import com.shoppin.customer.utils.Cart;
 import com.shoppin.customer.utils.Utils;
 
 import org.json.JSONObject;
@@ -46,8 +52,12 @@ public class CheckOutActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbarCheckOut)
     Toolbar toolbar;
+
     @BindView(R.id.rlvGlobalProgressbar)
     RelativeLayout rlvGlobalProgressbar;
+
+    @BindView(R.id.rootContainer)
+    View rootContainer;
 
     @BindView(R.id.txtCustomerName)
     TextView txtCustomerName;
@@ -73,6 +83,9 @@ public class CheckOutActivity extends AppCompatActivity {
     @BindView(R.id.etxCoupon)
     EditText etxCoupon;
 
+    @BindView(R.id.txtStore)
+    TextView txtStore;
+
     @BindView(R.id.cardStore)
     CardView cardStore;
 
@@ -81,6 +94,18 @@ public class CheckOutActivity extends AppCompatActivity {
 
     @BindView(R.id.timeRecyclerView)
     RecyclerView timeRecyclerView;
+
+    @BindView(R.id.txtAllProductPrice)
+    TextView txtAllProductPrice;
+
+    @BindView(R.id.txtCouponPrice)
+    TextView txtCouponPrice;
+
+    @BindView(R.id.txtTotalPrice)
+    TextView txtTotalPrice;
+
+    @BindView(R.id.txtGrandTotal)
+    TextView txtGrandTotal;
 
     private ArrayList<CheckoutDate> checkoutDateArrayList;
     private CheckoutDateAdapter checkoutDateAdapter;
@@ -164,10 +189,16 @@ public class CheckOutActivity extends AppCompatActivity {
         Utils.showToastShort(CheckOutActivity.this, getString(R.string.under_development));
     }
 
+    @OnClick(R.id.txtStore)
+    void selectNearByStore() {
+        showAlertNearByStore();
+    }
+
     @OnClick(R.id.txtPay)
     void makePayment() {
         Intent intent = new Intent(CheckOutActivity.this, PaymentActivity.class);
-        startActivityForResult(intent, REQUEST_PAYMENT);
+//        startActivityForResult(intent, REQUEST_PAYMENT);
+        startActivity(intent);
     }
 
     private void getCheckOutDetail() {
@@ -182,13 +213,14 @@ public class CheckOutActivity extends AppCompatActivity {
             checkOutDetailDataRequest.execute(IWebService.GET_CHECKOUT_DETAIL, loginParam.toString(), new DataRequest.CallBack() {
                 public void onPreExecute() {
                     rlvGlobalProgressbar.setVisibility(View.VISIBLE);
+                    rootContainer.setVisibility(View.GONE);
                 }
 
                 public void onPostExecute(String response) {
                     try {
                         rlvGlobalProgressbar.setVisibility(View.GONE);
                         if (!DataRequest.hasError(CheckOutActivity.this, response, true)) {
-
+                            rootContainer.setVisibility(View.VISIBLE);
                             JSONObject dataJObject = DataRequest.getJObjWebdata(response);
 
                             Gson gson = new Gson();
@@ -249,6 +281,8 @@ public class CheckOutActivity extends AppCompatActivity {
         } else {
             cardStore.setVisibility(View.GONE);
         }
+
+        setTotal();
     }
 
     private void setCurrentAddress(Address tmpCurrentAddress) {
@@ -259,5 +293,89 @@ public class CheckOutActivity extends AppCompatActivity {
         txtStreet.setText(currentAddress.street);
         txtSuburb.setText(currentAddress.suburbName);
         txtPostCode.setText(currentAddress.postCode);
+    }
+
+    private void setTotal() {
+        double allProductPrice = Cart.getCartSalePriceTotal(DBAdapter.getAllProductFromCart(CheckOutActivity.this));
+        double couponPrice = 0.0;
+        double totalPrice = 0.0;
+        txtAllProductPrice.setText("$ " + allProductPrice);
+        txtCouponPrice.setText("$ " + couponPrice);
+
+        totalPrice = allProductPrice + couponPrice;
+        txtTotalPrice.setText("$ " + totalPrice);
+
+        txtGrandTotal.setText("$ " + totalPrice);
+    }
+
+    private void showAlertNearByStore() {
+        TextView txtSelectionDone;
+        ListView listCategorytFilter;
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
+                CheckOutActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_selection, null);
+        dialogBuilder.setView(dialogView);
+        final AlertDialog alertDialog = dialogBuilder.create();
+
+        ((TextView) dialogView.findViewById(R.id.txtSelectionType))
+                .setText(getResources().getString(R.string.text_select_near_by_store));
+        txtSelectionDone = (TextView) dialogView.findViewById(R.id.txtSelectionDone);
+        txtSelectionDone.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+//                if (selectedEntityBoard != null) {
+//                    alertDialog.dismiss();
+//                    updateDropdown(UPDATE_ENTITY_BORAD);
+//                } else {
+//                    Utils.showToastShort(getActivity(), getResources().getString(R.string.validation_entity_board));
+//                }
+            }
+        });
+
+//        ArrayList<ProductOptionValue> productOptionValueArrayList = productOption.productOptionValueArrayList;
+
+        listCategorytFilter = (ListView) dialogView
+                .findViewById(R.id.listFilter);
+        final SelectionAdapter<Store> filterStateAdapter = new SelectionAdapter<Store>(
+                CheckOutActivity.this, storeArrayList);
+        filterStateAdapter
+                .setBindAdapterInterface(new SelectionAdapter.IBindAdapterValues<Store>() {
+                    @Override
+                    public void bindValues(SelectionAdapter.Holder holder, final int position) {
+                        // TODO Auto-generated method stub
+
+                        holder.txtSelectionValue.setText(storeArrayList.get(position).store_name);
+                        holder.txtSelectionValue.setChecked(storeArrayList.get(position).isSelected);
+                        if (storeArrayList.get(position).isSelected) {
+                            holder.txtSelectionValue.setTextColor(ContextCompat.getColor(CheckOutActivity.this, R.color.app_theme_1));
+                        } else {
+                            holder.txtSelectionValue.setTextColor(ContextCompat.getColor(CheckOutActivity.this, R.color.text_black));
+                        }
+                        holder.txtSelectionValue
+                                .setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View arg0) {
+                                        // TODO Auto-generated method stub
+                                        for (int i = 0; i < storeArrayList.size(); i++) {
+                                            storeArrayList.get(i).isSelected = false;
+                                        }
+                                        storeArrayList.get(position).isSelected = true;
+                                        txtStore.setText(storeArrayList.get(position).store_name);
+                                        filterStateAdapter.notifyDataSetChanged();
+
+                                        alertDialog.dismiss();
+                                    }
+                                });
+                    }
+                });
+        listCategorytFilter.setAdapter(filterStateAdapter);
+        alertDialog.getWindow().setBackgroundDrawableResource(
+                R.color.transparent);
+//        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
 }

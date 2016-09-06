@@ -281,32 +281,36 @@ public class DBAdapter {
 
         Gson gson = new Gson();
 
+        Log.d(TAG, "product.productName = " + product.productName + ", product.productHasOption= " + product.productHasOption);
+
         String query = "select * from " + ICart.TABLE_CART + " ";
         query += "WHERE " + ICart.KEY_PRODUCT_ID + " = '" + product.productId + "' ";
-        for (int optionProduct = 0; optionProduct < product.productOptionArrayList.size(); optionProduct++) {
-            for (int valueProduct = 0; valueProduct < product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.size(); valueProduct++) {
-                if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected) {
-                    switch (optionProduct) {
-                        case ICart.OPTION_0:
-                            query += "AND " + ICart.KEY_OPTION_ID_0 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
-                            query += "AND " + ICart.KEY_OPTION_VALUE_ID_0 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
-                            break;
-                        case ICart.OPTION_1:
-                            query += "AND " + ICart.KEY_OPTION_ID_1 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
-                            query += "AND " + ICart.KEY_OPTION_VALUE_ID_1 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
-                            break;
-                        case ICart.OPTION_2:
-                            query += "AND " + ICart.KEY_OPTION_ID_2 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
-                            query += "AND " + ICart.KEY_OPTION_VALUE_ID_2 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
-                            break;
-                        case ICart.OPTION_3:
-                            query += "AND " + ICart.KEY_OPTION_ID_3 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
-                            query += "AND " + ICart.KEY_OPTION_VALUE_ID_3 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
-                            break;
-                        case ICart.OPTION_4:
-                            query += "AND " + ICart.KEY_OPTION_ID_4 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
-                            query += "AND " + ICart.KEY_OPTION_VALUE_ID_4 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
-                            break;
+        if (product.productHasOption && product.productOptionArrayList != null) {
+            for (int optionProduct = 0; optionProduct < product.productOptionArrayList.size(); optionProduct++) {
+                for (int valueProduct = 0; valueProduct < product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.size(); valueProduct++) {
+                    if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected) {
+                        switch (optionProduct) {
+                            case ICart.OPTION_0:
+                                query += "AND " + ICart.KEY_OPTION_ID_0 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                                query += "AND " + ICart.KEY_OPTION_VALUE_ID_0 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                                break;
+                            case ICart.OPTION_1:
+                                query += "AND " + ICart.KEY_OPTION_ID_1 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                                query += "AND " + ICart.KEY_OPTION_VALUE_ID_1 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                                break;
+                            case ICart.OPTION_2:
+                                query += "AND " + ICart.KEY_OPTION_ID_2 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                                query += "AND " + ICart.KEY_OPTION_VALUE_ID_2 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                                break;
+                            case ICart.OPTION_3:
+                                query += "AND " + ICart.KEY_OPTION_ID_3 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                                query += "AND " + ICart.KEY_OPTION_VALUE_ID_3 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                                break;
+                            case ICart.OPTION_4:
+                                query += "AND " + ICart.KEY_OPTION_ID_4 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                                query += "AND " + ICart.KEY_OPTION_VALUE_ID_4 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                                break;
+                        }
                     }
                 }
             }
@@ -329,30 +333,32 @@ public class DBAdapter {
                 contentValues.put(ICart.KEY_PRODUCT_ID, product.productId);
                 contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
 
-                for (int optionProduct = 0; optionProduct < product.productOptionArrayList.size(); optionProduct++) {
-                    for (int valueProduct = 0; valueProduct < product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.size(); valueProduct++) {
-                        if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected) {
-                            switch (optionProduct) {
-                                case ICart.OPTION_0:
-                                    contentValues.put(ICart.KEY_OPTION_ID_0, product.productOptionArrayList.get(optionProduct).optionId);
-                                    contentValues.put(ICart.KEY_OPTION_VALUE_ID_0, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
-                                    break;
-                                case ICart.OPTION_1:
-                                    contentValues.put(ICart.KEY_OPTION_ID_1, product.productOptionArrayList.get(optionProduct).optionId);
-                                    contentValues.put(ICart.KEY_OPTION_VALUE_ID_1, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
-                                    break;
-                                case ICart.OPTION_2:
-                                    contentValues.put(ICart.KEY_OPTION_ID_2, product.productOptionArrayList.get(optionProduct).optionId);
-                                    contentValues.put(ICart.KEY_OPTION_VALUE_ID_2, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
-                                    break;
-                                case ICart.OPTION_3:
-                                    contentValues.put(ICart.KEY_OPTION_ID_3, product.productOptionArrayList.get(optionProduct).optionId);
-                                    contentValues.put(ICart.KEY_OPTION_VALUE_ID_3, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
-                                    break;
-                                case ICart.OPTION_4:
-                                    contentValues.put(ICart.KEY_OPTION_ID_4, product.productOptionArrayList.get(optionProduct).optionId);
-                                    contentValues.put(ICart.KEY_OPTION_VALUE_ID_4, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
-                                    break;
+                if (product.productHasOption && product.productOptionArrayList != null) {
+                    for (int optionProduct = 0; optionProduct < product.productOptionArrayList.size(); optionProduct++) {
+                        for (int valueProduct = 0; valueProduct < product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.size(); valueProduct++) {
+                            if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected) {
+                                switch (optionProduct) {
+                                    case ICart.OPTION_0:
+                                        contentValues.put(ICart.KEY_OPTION_ID_0, product.productOptionArrayList.get(optionProduct).optionId);
+                                        contentValues.put(ICart.KEY_OPTION_VALUE_ID_0, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
+                                        break;
+                                    case ICart.OPTION_1:
+                                        contentValues.put(ICart.KEY_OPTION_ID_1, product.productOptionArrayList.get(optionProduct).optionId);
+                                        contentValues.put(ICart.KEY_OPTION_VALUE_ID_1, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
+                                        break;
+                                    case ICart.OPTION_2:
+                                        contentValues.put(ICart.KEY_OPTION_ID_2, product.productOptionArrayList.get(optionProduct).optionId);
+                                        contentValues.put(ICart.KEY_OPTION_VALUE_ID_2, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
+                                        break;
+                                    case ICart.OPTION_3:
+                                        contentValues.put(ICart.KEY_OPTION_ID_3, product.productOptionArrayList.get(optionProduct).optionId);
+                                        contentValues.put(ICart.KEY_OPTION_VALUE_ID_3, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
+                                        break;
+                                    case ICart.OPTION_4:
+                                        contentValues.put(ICart.KEY_OPTION_ID_4, product.productOptionArrayList.get(optionProduct).optionId);
+                                        contentValues.put(ICart.KEY_OPTION_VALUE_ID_4, product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId);
+                                        break;
+                                }
                             }
                         }
                     }
@@ -395,27 +401,77 @@ public class DBAdapter {
         Log.e(TAG, "==== insertUpdateDeleteCart product.productId = " + product.productId + " ====");
     }
 
-    public static Product getProductFromCart(Context context, String ProductId) {
+    public static Product getProductFromCart(Context context, Product product) {
         SQLiteDatabase db = DatabaseHelper.getInstance(context).getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from " + ICart.TABLE_CART
-                + " WHERE " + ICart.KEY_PRODUCT_ID + " = " + ProductId, null);
-
-        Gson gson = new Gson();
-        Product product = null;
-
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            do {
-                try {
-                    product = gson.fromJson(new JSONObject(cursor.getString(cursor.getColumnIndex(ICart.KEY_PRODUCT_JSON))).toString(), Product.class);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        String query = "select * from " + ICart.TABLE_CART + " ";
+        query += "WHERE " + ICart.KEY_PRODUCT_ID + " = '" + product.productId + "' ";
+        if (product.productHasOption && product.productOptionArrayList != null) {
+            for (int optionProduct = 0; optionProduct < product.productOptionArrayList.size(); optionProduct++) {
+                for (int valueProduct = 0; valueProduct < product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.size(); valueProduct++) {
+                    if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected) {
+                        switch (optionProduct) {
+                            case ICart.OPTION_0:
+                                query += "AND " + ICart.KEY_OPTION_ID_0 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                                query += "AND " + ICart.KEY_OPTION_VALUE_ID_0 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                                break;
+                            case ICart.OPTION_1:
+                                query += "AND " + ICart.KEY_OPTION_ID_1 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                                query += "AND " + ICart.KEY_OPTION_VALUE_ID_1 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                                break;
+                            case ICart.OPTION_2:
+                                query += "AND " + ICart.KEY_OPTION_ID_2 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                                query += "AND " + ICart.KEY_OPTION_VALUE_ID_2 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                                break;
+                            case ICart.OPTION_3:
+                                query += "AND " + ICart.KEY_OPTION_ID_3 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                                query += "AND " + ICart.KEY_OPTION_VALUE_ID_3 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                                break;
+                            case ICart.OPTION_4:
+                                query += "AND " + ICart.KEY_OPTION_ID_4 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
+                                query += "AND " + ICart.KEY_OPTION_VALUE_ID_4 + " = '" + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId + "' ";
+                                break;
+                        }
+                    }
                 }
-            } while (cursor.moveToNext());
-            cursor.close(); // that's important too, otherwise you're gonna leak cursors
+            }
         }
-        return product;
+        Log.d(TAG, "query = " + query);
+        Cursor cursor = db.rawQuery(query, null);
+        Product cartProduct = null;
+        Gson gson = new Gson();
+        try {
+            if (cursor != null && cursor.getCount() > 0) {
+                cartProduct = gson.fromJson(new JSONObject(cursor.getString(cursor.getColumnIndex(ICart.KEY_PRODUCT_JSON))).toString(), Product.class);
+                cursor.close(); // that's important too, otherwise you're gonna leak cursors
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return cartProduct;
     }
+
+
+//    public static Product getProductFromCart(Context context, String ProductId) {
+//        SQLiteDatabase db = DatabaseHelper.getInstance(context).getWritableDatabase();
+//        Cursor cursor = db.rawQuery("select * from " + ICart.TABLE_CART
+//                + " WHERE " + ICart.KEY_PRODUCT_ID + " = " + ProductId, null);
+//
+//        Gson gson = new Gson();
+//        Product product = null;
+//
+//        if (cursor != null && cursor.getCount() > 0) {
+//            cursor.moveToFirst();
+//            do {
+//                try {
+//                    product = gson.fromJson(new JSONObject(cursor.getString(cursor.getColumnIndex(ICart.KEY_PRODUCT_JSON))).toString(), Product.class);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            } while (cursor.moveToNext());
+//            cursor.close(); // that's important too, otherwise you're gonna leak cursors
+//        }
+//        return product;
+//    }
 
     public static ArrayList<Product> getAllProductFromCart(Context context) {
         SQLiteDatabase db = DatabaseHelper.getInstance(context).getWritableDatabase();
@@ -437,6 +493,11 @@ public class DBAdapter {
             cursor.close(); // that's important too, otherwise you're gonna leak cursors
         }
         return productArrayList;
+    }
+
+    public static void clearCart(Context context) {
+        SQLiteDatabase db = DatabaseHelper.getInstance(context).getWritableDatabase();
+        db.delete(ICart.TABLE_CART, null, null);
     }
 
 //    /**

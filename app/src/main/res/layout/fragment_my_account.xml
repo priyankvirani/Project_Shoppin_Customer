@@ -1,31 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     android:clickable="true">
 
-    <android.support.v4.widget.NestedScrollView
+    <RelativeLayout
+        android:id="@+id/rlvBottomBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/app_theme_1">
+
+        <TextView
+            android:id="@+id/txtLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="?attr/selectableItemBackground"
+            android:padding="@dimen/margin_medium"
+            android:text="@string/text_sign_out"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_toolbar_title"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/rootContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/rlvBottomBar"
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_medium"
-                android:gravity="center_horizontal"
                 android:orientation="vertical">
-
 
                 <EditText
                     android:id="@+id/etxName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_medium"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:background="@drawable/edittext_bottom_line_gray"
                     android:drawablePadding="@dimen/margin_tiny"
@@ -34,8 +58,8 @@
                     android:maxLines="1"
                     android:nextFocusDown="@id/etxSigninId"
                     android:paddingBottom="@dimen/margin_edittext_bottom"
-                    android:textColor="@color/gray"
-                    android:textColorHint="@color/gray"
+                    android:textColor="@color/text_black"
+                    android:textColorHint="@color/text_black"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="@dimen/font_size_edittext" />
 
@@ -43,7 +67,7 @@
                     android:id="@+id/etxPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_medium"
                     android:background="@drawable/edittext_bottom_line_gray"
                     android:drawablePadding="@dimen/margin_tiny"
                     android:focusable="false"
@@ -51,8 +75,8 @@
                     android:inputType="number"
                     android:maxLines="1"
                     android:paddingBottom="@dimen/margin_edittext_bottom"
-                    android:textColor="@color/gray"
-                    android:textColorHint="@color/gray"
+                    android:textColor="@color/text_black"
+                    android:textColorHint="@color/text_black"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="@dimen/font_size_edittext" />
 
@@ -60,15 +84,15 @@
                     android:id="@+id/etxStreet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_medium"
                     android:background="@drawable/edittext_bottom_line_gray"
                     android:drawablePadding="@dimen/margin_tiny"
                     android:hint="@string/edittext_hint_street"
                     android:inputType="text"
                     android:maxLines="1"
                     android:paddingBottom="@dimen/margin_edittext_bottom"
-                    android:textColor="@color/gray"
-                    android:textColorHint="@color/gray"
+                    android:textColor="@color/text_black"
+                    android:textColorHint="@color/text_black"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="@dimen/font_size_edittext" />
 
@@ -76,7 +100,7 @@
                     android:id="@+id/atxSuburb"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_medium"
                     android:background="@drawable/edittext_bottom_line_gray"
                     android:drawablePadding="@dimen/margin_tiny"
                     android:hint="@string/edittext_hint_suburb"
@@ -84,8 +108,8 @@
                     android:maxLines="1"
                     android:nextFocusDown="@+id/etxPostcode"
                     android:paddingBottom="@dimen/margin_edittext_bottom"
-                    android:textColor="@color/gray"
-                    android:textColorHint="@color/gray"
+                    android:textColor="@color/text_black"
+                    android:textColorHint="@color/text_black"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="@dimen/font_size_edittext" />
 
@@ -93,15 +117,15 @@
                     android:id="@+id/etxPostcode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_medium"
                     android:background="@drawable/edittext_bottom_line_gray"
                     android:drawablePadding="@dimen/margin_tiny"
                     android:hint="@string/edittext_hint_postcode"
                     android:inputType="number"
                     android:maxLines="1"
                     android:paddingBottom="@dimen/margin_edittext_bottom"
-                    android:textColor="@color/gray"
-                    android:textColorHint="@color/gray"
+                    android:textColor="@color/text_black"
+                    android:textColorHint="@color/text_black"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="@dimen/font_size_edittext" />
 
@@ -109,15 +133,15 @@
                     android:id="@+id/etxPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_medium"
                     android:background="@drawable/edittext_bottom_line_gray"
                     android:drawablePadding="@dimen/margin_tiny"
                     android:hint="@string/edittext_hint_password"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:paddingBottom="@dimen/margin_edittext_bottom"
-                    android:textColor="@color/gray"
-                    android:textColorHint="@color/gray"
+                    android:textColor="@color/text_black"
+                    android:textColorHint="@color/text_black"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="@dimen/font_size_edittext" />
 
@@ -125,8 +149,8 @@
                     android:id="@+id/txtUpdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:background="@drawable/button_background_gray"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:background="@drawable/button_background_green"
                     android:gravity="center"
                     android:padding="@dimen/margin_button"
                     android:text="@string/button_update"
@@ -138,8 +162,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_medium"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:background="@color/gray"
+                    android:background="@color/app_theme_1"
                     android:padding="@dimen/margin_medium">
 
                     <TextView
@@ -148,9 +171,10 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:gravity="center_vertical"
-                        android:text="Address"
-                        android:textColor="@color/text_black"
-                        android:textSize="@dimen/font_size_edittext" />
+                        android:text="@string/text_address"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_size_title"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txtAddNewAddress"
@@ -158,11 +182,12 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:drawablePadding="@dimen/margin_tiny"
-                        android:drawableRight="@drawable/plus_round_black"
+                        android:drawableRight="@drawable/plus_round_white"
                         android:gravity="center_vertical"
-                        android:text="Add New"
-                        android:textColor="@color/text_black"
-                        android:textSize="@dimen/font_size_edittext" />
+                        android:text="@string/action_add_new_address"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_size_title"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 
@@ -178,24 +203,15 @@
                     android:scrollbars="vertical" />
             </LinearLayout>
 
-
-            <Button
-                android:id="@+id/btnLogOut"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Logout"
-                android:textSize="20sp" />
-
             <Button
                 android:id="@+id/btnExport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="Export DB"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:visibility="gone" />
         </LinearLayout>
-
     </android.support.v4.widget.NestedScrollView>
 
     <include layout="@layout/progressbar" />

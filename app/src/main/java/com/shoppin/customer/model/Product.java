@@ -28,7 +28,7 @@ public class Product implements Serializable {
     @SerializedName("description")
     public String productDescription;
     @SerializedName("has_option")
-    public boolean productHasOption;
+    public boolean productHasOption = false;
     @SerializedName("option_list")
     public ArrayList<ProductOption> productOptionArrayList;
     public int productQuantity;

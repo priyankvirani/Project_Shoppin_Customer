@@ -62,7 +62,8 @@
             android:name=".activity.AddressEditActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.ChooseDeliveryActivity"></activity>
+        <activity android:name=".activity.ChooseDeliveryActivity" />
+        <activity android:name=".activity.PaymentSuccessfulActivity"></activity>
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ public class Store implements Serializable {
     public String store_id;
     public String store_name;
     public String store_address;
+    public boolean isSelected;
 
     public Store(String store_id, String store_name, String store_address) {
         this.store_id = store_id;

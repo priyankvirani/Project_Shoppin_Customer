@@ -6,7 +6,7 @@
     android:clickable="true">
 
     <ScrollView
-        android:id="@+id/viewContainer"
+        android:id="@+id/rootContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="visible">
@@ -99,7 +99,7 @@
                         android:maxLines="1"
                         android:padding="@dimen/margin_tiny"
                         android:singleLine="true"
-                        android:text="x"
+                        android:text="1"
                         android:textColor="@color/black"
                         android:textSize="@dimen/font_size_title" />
 

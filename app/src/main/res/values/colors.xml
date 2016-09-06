@@ -12,13 +12,14 @@
     <color name="app_theme_2">#649f1f</color>
     <!--<color name="app_theme_3">#FF4081</color>-->
     <color name="app_theme_3">#000000</color>
+    <color name="app_theme_4">#649f1f</color>
 
     <color name="white">#ffffff</color>
     <color name="white_50">#80ffffff</color>
     <color name="black">#000000</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="gray">#d4d4d4</color>
-    <color name="text_gray_50">#80d4d4d4</color>
+    <color name="gray_50">#80d4d4d4</color>
     <color name="shadow">#d8d8d8</color>
     <color name="text_black">#464646</color>
     <color name="tab_not_selected">#649f1f</color>

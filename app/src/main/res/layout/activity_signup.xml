@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:background="@drawable/edittext_bottom_line_white"
-                android:drawableLeft="@drawable/suburb"
+                android:drawableLeft="@drawable/suburb_white"
                 android:drawablePadding="@dimen/margin_tiny"
                 android:hint="@string/edittext_hint_suburb"
                 android:inputType="text"
