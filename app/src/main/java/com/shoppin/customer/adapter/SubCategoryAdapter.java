@@ -18,25 +18,33 @@ import com.shoppin.customer.utils.Utils;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by ubuntu on 8/8/16.
  */
 
-public class SubCategoryNestedAdapter extends RecyclerView.Adapter<SubCategoryNestedAdapter.MyViewHolder> {
-    private static final String TAG = SubCategoryNestedAdapter.class.getSimpleName();
+public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.MyViewHolder> {
+    private static final String TAG = SubCategoryAdapter.class.getSimpleName();
 
     private Context context;
     private ArrayList<SubCategory> subCategoryArrayList;
     private int cellWidth = 100;
 
-    public SubCategoryNestedAdapter(Context context, ArrayList<SubCategory> subCategoryArrayList) {
+    public SubCategoryAdapter(Context context, ArrayList<SubCategory> subCategoryArrayList) {
         this.context = context;
         this.subCategoryArrayList = subCategoryArrayList;
         this.cellWidth = Utils.getDeviceWidth(context) / 3;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public int getItemCount() {
+        return subCategoryArrayList == null ? 0 : subCategoryArrayList.size();
+    }
+
+    @Override
+    public SubCategoryAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cell_subcategory_home, parent, false);
 //        Log.d(TAG, "cellWidth = " + cellWidth);
@@ -45,7 +53,7 @@ public class SubCategoryNestedAdapter extends RecyclerView.Adapter<SubCategoryNe
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final SubCategoryAdapter.MyViewHolder holder, final int position) {
         holder.txtSubCategory.setText(subCategoryArrayList.get(position).subcategoryName);
         Glide.with(context)
                 .load(subCategoryArrayList.get(position).subcategoryImage)
@@ -63,20 +71,16 @@ public class SubCategoryNestedAdapter extends RecyclerView.Adapter<SubCategoryNe
         });
     }
 
-    @Override
-    public int getItemCount() {
-        return subCategoryArrayList == null ? 0 : subCategoryArrayList.size();
-    }
-
     class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.txtSubcategory)
         TextView txtSubCategory;
+
+        @BindView(R.id.imgSubcategory)
         ImageView imgSubcategory;
 
-        MyViewHolder(View vi) {
-            super(vi);
-            txtSubCategory = (TextView) vi
-                    .findViewById(R.id.txtSubcategory);
-            imgSubcategory = (ImageView) vi.findViewById(R.id.imgSubcategory);
+        MyViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

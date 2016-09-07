@@ -56,7 +56,7 @@ public class MyAccountFragment extends BaseFragment {
     @BindView(R.id.rlvGlobalProgressbar)
     RelativeLayout rlvGlobalProgressbar;
 
-    @BindView(R.id.rclAddress)
+    @BindView(R.id.recyclerListAddress)
     RecyclerView rclAddress;
 
     @BindView(R.id.etxName)
@@ -93,8 +93,7 @@ public class MyAccountFragment extends BaseFragment {
 
         addressArrayList = new ArrayList<>();
         addressAdapter = new AddressAdapter(getActivity(), addressArrayList, MyAccountFragment.this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        rclAddress.setLayoutManager(mLayoutManager);
+        rclAddress.setLayoutManager(new LinearLayoutManager(getActivity()));
         rclAddress.setAdapter(addressAdapter);
 
         suburbArrayList = new ArrayList<>();

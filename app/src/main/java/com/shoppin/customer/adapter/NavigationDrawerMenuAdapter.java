@@ -1,15 +1,19 @@
 package com.shoppin.customer.adapter;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shoppin.customer.R;
-import com.shoppin.customer.model.NavigationDrawerMenuItem;
+import com.shoppin.customer.model.NavigationDrawerMenu;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -17,24 +21,63 @@ import com.shoppin.customer.model.NavigationDrawerMenuItem;
  *
  * @author chitrang
  */
-public class NavigationDrawerMenuAdapter extends ArrayAdapter<NavigationDrawerMenuItem> {
+public class NavigationDrawerMenuAdapter extends RecyclerView.Adapter<NavigationDrawerMenuAdapter.MyViewHolder>  {
 
-    public NavigationDrawerMenuAdapter(Context context) {
-        super(context, 0);
+    private ArrayList<NavigationDrawerMenu> navigationDrawerMenuArrayList;
+    private OnItemClickListener itemClickListener;
+
+    public NavigationDrawerMenuAdapter(ArrayList<NavigationDrawerMenu> navigationDrawerMenuArrayList) {
+        this.navigationDrawerMenuArrayList = navigationDrawerMenuArrayList;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.cell_navigation_drawer, null);
+    @Override
+    public int getItemCount() {
+        return navigationDrawerMenuArrayList == null ? 0 : navigationDrawerMenuArrayList.size();
+    }
+
+    @Override
+    public NavigationDrawerMenuAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.cell_navigation_drawer, parent, false);
+        return new NavigationDrawerMenuAdapter.MyViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(final NavigationDrawerMenuAdapter.MyViewHolder holder, final int position) {
+        holder.imgMenuIcon.setImageResource(navigationDrawerMenuArrayList.get(position).menuIcon);
+        holder.txtMenuTitle.setText(navigationDrawerMenuArrayList.get(position).menuName);
+        holder.cellRoot.setTag(navigationDrawerMenuArrayList.get(position).menuTagId);
+        holder.cellRoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClick(view, position);
+                }
+            }
+        });
+    }
+
+    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
+        this.itemClickListener = mItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int position);
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.cellRoot)
+        View cellRoot;
+
+        @BindView(R.id.txtMenuTitle)
+        TextView txtMenuTitle;
+
+        @BindView(R.id.imgMenuIcon)
+        ImageView imgMenuIcon;
+
+        MyViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
-        ImageView icon = (ImageView) convertView.findViewById(R.id.rowIcon);
-        icon.setImageResource(getItem(position).menuIcon);
-        TextView title = (TextView) convertView.findViewById(R.id.rowTitle);
-        title.setText(getItem(position).menuName);
-
-        convertView.setTag(getItem(position).menuTagId);
-
-        return convertView;
     }
 }

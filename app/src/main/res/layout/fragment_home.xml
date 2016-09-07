@@ -5,14 +5,29 @@
     android:background="@color/white"
     android:clickable="true">
 
-    <ListView
-        android:id="@+id/lstCategory"
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/rootContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_tiny"
-        android:divider="@color/white"
-        android:dividerHeight="1dp" />
-    <!--android:transcriptMode="alwaysScroll"-->
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/offerViewPager"
+                layout="@layout/image_viewpager_offer" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerListCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/offerViewPager"
+                android:layout_marginTop="@dimen/margin_tiny" />
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
     <include layout="@layout/progressbar" />
 </RelativeLayout>

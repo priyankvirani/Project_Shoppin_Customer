@@ -2,12 +2,12 @@ package com.shoppin.customer.adapter;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -15,18 +15,19 @@ import com.shoppin.customer.R;
 import com.shoppin.customer.activity.NavigationDrawerActivity;
 import com.shoppin.customer.database.DBAdapter;
 import com.shoppin.customer.model.Product;
-import com.shoppin.customer.utils.Utils;
 
 import java.util.ArrayList;
 
-import static com.shoppin.customer.R.id.imgAddToCart;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class ProductListAdapter extends BaseAdapter {
+public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.MyViewHolder> {
 
     private static final String TAG = ProductListAdapter.class.getSimpleName();
 
     private Context context;
     private ArrayList<Product> productArrayList;
+    private OnItemClickListener itemClickListener;
 
     public ProductListAdapter(Context context, ArrayList<Product> productArrayList) {
         this.context = context;
@@ -34,36 +35,19 @@ public class ProductListAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return productArrayList == null ? 0 : productArrayList.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return productArrayList.get(position);
+    public ProductListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.cell_product, parent, false);
+        return new ProductListAdapter.MyViewHolder(itemView);
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            convertView = View.inflate(context, R.layout.cell_product, null);
-            holder = new ViewHolder();
-            holder.lltCell = (LinearLayout) convertView.findViewById(R.id.lltCell);
-            holder.txtProductName = (TextView) convertView.findViewById(R.id.txtProductName);
-            holder.txtProductPrice = (TextView) convertView.findViewById(R.id.txtProductPrice);
-            holder.txtProductSalePrice = (TextView) convertView.findViewById(R.id.txtProductSalePrice);
-            holder.imgProduct = (ImageView) convertView.findViewById(R.id.imgProduct);
-            holder.imgAddToCart = (ImageView) convertView.findViewById(imgAddToCart);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
+    public void onBindViewHolder(final ProductListAdapter.MyViewHolder holder, final int position) {
         Log.e(TAG, "productId = " + productArrayList.get(position).productId);
 
         holder.txtProductName.setText(productArrayList.get(position).productName);
@@ -95,26 +79,47 @@ public class ProductListAdapter extends BaseAdapter {
                 }
             });
         }
-        return convertView;
 
+        holder.cellRoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClick(view, position);
+                }
+            }
+        });
     }
 
-    class ViewHolder {
-        public LinearLayout lltCell;
-        public TextView txtProductName, txtProductPrice, txtProductSalePrice;
-        public ImageView imgProduct, imgAddToCart;
+    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
+        this.itemClickListener = mItemClickListener;
     }
 
-    private class OnItemClickListener implements View.OnClickListener {
-        private int position;
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int position);
+    }
 
-        OnItemClickListener(int position) {
-            this.position = position;
-        }
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.cellRoot)
+        View cellRoot;
 
-        @Override
-        public void onClick(View arg0) {
-            Utils.showToastShort(context, "Under Development : " + productArrayList.get(position).productName);
+        @BindView(R.id.txtProductName)
+        TextView txtProductName;
+
+        @BindView(R.id.txtProductPrice)
+        TextView txtProductPrice;
+
+        @BindView(R.id.txtProductSalePrice)
+        TextView txtProductSalePrice;
+
+        @BindView(R.id.imgProduct)
+        ImageView imgProduct;
+
+        @BindView(R.id.imgAddToCart)
+        ImageView imgAddToCart;
+
+        MyViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 

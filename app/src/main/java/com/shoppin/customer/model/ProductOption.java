@@ -12,8 +12,10 @@ import java.util.ArrayList;
 public class ProductOption implements Serializable {
     @SerializedName("option_id")
     public String optionId;
+
     @SerializedName("name")
     public String optionName;
+
     @SerializedName("option_value")
     public ArrayList<ProductOptionValue> productOptionValueArrayList;
 }

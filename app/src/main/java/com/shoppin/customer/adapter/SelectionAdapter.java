@@ -1,72 +1,44 @@
 package com.shoppin.customer.adapter;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 
 import com.shoppin.customer.R;
 
 import java.util.ArrayList;
 
-public class SelectionAdapter<T> extends BaseAdapter {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class SelectionAdapter<T> extends RecyclerView.Adapter<SelectionAdapter.MyViewHolder> {
 
     private static final String TAG = SelectionAdapter.class.getSimpleName();
 
-    private Context context;
     private ArrayList<T> filterArrayList;
     private IBindAdapterValues<T> bindAdapterValues;
 
-    public SelectionAdapter(Context context, ArrayList<T> filterArrayList) {
-        this.context = context;
+    public SelectionAdapter(ArrayList<T> filterArrayList) {
         this.filterArrayList = filterArrayList;
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return filterArrayList == null ? 0 : filterArrayList.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return filterArrayList.get(position);
+    public SelectionAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.cell_selection, parent, false);
+        return new SelectionAdapter.MyViewHolder(itemView);
     }
 
     @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        Holder holder;
-        if (convertView == null) {
-            holder = new Holder();
-            convertView = View.inflate(context, R.layout.cell_selection, null);
-            holder.txtSelectionValue = (CheckBox) convertView.findViewById(R.id.txtSelectionValue);
-            convertView.setTag(holder);
-        } else {
-            holder = (Holder) convertView.getTag();
-        }
-
-        // holder.txtSelectionValue.setText(filterArrayList.get(position).name);
-        // holder.txtSelectionValue.setChecked(filterArrayList.get(position).selected);
-        // holder.txtSelectionValue.setOnClickListener(new OnClickListener() {
-        //
-        // @Override
-        // public void onClick(View arg0) {
-        // // TODO Auto-generated method stub
-        // if (filterArrayList.get(position).selected) {
-        // filterArrayList.get(position).selected = false;
-        // } else {
-        // filterArrayList.get(position).selected = true;
-        // }
-        // notifyDataSetChanged();
-        // }
-        // });
+    public void onBindViewHolder(final SelectionAdapter.MyViewHolder holder, final int position) {
         bindAdapterValues.bindValues(holder, position);
-        return convertView;
     }
 
     public void setBindAdapterInterface(IBindAdapterValues<T> bindAdapterValues) {
@@ -75,10 +47,16 @@ public class SelectionAdapter<T> extends BaseAdapter {
 
     public interface IBindAdapterValues<T> {
         // public void bindValues(Holder holder, T object);
-        public void bindValues(Holder holder, int position);
+        public void bindValues(SelectionAdapter.MyViewHolder holder, int position);
     }
 
-    public static class Holder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.txtSelectionValue)
         public CheckBox txtSelectionValue;
+
+        MyViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
     }
 }

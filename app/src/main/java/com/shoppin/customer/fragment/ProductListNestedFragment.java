@@ -2,12 +2,12 @@ package com.shoppin.customer.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,8 +39,8 @@ public class ProductListNestedFragment extends BaseFragment {
     @BindView(R.id.rlvGlobalProgressbar)
     View rlvGlobalProgressbar;
 
-    @BindView(R.id.listProduct)
-    ListView listProduct;
+    @BindView(R.id.recyclerListProduct)
+    RecyclerView recyclerListProduct;
 
     private ArrayList<SubCategory> subCategoryArrayList;
     private int subCategoryPosition = -1;
@@ -61,50 +61,21 @@ public class ProductListNestedFragment extends BaseFragment {
 
         productArrayList = new ArrayList<>();
         productListAdapter = new ProductListAdapter(getActivity(), productArrayList);
-        listProduct.setAdapter(productListAdapter);
-        listProduct.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        productListAdapter.setOnItemClickListener(new ProductListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(View view, int position) {
                 NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) getActivity();
                 if (navigationDrawerActivity != null) {
-                    navigationDrawerActivity.switchContent(ProductDetailFragment.newInstance(productArrayList.get(i).productId), false);
+                    navigationDrawerActivity.switchContent(ProductDetailFragment.newInstance(productArrayList.get(position).productId), false);
                 }
             }
         });
+        recyclerListProduct.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerListProduct.setAdapter(productListAdapter);
 
-//        initAdapter();
         getProductBySubCategory();
         return layoutView;
     }
-
-
-//    @Override
-//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        position = FragmentPagerItem.getPosition(getArguments());
-//        Log.e(TAG, "Position :  -  " + position);
-//        productListAdapter = new SubCategoryAdapter(getActivity(), productArrayList.get(position).productArrayList);
-//        listProduct.setAdapter(productListAdapter);
-//        //productListAdapter.notifyDataSetChanged();
-//        Log.e(TAG, "onViewCreated");
-//
-//    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-//        initAdapter();
-        Log.e(TAG, "onViewCreated");
-
-    }
-
-//    private void initAdapter() {
-//        position = FragmentPagerItem.getPosition(getArguments());
-//        Log.e(TAG, "Position :  -  " + position);
-//        productListAdapter = new SubCategoryNestedAdapter(getActivity(), productArrayList.get(position).productOptionValueArrayList);
-//        listProduct.setAdapter(productListAdapter);
-//    }
 
     private void getProductBySubCategory() {
         try {

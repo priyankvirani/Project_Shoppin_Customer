@@ -1,9 +1,10 @@
 package com.shoppin.customer.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.shoppin.customer.R;
@@ -11,11 +12,14 @@ import com.shoppin.customer.model.Store;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by ubuntu on 24/8/16.
  */
 
-public class StoreListAdapter extends BaseAdapter {
+public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.MyViewHolder> {
     private static final String TAG = StoreListAdapter.class.getSimpleName();
 
     private Context context;
@@ -27,40 +31,34 @@ public class StoreListAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return storeArrayList == null ? 0 : storeArrayList.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return storeArrayList.get(position);
+    public StoreListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.cell_store_list, parent, false);
+        return new StoreListAdapter.MyViewHolder(itemView);
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            convertView = View.inflate(context, R.layout.cell_store_list, null);
-            holder = new ViewHolder();
-
-            holder.txtStoreName = (TextView) convertView.findViewById(R.id.txtStoreName);
-            holder.txtStoreAddress = (TextView) convertView.findViewById(R.id.txtStoreAddress);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
+    public void onBindViewHolder(final StoreListAdapter.MyViewHolder holder, final int position) {
         holder.txtStoreName.setText(storeArrayList.get(position).store_name);
         holder.txtStoreAddress.setText(storeArrayList.get(position).store_address);
-        return convertView;
     }
 
-    class ViewHolder {
-        public TextView txtStoreName, txtStoreAddress;
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.txtStoreName)
+        TextView txtStoreName;
+
+        @BindView(R.id.txtStoreAddress)
+        TextView txtStoreAddress;
+
+        MyViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
     }
 }

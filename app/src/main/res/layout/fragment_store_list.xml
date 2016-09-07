@@ -3,13 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/lstNearShops"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerListNearByStore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:divider="@color/gray"
-        android:dividerHeight="1dp" />
+        android:layout_marginTop="2dp" />
 
     <include layout="@layout/progressbar" />
 </RelativeLayout>

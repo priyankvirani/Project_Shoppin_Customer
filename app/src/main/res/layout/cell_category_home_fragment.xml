@@ -6,7 +6,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_tiny">
 
         <RelativeLayout
             android:id="@+id/rlvCategory"
@@ -38,7 +39,7 @@
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+            android:id="@+id/recyclerHorizontalListSubCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollbars="none" />

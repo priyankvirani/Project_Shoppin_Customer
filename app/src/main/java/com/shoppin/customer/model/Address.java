@@ -10,6 +10,17 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Address implements Parcelable {
+    public static final Creator<Address> CREATOR = new Creator<Address>() {
+        @Override
+        public Address createFromParcel(Parcel source) {
+            return new Address(source);
+        }
+
+        @Override
+        public Address[] newArray(int size) {
+            return new Address[size];
+        }
+    };
     @SerializedName("customer_address_id")
     public String addressId;
     @SerializedName("customer_name")
@@ -28,6 +39,16 @@ public class Address implements Parcelable {
     public Address() {
     }
 
+    protected Address(Parcel in) {
+        this.addressId = in.readString();
+        this.name = in.readString();
+        this.phoneNumber = in.readString();
+        this.street = in.readString();
+        this.suburbId = in.readString();
+        this.suburbName = in.readString();
+        this.postCode = in.readString();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -43,26 +64,4 @@ public class Address implements Parcelable {
         dest.writeString(this.suburbName);
         dest.writeString(this.postCode);
     }
-
-    protected Address(Parcel in) {
-        this.addressId = in.readString();
-        this.name = in.readString();
-        this.phoneNumber = in.readString();
-        this.street = in.readString();
-        this.suburbId = in.readString();
-        this.suburbName = in.readString();
-        this.postCode = in.readString();
-    }
-
-    public static final Creator<Address> CREATOR = new Creator<Address>() {
-        @Override
-        public Address createFromParcel(Parcel source) {
-            return new Address(source);
-        }
-
-        @Override
-        public Address[] newArray(int size) {
-            return new Address[size];
-        }
-    };
 }

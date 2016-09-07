@@ -14,6 +14,9 @@ import com.shoppin.customer.utils.Utils;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by ubuntu on 8/8/16.
  */
@@ -30,10 +33,14 @@ public class CheckoutTimeAdapter extends RecyclerView.Adapter<CheckoutTimeAdapte
     }
 
     @Override
+    public int getItemCount() {
+        return checkoutTimeArrayList == null ? 0 : checkoutTimeArrayList.size();
+    }
+
+    @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cell_checkout_date_time, parent, false);
-
         return new MyViewHolder(itemView);
     }
 
@@ -48,12 +55,21 @@ public class CheckoutTimeAdapter extends RecyclerView.Adapter<CheckoutTimeAdapte
             holder.txtTime.setTextColor(context.getResources().getColor(R.color.text_black));
             holder.txtTime.setBackground(Utils.getDrawable(context, R.drawable.bg_date_time_non_selected));
         }
-        holder.txtTime.setOnClickListener(new OnItemClickListener(checkoutTimeArrayList.get(position), position, holder.txtTime));
-    }
-
-    @Override
-    public int getItemCount() {
-        return checkoutTimeArrayList == null ? 0 : checkoutTimeArrayList.size();
+//        holder.txtTime.setOnClickListener(new OnItemClickListener(checkoutTimeArrayList.get(position), position, holder.txtTime));
+        holder.txtTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.txtTime.setBackgroundColor(context.getResources().getColor(R.color.app_theme_1));
+                for (int i = 0; i < checkoutTimeArrayList.size(); i++) {
+                    if (i != position) {
+                        checkoutTimeArrayList.get(i).setSelected(false);
+                    } else {
+                        checkoutTimeArrayList.get(i).setSelected(true);
+                    }
+                }
+                notifyDataSetChanged();
+            }
+        });
     }
 
     protected void setCheckoutTimeArrayList(ArrayList<CheckoutTime> tmpCheckoutTimeArrayList) {
@@ -65,37 +81,12 @@ public class CheckoutTimeAdapter extends RecyclerView.Adapter<CheckoutTimeAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.txtDateTime)
+        TextView txtTime;
 
-        public TextView txtTime;
-
-        public MyViewHolder(View vi) {
-            super(vi);
-            txtTime = (TextView) vi.findViewById(R.id.txtDateTime);
-        }
-    }
-
-    private class OnItemClickListener implements View.OnClickListener {
-        private CheckoutTime checkoutTime;
-        private int position;
-        private TextView txtTime;
-
-        OnItemClickListener(CheckoutTime checkoutTime, int position, TextView txtTime) {
-            this.checkoutTime = checkoutTime;
-            this.position = position;
-            this.txtTime = txtTime;
-        }
-
-        @Override
-        public void onClick(View arg0) {
-            txtTime.setBackgroundColor(context.getResources().getColor(R.color.app_theme_1));
-            for (int i = 0; i < checkoutTimeArrayList.size(); i++) {
-                if (i != position) {
-                    checkoutTimeArrayList.get(i).setSelected(false);
-                } else {
-                    checkoutTimeArrayList.get(i).setSelected(true);
-                }
-            }
-            notifyDataSetChanged();
+        MyViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

@@ -10,13 +10,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +31,7 @@ import com.shoppin.customer.fragment.MyAccountFragment;
 import com.shoppin.customer.fragment.OfferFragment;
 import com.shoppin.customer.fragment.StoreListFragment;
 import com.shoppin.customer.fragment.UnderDevelopmentFragment;
-import com.shoppin.customer.model.NavigationDrawerMenuItem;
+import com.shoppin.customer.model.NavigationDrawerMenu;
 import com.shoppin.customer.model.Product;
 import com.shoppin.customer.utils.Utils;
 
@@ -63,10 +63,12 @@ public class NavigationDrawerActivity extends BaseActivity {
      */
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     @BindView(R.id.drawerLayout)
     DrawerLayout drawerLayout;
-    @BindView(R.id.leftDrawerList)
-    ListView leftDrawerList;
+
+    @BindView(R.id.recyclerListNavigationDrawer)
+    RecyclerView recyclerListNavigationDrawer;
     /**
      * Basically to change title in tool bar.
      * <p/>
@@ -93,11 +95,9 @@ public class NavigationDrawerActivity extends BaseActivity {
     /**
      * Menu drawer item click listener to set respective fragment
      */
-    AdapterView.OnItemClickListener leftDrawerListItemClickListener = new AdapterView.OnItemClickListener() {
-
+    NavigationDrawerMenuAdapter.OnItemClickListener leftDrawerListItemClickListener = new NavigationDrawerMenuAdapter.OnItemClickListener() {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        public void onItemClick(View view, int position) {
             if (view != null && view.getTag() != null) {
                 Log.d(TAG, "menuName = " + view.getTag());
 
@@ -143,7 +143,9 @@ public class NavigationDrawerActivity extends BaseActivity {
             }
         }
     };
+
     private ActionBarDrawerToggle drawerToggle;
+    private ArrayList<NavigationDrawerMenu> navigationDrawerMenuArrayList;
     private NavigationDrawerMenuAdapter drawerMenuAdapter;
     /**
      * For double back exit functionality
@@ -219,41 +221,41 @@ public class NavigationDrawerActivity extends BaseActivity {
     }
 
     private void setMenuAdapter() {
-        drawerMenuAdapter = new NavigationDrawerMenuAdapter(
-                NavigationDrawerActivity.this);
+        navigationDrawerMenuArrayList = new ArrayList<>();
         if (DBAdapter.getMapKeyValueBoolean(NavigationDrawerActivity.this, IMap.IS_LOGIN)) {
-            drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.WELCOME,
+            navigationDrawerMenuArrayList.add(new NavigationDrawerMenu(IDrawerMenu.WELCOME,
                     IDrawerMenu.WELCOME_ID, R.drawable.user));
         } else {
-            drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.LOGIN_SIGNUP,
+            navigationDrawerMenuArrayList.add(new NavigationDrawerMenu(IDrawerMenu.LOGIN_SIGNUP,
                     IDrawerMenu.LOGIN_SIGNUP_ID, R.drawable.user));
         }
 
-        drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.CHANGE_SUBURB,
+        navigationDrawerMenuArrayList.add(new NavigationDrawerMenu(IDrawerMenu.CHANGE_SUBURB,
                 IDrawerMenu.CHANGE_SUBURB_ID, R.drawable.street));
-//        drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.HOME,
+//        drawerMenuAdapter.add(new NavigationDrawerMenu(IDrawerMenu.HOME,
 //                IDrawerMenu.HOME_ID, R.drawable.user));
-        drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.STORE_LIST,
+        navigationDrawerMenuArrayList.add(new NavigationDrawerMenu(IDrawerMenu.STORE_LIST,
                 IDrawerMenu.STORE_LIST_ID, R.drawable.storelist));
 
         if (DBAdapter.getMapKeyValueBoolean(NavigationDrawerActivity.this, IMap.IS_LOGIN)) {
-            drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.MY_ORDER,
+            navigationDrawerMenuArrayList.add(new NavigationDrawerMenu(IDrawerMenu.MY_ORDER,
                     IDrawerMenu.MY_ORDER_ID, R.drawable.myorder));
         }
 
-        drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.CART,
+        navigationDrawerMenuArrayList.add(new NavigationDrawerMenu(IDrawerMenu.CART,
                 IDrawerMenu.CART_ID, R.drawable.mycart));
-        drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.OFFERS,
+        navigationDrawerMenuArrayList.add(new NavigationDrawerMenu(IDrawerMenu.OFFERS,
                 IDrawerMenu.OFFERS_ID, R.drawable.offers));
-        drawerMenuAdapter.add(new NavigationDrawerMenuItem(IDrawerMenu.ABOUT_US,
+        navigationDrawerMenuArrayList.add(new NavigationDrawerMenu(IDrawerMenu.ABOUT_US,
                 IDrawerMenu.ABOUT_US_ID, R.drawable.aboutus));
     }
 
     private void initDrawer() {
         setMenuAdapter();
-        leftDrawerList.setAdapter(drawerMenuAdapter);
-        leftDrawerList.setOnItemClickListener(leftDrawerListItemClickListener);
-
+        drawerMenuAdapter = new NavigationDrawerMenuAdapter(navigationDrawerMenuArrayList);
+        drawerMenuAdapter.setOnItemClickListener(leftDrawerListItemClickListener);
+        recyclerListNavigationDrawer.setLayoutManager(new LinearLayoutManager(NavigationDrawerActivity.this));
+        recyclerListNavigationDrawer.setAdapter(drawerMenuAdapter);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.drawer_open, R.string.drawer_close) {

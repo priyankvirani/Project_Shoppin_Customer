@@ -37,10 +37,12 @@ public class ChooseDeliveryActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbarChooseDelivery)
     Toolbar toolbar;
+
     @BindView(R.id.rlvGlobalProgressbar)
     RelativeLayout rlvGlobalProgressbar;
-    @BindView(R.id.rclAddress)
-    RecyclerView rclAddress;
+
+    @BindView(R.id.recyclerListAddress)
+    RecyclerView recyclerListAddress;
 
     private ArrayList<Address> addressArrayList;
     private AddressAdapter addressAdapter;
@@ -60,9 +62,6 @@ public class ChooseDeliveryActivity extends AppCompatActivity {
 
         addressArrayList = new ArrayList<>();
         addressAdapter = new AddressAdapter(ChooseDeliveryActivity.this, addressArrayList, null);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(ChooseDeliveryActivity.this);
-        rclAddress.setLayoutManager(mLayoutManager);
-        rclAddress.setAdapter(addressAdapter);
         addressAdapter.setOnItemClickListener(new AddressAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -72,6 +71,9 @@ public class ChooseDeliveryActivity extends AppCompatActivity {
                 finish();
             }
         });
+//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(ChooseDeliveryActivity.this);
+        recyclerListAddress.setLayoutManager(new LinearLayoutManager(ChooseDeliveryActivity.this));
+        recyclerListAddress.setAdapter(addressAdapter);
 
         getAddressList();
     }

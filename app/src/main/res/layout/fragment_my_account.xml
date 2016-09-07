@@ -194,7 +194,7 @@
                 <!--<include layout="@layout/cell_address" />-->
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rclAddress"
+                    android:id="@+id/recyclerListAddress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="2dp"

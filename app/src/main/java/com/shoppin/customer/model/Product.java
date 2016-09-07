@@ -17,20 +17,28 @@ public class Product implements Serializable {
 
     @SerializedName("product_id")
     public String productId;
+
     @SerializedName("name")
     public String productName;
+
     @SerializedName("images")
     public ArrayList<String> productImages;
+
     @SerializedName("price")
     public double productPrice;
+
     @SerializedName("saleprice")
     public double productSalePrice;
+
     @SerializedName("description")
     public String productDescription;
+
     @SerializedName("has_option")
     public boolean productHasOption = false;
+
     @SerializedName("option_list")
     public ArrayList<ProductOption> productOptionArrayList;
+
     public int productQuantity;
 
     //    private double priceAsPerSelection = 0;
@@ -53,7 +61,7 @@ public class Product implements Serializable {
                 for (int jOptionValue = 0;
                      jOptionValue < productOptionArrayList.get(iOption).productOptionValueArrayList.size();
                      jOptionValue++) {
-                    if (productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).selected) {
+                    if (productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).isSelected) {
                         salePrice += productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).optionValuePrice;
                         Log.d(TAG, "price optionValueName = " + productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).optionValueName);
                         Log.d(TAG, "price optionValuePrice = " + productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).optionValuePrice);
@@ -89,7 +97,7 @@ public class Product implements Serializable {
                 for (int jOptionValue = 0;
                      jOptionValue < productOptionArrayList.get(iOption).productOptionValueArrayList.size();
                      jOptionValue++) {
-                    if (productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).selected) {
+                    if (productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).isSelected) {
                         if (iOption == productOptionArrayList.size() - 1) {
                             tmpSelectedOptions += productOptionArrayList.get(iOption).productOptionValueArrayList.get(jOptionValue).optionValueName;
                         } else {

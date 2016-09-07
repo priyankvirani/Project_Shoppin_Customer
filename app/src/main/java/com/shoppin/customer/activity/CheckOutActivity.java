@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -310,7 +309,7 @@ public class CheckOutActivity extends AppCompatActivity {
 
     private void showAlertNearByStore() {
         TextView txtSelectionDone;
-        ListView listCategorytFilter;
+        RecyclerView recyclerFilter;
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
                 CheckOutActivity.this);
@@ -337,14 +336,12 @@ public class CheckOutActivity extends AppCompatActivity {
 
 //        ArrayList<ProductOptionValue> productOptionValueArrayList = productOption.productOptionValueArrayList;
 
-        listCategorytFilter = (ListView) dialogView
-                .findViewById(R.id.listFilter);
-        final SelectionAdapter<Store> filterStateAdapter = new SelectionAdapter<Store>(
-                CheckOutActivity.this, storeArrayList);
+        recyclerFilter = (RecyclerView) dialogView.findViewById(R.id.recyclerFilter);
+        final SelectionAdapter<Store> filterStateAdapter = new SelectionAdapter<Store>(storeArrayList);
         filterStateAdapter
                 .setBindAdapterInterface(new SelectionAdapter.IBindAdapterValues<Store>() {
                     @Override
-                    public void bindValues(SelectionAdapter.Holder holder, final int position) {
+                    public void bindValues(SelectionAdapter.MyViewHolder holder, final int position) {
                         // TODO Auto-generated method stub
 
                         holder.txtSelectionValue.setText(storeArrayList.get(position).store_name);
@@ -372,7 +369,8 @@ public class CheckOutActivity extends AppCompatActivity {
                                 });
                     }
                 });
-        listCategorytFilter.setAdapter(filterStateAdapter);
+        recyclerFilter.setLayoutManager(new LinearLayoutManager(CheckOutActivity.this));
+        recyclerFilter.setAdapter(filterStateAdapter);
         alertDialog.getWindow().setBackgroundDrawableResource(
                 R.color.transparent);
 //        alertDialog.setCancelable(false);

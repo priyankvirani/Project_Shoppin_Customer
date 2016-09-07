@@ -11,10 +11,12 @@ import java.io.Serializable;
 public class ProductOptionValue implements Serializable {
     @SerializedName("option_value_id")
     public String optionValueId;
+
     @SerializedName("name")
     public String optionValueName;
+
     @SerializedName("price")
     public double optionValuePrice;
 
-    public boolean selected;
+    public boolean isSelected;
 }

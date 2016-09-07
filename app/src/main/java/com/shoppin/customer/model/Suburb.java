@@ -7,7 +7,6 @@ package com.shoppin.customer.model;
 public class Suburb {
     public String suburb_id;
     public String suburb_name;
-    public boolean selected;
 
     @Override
     public String toString() {

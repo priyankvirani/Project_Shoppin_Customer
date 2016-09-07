@@ -3,7 +3,6 @@ package com.shoppin.customer.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +30,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.MyViewHo
     private Context context;
     private ArrayList<Address> addressArrayList;
     private MyAccountFragment myAccountFragment;
-    private OnItemClickListener mItemClickListener;
+    private OnItemClickListener itemClickListener;
 
     public AddressAdapter(Context context, ArrayList<Address> addressArrayList, MyAccountFragment myAccountFragment) {
         this.context = context;
@@ -40,14 +39,19 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.MyViewHo
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public int getItemCount() {
+        return addressArrayList == null ? 0 : addressArrayList.size();
+    }
+
+    @Override
+    public AddressAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cell_address, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final AddressAdapter.MyViewHolder holder, final int position) {
         holder.txtName.setText(addressArrayList.get(position).name);
         holder.txtPhone.setText(addressArrayList.get(position).phoneNumber);
         holder.txtStreet.setText(addressArrayList.get(position).street);
@@ -65,24 +69,18 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.MyViewHo
                 }
             }
         });
-        holder.cardAddress.setOnClickListener(new View.OnClickListener() {
+        holder.cellRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mItemClickListener != null) {
-                    mItemClickListener.onItemClick(view, position);
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClick(view, position);
                 }
             }
         });
     }
 
-    @Override
-    public int getItemCount() {
-        return addressArrayList == null ? 0 : addressArrayList.size();
-    }
-
-
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
-        this.mItemClickListener = mItemClickListener;
+        this.itemClickListener = mItemClickListener;
     }
 
     public interface OnItemClickListener {
@@ -90,24 +88,30 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.MyViewHo
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.cardAddress)
-        CardView cardAddress;
+        @BindView(R.id.cellRoot)
+        View cellRoot;
+
         @BindView(R.id.txtCustomerName)
         TextView txtName;
+
         @BindView(R.id.txtPhone)
         TextView txtPhone;
+
         @BindView(R.id.txtStreet)
         TextView txtStreet;
+
         @BindView(R.id.txtSuburb)
         TextView txtSuburb;
+
         @BindView(R.id.txtPostCode)
         TextView txtPostCode;
+
         @BindView(R.id.imgEditAddress)
         ImageView imgEdit;
 
-        MyViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
+        MyViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

@@ -29,6 +29,7 @@ public class CategoryFragment extends BaseFragment {
 
     @BindView(R.id.categoryViewPager)
     ViewPager categoryViewPager;
+
     @BindView(R.id.categorySmartTabLayout)
     SmartTabLayout categorySmartTabLayout;
 
@@ -88,8 +89,6 @@ public class CategoryFragment extends BaseFragment {
 //        fragmentPagerItemAdapter = new FragmentPagerItemAdapter(getActivity().getSupportFragmentManager(), fragmentPagerItems);
         fragmentPagerItemAdapter = new FragmentPagerItemAdapter(getChildFragmentManager(), fragmentPagerItems);
         categoryViewPager.setAdapter(fragmentPagerItemAdapter);
-        categorySmartTabLayout.setViewPager(categoryViewPager);
-
         categoryViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -121,6 +120,7 @@ public class CategoryFragment extends BaseFragment {
             public void onPageScrollStateChanged(int state) {
             }
         });
+        categorySmartTabLayout.setViewPager(categoryViewPager);
         categorySmartTabLayout.setOnTabClickListener(new SmartTabLayout.OnTabClickListener() {
             @Override
             public void onTabClicked(int position) {

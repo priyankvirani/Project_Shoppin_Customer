@@ -2,10 +2,11 @@ package com.shoppin.customer.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.shoppin.customer.R;
 import com.shoppin.customer.activity.NavigationDrawerActivity;
@@ -25,8 +26,8 @@ public class StoreListFragment extends BaseFragment {
 
     public static final String TAG = StoreListFragment.class.getSimpleName();
 
-    @BindView(R.id.lstNearShops)
-    ListView lstNearShops;
+    @BindView(R.id.recyclerListNearByStore)
+    RecyclerView recyclerListNearByStore;
 
     ArrayList<Store> storeArrayList;
     StoreListAdapter storeListAdapter;
@@ -38,17 +39,14 @@ public class StoreListFragment extends BaseFragment {
 
         ButterKnife.bind(this, layoutView);
 
-        initView();
+        storeArrayList = new ArrayList<Store>();
+        storeListAdapter = new StoreListAdapter(getActivity(), storeArrayList);
+        recyclerListNearByStore.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerListNearByStore.setAdapter(storeListAdapter);
 
         dummyData();
 
         return layoutView;
-    }
-
-    private void initView() {
-        storeArrayList = new ArrayList<Store>();
-        storeListAdapter = new StoreListAdapter(getActivity(), storeArrayList);
-        lstNearShops.setAdapter(storeListAdapter);
     }
 
     private void dummyData() {

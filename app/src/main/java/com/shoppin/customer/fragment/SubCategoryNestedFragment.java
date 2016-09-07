@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.shoppin.customer.R;
-import com.shoppin.customer.adapter.SubCategoryNestedAdapter;
+import com.shoppin.customer.adapter.SubCategoryAdapter;
 import com.shoppin.customer.model.Category;
 
 import java.util.ArrayList;
@@ -28,17 +28,14 @@ import static com.shoppin.customer.fragment.CategoryFragment.CATEGORY_POSITION;
 public class SubCategoryNestedFragment extends BaseFragment {
     private static final String TAG = SubCategoryNestedFragment.class.getSimpleName();
 
-//    @BindView(R.id.grdSubCategory)
-//    GridView grdSubCategory;
-
-    @BindView(R.id.recycler_view)
-    RecyclerView grdSubCategory;
+    @BindView(R.id.recyclerGridSubCategory)
+    RecyclerView recyclerGridSubCategory;
 
 
     private int categoryPosition = -1;
     private int position;
     private ArrayList<Category> categoryArrayList;
-    private SubCategoryNestedAdapter subCategoryNestedAdapter;
+    private SubCategoryAdapter subCategoryNestedAdapter;
 
     @Nullable
     @Override
@@ -86,14 +83,8 @@ public class SubCategoryNestedFragment extends BaseFragment {
     private void initAdapter() {
         position = FragmentPagerItem.getPosition(getArguments());
         Log.e(TAG, "Position :  -  " + position);
-        subCategoryNestedAdapter = new SubCategoryNestedAdapter(getActivity(), categoryArrayList.get(position).subCategoryArrayList);
-//        grdSubCategory.setAdapter(subCategoryNestedAdapter);
-//
-//        subCategoryArrayList = categoryArrayList.get(position).subCategoryArrayList;
-//        subCategoryHorizontalAdapter = new SubCategoryHorizontalAdapter(context, subCategoryArrayList, categoryArrayList.get(position).categoryId);
-        RecyclerView.LayoutManager mLayoutManager
-                = new GridLayoutManager(getActivity(),3);
-        grdSubCategory.setLayoutManager(mLayoutManager);
-        grdSubCategory.setAdapter(subCategoryNestedAdapter);
+        subCategoryNestedAdapter = new SubCategoryAdapter(getActivity(), categoryArrayList.get(position).subCategoryArrayList);
+        recyclerGridSubCategory.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        recyclerGridSubCategory.setAdapter(subCategoryNestedAdapter);
     }
 }

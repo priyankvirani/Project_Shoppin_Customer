@@ -2,12 +2,11 @@ package com.shoppin.customer.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.shoppin.customer.R;
 import com.shoppin.customer.activity.NavigationDrawerActivity;
@@ -28,8 +27,8 @@ public class OfferFragment extends BaseFragment {
 
     private static final String TAG = OfferFragment.class.getSimpleName();
 
-    @BindView(R.id.lstOffers)
-    ListView lstOffers;
+    @BindView(R.id.recyclerListOffer)
+    RecyclerView recyclerListOffer;
 
     private ArrayList<Offer> offerArrayList;
     private OfferAdapter offerAdapter;
@@ -40,26 +39,20 @@ public class OfferFragment extends BaseFragment {
         layoutView = inflater.inflate(R.layout.fragment_offer, container, false);
         ButterKnife.bind(this, layoutView);
 
-        intiView();
-
-        dummyData();
-
-        lstOffers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        offerArrayList = new ArrayList<>();
+        offerAdapter = new OfferAdapter(getActivity(), offerArrayList);
+        offerAdapter.setOnItemClickListener(new OfferAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+            public void onItemClick(View view, int position) {
                 Utils.copyTextToClipBoard(getActivity(), offerArrayList.get(position).offer_detail);
             }
         });
+        recyclerListOffer.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerListOffer.setAdapter(offerAdapter);
+
+        dummyData();
 
         return layoutView;
-
-
-    }
-
-    private void intiView() {
-        offerArrayList = new ArrayList<Offer>();
-        offerAdapter = new OfferAdapter(getActivity(), offerArrayList);
-        lstOffers.setAdapter(offerAdapter);
     }
 
     private void dummyData() {

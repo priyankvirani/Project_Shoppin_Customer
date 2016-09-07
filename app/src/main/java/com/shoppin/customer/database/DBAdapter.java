@@ -153,16 +153,16 @@ public class DBAdapter {
 //                                                    // Cart product option value
 //                                                    for (int valueCartProduct = 0; valueCartProduct < cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.size(); valueCartProduct++) {
 //                                                        // Both value id got matched
-//                                                        // and both are selected
+//                                                        // and both are isSelected
 //                                                        Log.e(TAG, "[" + optionProduct + "]optionProduct, [" + valueProduct + "]valueProduct = " + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId
-//                                                                + "," + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected);
+//                                                                + "," + product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).isSelected);
 //                                                        Log.e(TAG, "[" + optionCartProduct + "]optionCartProduct [" + valueCartProduct + "]valueCartProduct = " + cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).optionValueId
-//                                                                + "," + cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).selected);
+//                                                                + "," + cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).isSelected);
 //
 //                                                        if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).optionValueId
 //                                                                .equals(cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).optionValueId)
-//                                                                && product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected
-//                                                                && cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).selected) {
+//                                                                && product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).isSelected
+//                                                                && cartProduct.productOptionArrayList.get(optionCartProduct).productOptionValueArrayList.get(valueCartProduct).isSelected) {
 //                                                            Log.e(TAG, "================MATCH==================");
 //                                                            optionMatchCount++;
 //                                                            break;
@@ -288,7 +288,7 @@ public class DBAdapter {
         if (product.productHasOption && product.productOptionArrayList != null) {
             for (int optionProduct = 0; optionProduct < product.productOptionArrayList.size(); optionProduct++) {
                 for (int valueProduct = 0; valueProduct < product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.size(); valueProduct++) {
-                    if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected) {
+                    if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).isSelected) {
                         switch (optionProduct) {
                             case ICart.OPTION_0:
                                 query += "AND " + ICart.KEY_OPTION_ID_0 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";
@@ -336,7 +336,7 @@ public class DBAdapter {
                 if (product.productHasOption && product.productOptionArrayList != null) {
                     for (int optionProduct = 0; optionProduct < product.productOptionArrayList.size(); optionProduct++) {
                         for (int valueProduct = 0; valueProduct < product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.size(); valueProduct++) {
-                            if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected) {
+                            if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).isSelected) {
                                 switch (optionProduct) {
                                     case ICart.OPTION_0:
                                         contentValues.put(ICart.KEY_OPTION_ID_0, product.productOptionArrayList.get(optionProduct).optionId);
@@ -408,7 +408,7 @@ public class DBAdapter {
         if (product.productHasOption && product.productOptionArrayList != null) {
             for (int optionProduct = 0; optionProduct < product.productOptionArrayList.size(); optionProduct++) {
                 for (int valueProduct = 0; valueProduct < product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.size(); valueProduct++) {
-                    if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).selected) {
+                    if (product.productOptionArrayList.get(optionProduct).productOptionValueArrayList.get(valueProduct).isSelected) {
                         switch (optionProduct) {
                             case ICart.OPTION_0:
                                 query += "AND " + ICart.KEY_OPTION_ID_0 + " = '" + product.productOptionArrayList.get(optionProduct).optionId + "' ";

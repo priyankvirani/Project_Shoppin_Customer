@@ -3,11 +3,11 @@ package com.shoppin.customer.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.shoppin.customer.R;
@@ -35,8 +35,8 @@ public class CartFragment extends BaseFragment {
     @BindView(R.id.rlvGlobalProgressbar)
     View rlvGlobalProgressbar;
 
-    @BindView(R.id.listProduct)
-    ListView listProduct;
+    @BindView(R.id.recyclerListProduct)
+    RecyclerView recyclerListProduct;
 
     @BindView(R.id.txtCartSalePriceTotal)
     TextView txtCartSalePriceTotal;
@@ -53,16 +53,17 @@ public class CartFragment extends BaseFragment {
         productArrayList = new ArrayList<>();
         productArrayList.addAll(DBAdapter.getAllProductFromCart(getActivity()));
         productListAdapter = new CartProductListAdapter(getActivity(), productArrayList);
-        listProduct.setAdapter(productListAdapter);
-        listProduct.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        productListAdapter.setOnItemClickListener(new CartProductListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(View view, int position) {
                 NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) getActivity();
                 if (navigationDrawerActivity != null) {
-                    navigationDrawerActivity.switchContent(ProductDetailFragment.newInstance(productArrayList.get(i).productId), false);
+                    navigationDrawerActivity.switchContent(ProductDetailFragment.newInstance(productArrayList.get(position).productId), false);
                 }
             }
         });
+        recyclerListProduct.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerListProduct.setAdapter(productListAdapter);
 
         txtCartSalePriceTotal.setText("Total : $ " + Cart.getCartSalePriceTotal(productArrayList));
         return layoutView;

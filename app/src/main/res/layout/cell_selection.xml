@@ -17,5 +17,9 @@
         android:textSize="@dimen/font_size_edittext" />
 
     <!--android:button="@drawable/custom_checkbox"-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_50" />
 
 </LinearLayout>

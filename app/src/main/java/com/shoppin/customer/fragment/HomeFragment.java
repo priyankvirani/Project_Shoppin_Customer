@@ -3,12 +3,13 @@ package com.shoppin.customer.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -41,16 +42,20 @@ public class HomeFragment extends BaseFragment {
 
     @BindView(R.id.rlvGlobalProgressbar)
     View rlvGlobalProgressbar;
-    @BindView(R.id.lstCategory)
-    ListView lstCategory;
+
+    @BindView(R.id.recyclerListCategory)
+    RecyclerView recyclerListCategory;
+
+    @BindView(R.id.imageViewPager)
+    AutoScrollViewPager offerViewPager;
+
+    @BindView(R.id.imageViewPagerIndicator)
+    LinearLayout offerViewPagerIndicator;
+
     private ArrayList<Category> categoryArrayList;
     private CategoryHomeAdapter categoryHomeAdapter;
-
     private ArrayList<String> offerArrayList;
     private ImageSlideAdapter offerHomeAdapter;
-    private AutoScrollViewPager offerViewPager;
-    private LinearLayout offerViewPagerIndicator;
-
 
     @Nullable
     @Override
@@ -59,13 +64,13 @@ public class HomeFragment extends BaseFragment {
         layoutView = inflater.inflate(R.layout.fragment_home, container, false);
 
         ButterKnife.bind(this, layoutView);
-        initView();
 
         initOffers();
 
         categoryArrayList = new ArrayList<>();
         categoryHomeAdapter = new CategoryHomeAdapter(getActivity(), categoryArrayList);
-        lstCategory.setAdapter(categoryHomeAdapter);
+        recyclerListCategory.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerListCategory.setAdapter(categoryHomeAdapter);
 
         getCategory();
 
@@ -82,15 +87,6 @@ public class HomeFragment extends BaseFragment {
     public void onResume() {
         super.onResume(); // Always call the superclass method first
         offerViewPager.startAutoScroll();
-    }
-
-    private void initView() {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        ViewGroup headerView = (ViewGroup) inflater.inflate(
-                R.layout.image_viewpager_offer, null);
-        offerViewPager = (AutoScrollViewPager) headerView.findViewById(R.id.imageViewPager);
-        offerViewPagerIndicator = (LinearLayout) headerView.findViewById(R.id.imageViewPagerIndicator);
-        lstCategory.addHeaderView(headerView);
     }
 
     private void getCategory() {

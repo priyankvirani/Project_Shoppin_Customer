@@ -6,11 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -193,23 +194,23 @@ public class ProductDetailFragment extends BaseFragment {
             productDetail.productHasOption = true;
             if (i == ICart.OPTION_0) {
                 txtOption0.setVisibility(View.VISIBLE);
-                productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).selected = true;
+                productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).isSelected = true;
                 txtOption0.setText(productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).optionValueName);
             } else if (i == ICart.OPTION_1) {
                 txtOption1.setVisibility(View.VISIBLE);
-                productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).selected = true;
+                productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).isSelected = true;
                 txtOption1.setText(productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).optionValueName);
             } else if (i == ICart.OPTION_2) {
                 txtOption2.setVisibility(View.VISIBLE);
-                productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).selected = true;
+                productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).isSelected = true;
                 txtOption2.setText(productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).optionValueName);
             } else if (i == ICart.OPTION_3) {
                 txtOption3.setVisibility(View.VISIBLE);
-                productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).selected = true;
+                productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).isSelected = true;
                 txtOption3.setText(productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).optionValueName);
             } else if (i == ICart.OPTION_4) {
                 txtOption4.setVisibility(View.VISIBLE);
-                productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).selected = true;
+                productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).isSelected = true;
                 txtOption4.setText(productDetail.productOptionArrayList.get(i).productOptionValueArrayList.get(0).optionValueName);
             }
         }
@@ -295,7 +296,7 @@ public class ProductDetailFragment extends BaseFragment {
 
     private void showAlertOption(final ProductOption productOption, final TextView txtOption) {
         TextView txtSelectionDone;
-        ListView listCategorytFilter;
+        RecyclerView recyclerFilter;
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
                 getActivity());
@@ -322,21 +323,19 @@ public class ProductDetailFragment extends BaseFragment {
 
 //        ArrayList<ProductOptionValue> productOptionValueArrayList = productOption.productOptionValueArrayList;
 
-        listCategorytFilter = (ListView) dialogView
-                .findViewById(R.id.listFilter);
-        final SelectionAdapter<ProductOptionValue> filterStateAdapter = new SelectionAdapter<ProductOptionValue>(
-                getActivity(), productOption.productOptionValueArrayList);
+        recyclerFilter = (RecyclerView) dialogView.findViewById(R.id.recyclerFilter);
+        final SelectionAdapter<ProductOptionValue> filterStateAdapter = new SelectionAdapter<ProductOptionValue>(productOption.productOptionValueArrayList);
         filterStateAdapter
                 .setBindAdapterInterface(new SelectionAdapter.IBindAdapterValues<ProductOptionValue>() {
                     @Override
-                    public void bindValues(SelectionAdapter.Holder holder, final int position) {
+                    public void bindValues(SelectionAdapter.MyViewHolder holder, final int position) {
                         // TODO Auto-generated method stub
 
                         holder.txtSelectionValue.setText(productOption.productOptionValueArrayList
                                 .get(position).optionValueName);
                         holder.txtSelectionValue.setChecked(productOption.productOptionValueArrayList
-                                .get(position).selected);
-                        if (productOption.productOptionValueArrayList.get(position).selected) {
+                                .get(position).isSelected);
+                        if (productOption.productOptionValueArrayList.get(position).isSelected) {
                             holder.txtSelectionValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.app_theme_1));
                         } else {
                             holder.txtSelectionValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.text_black));
@@ -349,9 +348,9 @@ public class ProductDetailFragment extends BaseFragment {
                                         // TODO Auto-generated method stub
                                         for (int i = 0; i < productOption.productOptionValueArrayList
                                                 .size(); i++) {
-                                            productOption.productOptionValueArrayList.get(i).selected = false;
+                                            productOption.productOptionValueArrayList.get(i).isSelected = false;
                                         }
-                                        productOption.productOptionValueArrayList.get(position).selected = true;
+                                        productOption.productOptionValueArrayList.get(position).isSelected = true;
                                         txtOption.setText(productOption.productOptionValueArrayList.get(position).optionValueName);
                                         filterStateAdapter.notifyDataSetChanged();
 
@@ -362,9 +361,9 @@ public class ProductDetailFragment extends BaseFragment {
                                 });
                     }
                 });
-        listCategorytFilter.setAdapter(filterStateAdapter);
-        alertDialog.getWindow().setBackgroundDrawableResource(
-                R.color.transparent);
+        recyclerFilter.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerFilter.setAdapter(filterStateAdapter);
+        alertDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
 //        alertDialog.setCancelable(false);
         alertDialog.show();
     }
