@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.shoppin.customer.R;
+import com.shoppin.customer.activity.NavigationDrawerActivity;
+import com.shoppin.customer.database.DBAdapter;
 import com.shoppin.customer.model.Product;
 import com.shoppin.customer.utils.Utils;
 
@@ -27,6 +29,7 @@ public class CartProductListAdapter extends RecyclerView.Adapter<CartProductList
     private Context context;
     private ArrayList<Product> productArrayList;
     private OnItemClickListener onItemClickListener;
+    private OnCartChangeListener onCartChangeListener;
 
     public CartProductListAdapter(Context context, ArrayList<Product> productArrayList) {
         this.context = context;
@@ -70,6 +73,44 @@ public class CartProductListAdapter extends RecyclerView.Adapter<CartProductList
                     .into(holder.imgProduct);
         }
 
+        holder.imgDecrementProductCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
+                if (navigationDrawerActivity != null) {
+                    DBAdapter.insertUpdateDeleteCart(context, productArrayList.get(position), false);
+                    notifyDataSetChanged();
+                    navigationDrawerActivity.updateCartCount();
+//                    holder.txtProductCartCount.setText("" + productArrayList.get(position).productQuantity);
+                    Log.d(TAG, "productArrayList.get(position).productQuantity = " + productArrayList.get(position).productQuantity);
+                    if (onCartChangeListener != null) {
+                        if (productArrayList.get(position).productQuantity <= 0) {
+                            onCartChangeListener.onCartChange(view, position, true);
+                        } else {
+                            onCartChangeListener.onCartChange(view, position, false);
+                        }
+                    }
+                }
+            }
+        });
+
+
+        holder.imgIncrementProductCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) context;
+                if (navigationDrawerActivity != null) {
+                    DBAdapter.insertUpdateDeleteCart(context, productArrayList.get(position), true);
+                    notifyDataSetChanged();
+                    navigationDrawerActivity.updateCartCount();
+//                    holder.txtProductCartCount.setText("" + productArrayList.get(position).productQuantity);
+                    if (onCartChangeListener != null) {
+                        onCartChangeListener.onCartChange(view, position, false);
+                    }
+                }
+            }
+        });
+
         holder.cellRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,8 +125,16 @@ public class CartProductListAdapter extends RecyclerView.Adapter<CartProductList
         this.onItemClickListener = onItemClickListener;
     }
 
+    public void setOnCartChangeListener(final OnCartChangeListener onCartChangeListener) {
+        this.onCartChangeListener = onCartChangeListener;
+    }
+
     public interface OnItemClickListener {
         public void onItemClick(View view, int position);
+    }
+
+    public interface OnCartChangeListener {
+        public void onCartChange(View view, int position, boolean isProductRemove);
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -109,6 +158,12 @@ public class CartProductListAdapter extends RecyclerView.Adapter<CartProductList
 
         @BindView(R.id.imgProduct)
         ImageView imgProduct;
+
+        @BindView(R.id.imgDecrementProductCart)
+        ImageView imgDecrementProductCart;
+
+        @BindView(R.id.imgIncrementProductCart)
+        ImageView imgIncrementProductCart;
 
         MyViewHolder(View itemView) {
             super(itemView);

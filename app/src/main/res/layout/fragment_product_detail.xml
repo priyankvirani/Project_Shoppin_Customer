@@ -96,11 +96,12 @@
                         android:id="@+id/txtProductCartCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/cart_circle_green"
+                        android:gravity="center"
                         android:maxLines="1"
-                        android:padding="@dimen/margin_tiny"
                         android:singleLine="true"
                         android:text="1"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/font_size_title" />
 
                     <ImageView

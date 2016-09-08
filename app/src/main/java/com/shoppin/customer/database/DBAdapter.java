@@ -381,13 +381,12 @@ public class DBAdapter {
                     else {
                         cartProduct.productQuantity--;
                         // Remove product from cart
-                        if (cartProduct.productQuantity <= 0) {
+                        product.productQuantity = cartProduct.productQuantity;
+                        if (product.productQuantity <= 0) {
                             db.delete(ICart.TABLE_CART, ICart.KEY_ID + " = '" + index + "'", null);
                         }
                         // Decrease cart count
                         else {
-
-                            product.productQuantity = cartProduct.productQuantity;
                             contentValues.put(ICart.KEY_PRODUCT_JSON, gson.toJson(product));
                             db.update(ICart.TABLE_CART, contentValues, ICart.KEY_ID + " = '" + index + "'", null);
                         }

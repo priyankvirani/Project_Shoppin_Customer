@@ -1,5 +1,6 @@
 package com.shoppin.customer.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,13 +21,9 @@ public class PaymentActivity extends AppCompatActivity {
 
     @OnClick(R.id.txtPayNow)
     void clickToPay() {
-//        Intent returnIntent = new Intent();
-//        returnIntent.putExtra(CheckOutActivity.RESPONSE_PAYMENT_ID,"payment123");
-//        setResult(Activity.RESULT_OK, returnIntent);
-//        finish();
-
-        Intent intent = new Intent(PaymentActivity.this, PaymentSuccessfulActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(CheckOutActivity.RESPONSE_PAYMENT_ID,"payment123");
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
 }

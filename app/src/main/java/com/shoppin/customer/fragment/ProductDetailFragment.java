@@ -378,22 +378,23 @@ public class ProductDetailFragment extends BaseFragment {
     /**
      * Logic for cart in local database
      */
-    @OnClick(R.id.imgIncrementProductCart)
-    void increaseCart() {
+
+    @OnClick(R.id.imgDecrementProductCart)
+    void decrementCart() {
         NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) getActivity();
         if (navigationDrawerActivity != null) {
-            DBAdapter.insertUpdateDeleteCart(getActivity(), productDetail, true);
+            DBAdapter.insertUpdateDeleteCart(getActivity(), productDetail, false);
             navigationDrawerActivity.updateCartCount();
             txtProductCartCount.setText("" + productDetail.productQuantity);
             updatePriceAsSelectedOption();
         }
     }
 
-    @OnClick(R.id.imgDecrementProductCart)
-    void decreaseCart() {
+    @OnClick(R.id.imgIncrementProductCart)
+    void incrementCart() {
         NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) getActivity();
         if (navigationDrawerActivity != null) {
-            DBAdapter.insertUpdateDeleteCart(getActivity(), productDetail, false);
+            DBAdapter.insertUpdateDeleteCart(getActivity(), productDetail, true);
             navigationDrawerActivity.updateCartCount();
             txtProductCartCount.setText("" + productDetail.productQuantity);
             updatePriceAsSelectedOption();

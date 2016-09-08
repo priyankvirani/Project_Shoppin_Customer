@@ -56,35 +56,62 @@
                 android:textSize="@dimen/font_size_edittext" />
 
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="10">
 
                 <TextView
                     android:id="@+id/txtProductSalePrice"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_weight="5"
                     android:padding="@dimen/margin_tiny"
                     android:text="txtProductSalePrice"
                     android:textColor="@color/app_theme_1"
                     android:textSize="@dimen/font_size_title" />
 
-                <TextView
-                    android:id="@+id/txtProductCartCount"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/margin_small"
-                    android:background="@drawable/cart_circle_green"
-                    android:gravity="center"
-                    android:maxLength="3"
-                    android:text="x"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font_size_edittext"
-                    android:visibility="visible" />
+                    android:layout_weight="4"
+                    android:gravity="right|center_vertical"
+                    android:orientation="horizontal">
 
-            </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/imgDecrementProductCart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_tiny"
+                        android:src="@drawable/minus_round_green" />
+
+                    <TextView
+                        android:id="@+id/txtProductCartCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_tiny"
+                        android:layout_marginRight="@dimen/margin_tiny"
+                        android:background="@drawable/cart_circle_green"
+                        android:gravity="center"
+                        android:maxLength="3"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="x"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_size_title" />
+
+                    <ImageView
+                        android:id="@+id/imgIncrementProductCart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_tiny"
+                        android:src="@drawable/plus_round_green" />
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

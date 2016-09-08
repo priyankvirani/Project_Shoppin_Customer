@@ -28,6 +28,7 @@ import com.shoppin.customer.database.DBAdapter;
 import com.shoppin.customer.database.IDatabase.IMap;
 import com.shoppin.customer.model.Address;
 import com.shoppin.customer.model.CheckoutDate;
+import com.shoppin.customer.model.Coupon;
 import com.shoppin.customer.model.Store;
 import com.shoppin.customer.network.DataRequest;
 import com.shoppin.customer.network.IWebService;
@@ -114,6 +115,8 @@ public class CheckOutActivity extends AppCompatActivity {
 
     private Address currentAddress;
 
+    private Coupon coupon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,7 +162,7 @@ public class CheckOutActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 String paymentId = data.getStringExtra(RESPONSE_PAYMENT_ID);
                 Log.d(TAG, "paymentId = " + paymentId);
-                Utils.showToastShort(CheckOutActivity.this, "Successfully.. clear cart");
+                Utils.showToastShort(CheckOutActivity.this, "Successfully");
                 finish();
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -195,9 +198,11 @@ public class CheckOutActivity extends AppCompatActivity {
 
     @OnClick(R.id.txtPay)
     void makePayment() {
-        Intent intent = new Intent(CheckOutActivity.this, PaymentActivity.class);
-//        startActivityForResult(intent, REQUEST_PAYMENT);
-        startActivity(intent);
+        if (checkoutValidation()) {
+            Intent intent = new Intent(CheckOutActivity.this, PaymentActivity.class);
+            startActivityForResult(intent, REQUEST_PAYMENT);
+//            startActivity(intent);
+        }
     }
 
     private void getCheckOutDetail() {
@@ -375,5 +380,25 @@ public class CheckOutActivity extends AppCompatActivity {
                 R.color.transparent);
 //        alertDialog.setCancelable(false);
         alertDialog.show();
+    }
+
+    private boolean checkoutValidation() {
+        boolean isValid = true;
+
+        if(currentAddress==null) {
+            Utils.showToastShort(CheckOutActivity.this, "Please select address");
+            isValid = false;
+        }
+//        else if() {
+//
+//        }
+//
+        return isValid;
+    }
+
+    private void placeOrderSuccessful() {
+        Intent intent = new Intent(CheckOutActivity.this, PaymentSuccessfulActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

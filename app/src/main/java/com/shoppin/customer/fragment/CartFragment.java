@@ -62,10 +62,26 @@ public class CartFragment extends BaseFragment {
                 }
             }
         });
+        productListAdapter.setOnCartChangeListener(new CartProductListAdapter.OnCartChangeListener() {
+            @Override
+            public void onCartChange(View view, int position, boolean isProductRemove) {
+                if (isProductRemove) {
+                    if (productArrayList != null) {
+                        productArrayList.clear();
+                        productArrayList.addAll(DBAdapter.getAllProductFromCart(getActivity()));
+                        productListAdapter.notifyDataSetChanged();
+                    }
+                }
+                updateCartTotal();
+            }
+        });
         recyclerListProduct.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerListProduct.setAdapter(productListAdapter);
 
-        txtCartSalePriceTotal.setText("Total : $ " + Cart.getCartSalePriceTotal(productArrayList));
+
+        updateCartTotal();
+
+
         return layoutView;
     }
 
@@ -78,5 +94,9 @@ public class CartFragment extends BaseFragment {
             Intent intent = new Intent(getActivity(), SigninActivity.class);
             startActivity(intent);
         }
+    }
+
+    private void updateCartTotal() {
+        txtCartSalePriceTotal.setText("Total : $ " + Cart.getCartSalePriceTotal(productArrayList));
     }
 }
