@@ -9,33 +9,10 @@ import java.util.ArrayList;
  */
 
 public class CheckoutDate {
-    boolean isSelected;
-    String date;
+    public boolean isSelected;
+
+    public String date;
+
     @SerializedName("slot_list")
-    ArrayList<CheckoutTime> checkoutTimesArrayList;
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
-    }
-
-
-    public ArrayList<CheckoutTime> getCheckoutTimesArrayList() {
-        return checkoutTimesArrayList;
-    }
-
-    public void setCheckoutTimesArrayList(ArrayList<CheckoutTime> checkoutTimesArrayList) {
-        this.checkoutTimesArrayList = checkoutTimesArrayList;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
+    public ArrayList<CheckoutTime> checkoutTimesArrayList;
 }

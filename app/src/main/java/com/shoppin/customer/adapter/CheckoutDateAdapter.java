@@ -24,11 +24,10 @@ import butterknife.ButterKnife;
 
 public class CheckoutDateAdapter extends RecyclerView.Adapter<CheckoutDateAdapter.MyViewHolder> {
     private static final String TAG = CheckoutDateAdapter.class.getSimpleName();
-
+    public RecyclerView timeRecyclerView;
     private Context context;
     private ArrayList<CheckoutDate> checkoutDateArrayList;
     private CheckoutTimeAdapter checkoutTimeAdapter;
-    public RecyclerView timeRecyclerView;
 
     public CheckoutDateAdapter(Context context, ArrayList<CheckoutDate> checkoutDateArrayList
             , RecyclerView timeRecyclerView) {
@@ -56,27 +55,26 @@ public class CheckoutDateAdapter extends RecyclerView.Adapter<CheckoutDateAdapte
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.txtDate.setText(checkoutDateArrayList.get(position).getDate());
-        Log.e(TAG, "isSelected = " + checkoutDateArrayList.get(position).isSelected() + ",position =" + position);
-        if (checkoutDateArrayList.get(position).isSelected()) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        holder.txtDate.setText(checkoutDateArrayList.get(position).date);
+        Log.e(TAG, "isSelected = " + checkoutDateArrayList.get(position).isSelected + ",position =" + position);
+        if (checkoutDateArrayList.get(position).isSelected) {
             holder.txtDate.setTextColor(context.getResources().getColor(R.color.white));
             holder.txtDate.setBackground(Utils.getDrawable(context, R.drawable.bg_date_time_selected));
-            checkoutTimeAdapter.setCheckoutTimeArrayList(checkoutDateArrayList.get(position).getCheckoutTimesArrayList());
+            checkoutTimeAdapter.setCheckoutTimeArrayList(checkoutDateArrayList.get(position).checkoutTimesArrayList);
         } else {
             holder.txtDate.setTextColor(context.getResources().getColor(R.color.text_black));
             holder.txtDate.setBackground(Utils.getDrawable(context, R.drawable.bg_date_time_non_selected));
         }
 
-//        holder.txtDate.setOnClickListener(new OnItemClickListener(checkoutDateArrayList.get(position), position, holder.txtDate));
         holder.txtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 for (int i = 0; i < checkoutDateArrayList.size(); i++) {
-                    if (i != position) {
-                        checkoutDateArrayList.get(i).setSelected(false);
+                    if (i != holder.getAdapterPosition()) {
+                        checkoutDateArrayList.get(i).isSelected = false;
                     } else {
-                        checkoutDateArrayList.get(i).setSelected(true);
+                        checkoutDateArrayList.get(i).isSelected = true;
                     }
                 }
                 notifyDataSetChanged();

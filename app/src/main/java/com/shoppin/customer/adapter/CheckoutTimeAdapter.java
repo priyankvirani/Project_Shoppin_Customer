@@ -45,10 +45,10 @@ public class CheckoutTimeAdapter extends RecyclerView.Adapter<CheckoutTimeAdapte
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.txtTime.setText(checkoutTimeArrayList.get(position).getTime());
-        Log.e(TAG, "isSelected = " + checkoutTimeArrayList.get(position).isSelected() + ",position =" + position);
-        if (checkoutTimeArrayList.get(position).isSelected()) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        holder.txtTime.setText(checkoutTimeArrayList.get(position).time);
+        Log.e(TAG, "isSelected = " + checkoutTimeArrayList.get(position).isSelected + ",position =" + position);
+        if (checkoutTimeArrayList.get(position).isSelected) {
             holder.txtTime.setTextColor(context.getResources().getColor(R.color.white));
             holder.txtTime.setBackground(Utils.getDrawable(context, R.drawable.bg_date_time_selected));
         } else {
@@ -61,10 +61,10 @@ public class CheckoutTimeAdapter extends RecyclerView.Adapter<CheckoutTimeAdapte
             public void onClick(View view) {
                 holder.txtTime.setBackgroundColor(context.getResources().getColor(R.color.app_theme_1));
                 for (int i = 0; i < checkoutTimeArrayList.size(); i++) {
-                    if (i != position) {
-                        checkoutTimeArrayList.get(i).setSelected(false);
+                    if (i != holder.getAdapterPosition()) {
+                        checkoutTimeArrayList.get(i).isSelected = false;
                     } else {
-                        checkoutTimeArrayList.get(i).setSelected(true);
+                        checkoutTimeArrayList.get(i).isSelected = true;
                     }
                 }
                 notifyDataSetChanged();
@@ -75,7 +75,7 @@ public class CheckoutTimeAdapter extends RecyclerView.Adapter<CheckoutTimeAdapte
     protected void setCheckoutTimeArrayList(ArrayList<CheckoutTime> tmpCheckoutTimeArrayList) {
         checkoutTimeArrayList = tmpCheckoutTimeArrayList;
         for (int i = 0; i < checkoutTimeArrayList.size(); i++) {
-            checkoutTimeArrayList.get(i).setSelected(false);
+            checkoutTimeArrayList.get(i).isSelected = false;
         }
         notifyDataSetChanged();
     }

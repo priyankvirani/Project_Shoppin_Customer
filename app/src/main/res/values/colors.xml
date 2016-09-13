@@ -23,4 +23,11 @@
     <color name="shadow">#d8d8d8</color>
     <color name="text_black">#464646</color>
     <color name="tab_not_selected">#649f1f</color>
+
+    <!-- Order Status -->
+    <color name="order_status_default">#f0f0f0</color>
+    <color name="order_status_accepted">#a9e662</color>
+    <color name="order_status_purchasing">#9cdb52</color>
+    <color name="order_status_shipping">#8fd044</color>
+    <color name="order_status_completed">#80cc28</color>
 </resources>

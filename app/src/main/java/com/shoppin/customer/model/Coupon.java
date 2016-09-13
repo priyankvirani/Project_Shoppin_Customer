@@ -5,6 +5,7 @@ package com.shoppin.customer.model;
  */
 
 public class Coupon {
-    String couponCode;
-    String discountAmount;
+    public String couponCode = "0";
+    public double discountAmount = 0.0;
+    public String couponId = "0";
 }

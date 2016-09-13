@@ -45,8 +45,8 @@ public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.MyVi
 
     @Override
     public void onBindViewHolder(final StoreListAdapter.MyViewHolder holder, final int position) {
-        holder.txtStoreName.setText(storeArrayList.get(position).store_name);
-        holder.txtStoreAddress.setText(storeArrayList.get(position).store_address);
+        holder.txtStoreName.setText(storeArrayList.get(position).storeName);
+        holder.txtStoreAddress.setText(storeArrayList.get(position).storeAddress);
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

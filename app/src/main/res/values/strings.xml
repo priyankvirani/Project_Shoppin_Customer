@@ -12,15 +12,20 @@
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
     <string name="retry">Retry</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
     <string name="user_login_id">Mobile Number</string>
 
     <!-- Error messages -->
     <string name="error_title">Error : </string>
+    <string name="error_app_update">Need to update app</string>
     <string name="error_technichal_problem">Having some technical problem</string>
     <string name="error_internet_check">Internet connection is not available. Please enable wifi or internet data.</string>
     <string name="error_required">Required</string>
     <string name="error_valid_suburb">Select valid suburb</string>
     <string name="error_confirm_password">Password and Confirm Password must be same</string>
+    <string name="error_checkout_address">Please select address</string>
+    <string name="error_checkout_date_time">Please select date and time</string>
 
     <!-- Textview -->
     <string name="text_dont_have_account">Don\'t have an account</string>
@@ -90,8 +95,9 @@
     <string name="activity_credit_card">Credit Card</string>
     <string name="fragment_myaccount">My Account</string>
 
-    <!--Toast message-->
     <string name="toast_address_add">Address added successfully</string>
     <string name="toast_address_update">Address updated successfully</string>
+
+    <string name="alert_message_remove_product">Do you want to remove %1$s ?"</string>
 
 </resources>

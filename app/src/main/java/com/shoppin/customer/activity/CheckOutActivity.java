@@ -29,12 +29,14 @@ import com.shoppin.customer.database.IDatabase.IMap;
 import com.shoppin.customer.model.Address;
 import com.shoppin.customer.model.CheckoutDate;
 import com.shoppin.customer.model.Coupon;
+import com.shoppin.customer.model.Product;
 import com.shoppin.customer.model.Store;
 import com.shoppin.customer.network.DataRequest;
 import com.shoppin.customer.network.IWebService;
 import com.shoppin.customer.utils.Cart;
 import com.shoppin.customer.utils.Utils;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -106,16 +108,15 @@ public class CheckOutActivity extends AppCompatActivity {
 
     @BindView(R.id.txtGrandTotal)
     TextView txtGrandTotal;
-
+    String paymentId;
     private ArrayList<CheckoutDate> checkoutDateArrayList;
     private CheckoutDateAdapter checkoutDateAdapter;
-
     private ArrayList<Address> addressArrayList;
     private ArrayList<Store> storeArrayList;
-
     private Address currentAddress;
-
-    private Coupon coupon;
+    private Coupon currentCoupon = new Coupon();
+    private double allProductPrice = 0.0;
+    private double totalPrice = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +134,7 @@ public class CheckOutActivity extends AppCompatActivity {
         imgEditAddress.setVisibility(View.GONE);
         imgAddNewAddress.setVisibility(View.VISIBLE);
 
-        checkoutDateArrayList = new ArrayList<CheckoutDate>();
+        checkoutDateArrayList = new ArrayList<>();
         checkoutDateAdapter = new CheckoutDateAdapter(CheckOutActivity.this, checkoutDateArrayList, timeRecyclerView);
         LinearLayoutManager horizontalLayoutManagaerdate
                 = new LinearLayoutManager(CheckOutActivity.this, LinearLayoutManager.HORIZONTAL, false);
@@ -160,10 +161,10 @@ public class CheckOutActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_PAYMENT) {
             if (resultCode == Activity.RESULT_OK) {
-                String paymentId = data.getStringExtra(RESPONSE_PAYMENT_ID);
+                paymentId = data.getStringExtra(RESPONSE_PAYMENT_ID);
                 Log.d(TAG, "paymentId = " + paymentId);
-                Utils.showToastShort(CheckOutActivity.this, "Successfully");
-                finish();
+                placeOrder();
+//                Utils.showToastShort(CheckOutActivity.this, "Successfully");
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
                 Utils.showToastShort(CheckOutActivity.this, "Unsuccessfully");
@@ -188,7 +189,8 @@ public class CheckOutActivity extends AppCompatActivity {
 
     @OnClick(R.id.txtApplyCoupon)
     void applyCoupon() {
-        Utils.showToastShort(CheckOutActivity.this, getString(R.string.under_development));
+//        Utils.showToastShort(CheckOutActivity.this, getString(R.string.under_development));
+        getCouponVerify(etxCoupon.getText().toString(), allProductPrice);
     }
 
     @OnClick(R.id.txtStore)
@@ -201,7 +203,6 @@ public class CheckOutActivity extends AppCompatActivity {
         if (checkoutValidation()) {
             Intent intent = new Intent(CheckOutActivity.this, PaymentActivity.class);
             startActivityForResult(intent, REQUEST_PAYMENT);
-//            startActivity(intent);
         }
     }
 
@@ -210,7 +211,7 @@ public class CheckOutActivity extends AppCompatActivity {
             JSONObject loginParam = new JSONObject();
             loginParam.put(IWebService.KEY_REQ_CUSTOMER_ID,
                     DBAdapter.getMapKeyValueString(CheckOutActivity.this, IMap.CUSTOMER_ID));
-            loginParam.put(IWebService.KEY_REQ_CUSTOMER__SUBURB_ID,
+            loginParam.put(IWebService.KEY_REQ_CUSTOMER_SUBURB_ID,
                     DBAdapter.getMapKeyValueString(CheckOutActivity.this, IMap.SUBURB_ID));
 
             DataRequest checkOutDetailDataRequest = new DataRequest(CheckOutActivity.this);
@@ -236,8 +237,8 @@ public class CheckOutActivity extends AppCompatActivity {
                             if (tmpCheckoutDateAdapter != null) {
                                 checkoutDateArrayList.clear();
                                 checkoutDateArrayList.addAll(tmpCheckoutDateAdapter);
-                                checkoutDateArrayList.get(0).setSelected(true);
-                                checkoutDateArrayList.get(0).getCheckoutTimesArrayList().get(0).setSelected(true);
+                                checkoutDateArrayList.get(0).isSelected = true;
+                                checkoutDateArrayList.get(0).checkoutTimesArrayList.get(0).isSelected = true;
                                 checkoutDateAdapter.notifyDataSetChanged();
                                 Log.d(TAG, "checkoutDateArrayList.size() = " + checkoutDateArrayList.size());
                             }
@@ -300,13 +301,18 @@ public class CheckOutActivity extends AppCompatActivity {
     }
 
     private void setTotal() {
-        double allProductPrice = Cart.getCartSalePriceTotal(DBAdapter.getAllProductFromCart(CheckOutActivity.this));
+        allProductPrice = 0.0;
         double couponPrice = 0.0;
-        double totalPrice = 0.0;
+        totalPrice = 0.0;
+
+        allProductPrice = Cart.getCartSalePriceTotal(DBAdapter.getAllProductFromCart(CheckOutActivity.this));
+
+        couponPrice = currentCoupon.discountAmount;
+
         txtAllProductPrice.setText("$ " + allProductPrice);
         txtCouponPrice.setText("$ " + couponPrice);
 
-        totalPrice = allProductPrice + couponPrice;
+        totalPrice = allProductPrice - couponPrice;
         txtTotalPrice.setText("$ " + totalPrice);
 
         txtGrandTotal.setText("$ " + totalPrice);
@@ -339,8 +345,6 @@ public class CheckOutActivity extends AppCompatActivity {
             }
         });
 
-//        ArrayList<ProductOptionValue> productOptionValueArrayList = productOption.productOptionValueArrayList;
-
         recyclerFilter = (RecyclerView) dialogView.findViewById(R.id.recyclerFilter);
         final SelectionAdapter<Store> filterStateAdapter = new SelectionAdapter<Store>(storeArrayList);
         filterStateAdapter
@@ -349,7 +353,7 @@ public class CheckOutActivity extends AppCompatActivity {
                     public void bindValues(SelectionAdapter.MyViewHolder holder, final int position) {
                         // TODO Auto-generated method stub
 
-                        holder.txtSelectionValue.setText(storeArrayList.get(position).store_name);
+                        holder.txtSelectionValue.setText(storeArrayList.get(position).storeName);
                         holder.txtSelectionValue.setChecked(storeArrayList.get(position).isSelected);
                         if (storeArrayList.get(position).isSelected) {
                             holder.txtSelectionValue.setTextColor(ContextCompat.getColor(CheckOutActivity.this, R.color.app_theme_1));
@@ -366,7 +370,7 @@ public class CheckOutActivity extends AppCompatActivity {
                                             storeArrayList.get(i).isSelected = false;
                                         }
                                         storeArrayList.get(position).isSelected = true;
-                                        txtStore.setText(storeArrayList.get(position).store_name);
+                                        txtStore.setText(storeArrayList.get(position).storeName);
                                         filterStateAdapter.notifyDataSetChanged();
 
                                         alertDialog.dismiss();
@@ -385,14 +389,25 @@ public class CheckOutActivity extends AppCompatActivity {
     private boolean checkoutValidation() {
         boolean isValid = true;
 
-        if(currentAddress==null) {
-            Utils.showToastShort(CheckOutActivity.this, "Please select address");
+        if (currentAddress == null) {
             isValid = false;
+            Utils.showToastShort(CheckOutActivity.this, getString(R.string.error_checkout_address));
+        } else {
+            boolean isDateTimeSelected = false;
+            for (int indexDate = 0; indexDate < checkoutDateArrayList.size(); indexDate++) {
+                if (checkoutDateArrayList.get(indexDate).isSelected) {
+                    for (int indexTime = 0; indexTime < checkoutDateArrayList.get(indexDate).checkoutTimesArrayList.size(); indexTime++) {
+                        if (checkoutDateArrayList.get(indexDate).checkoutTimesArrayList.get(indexTime).isSelected) {
+                            isDateTimeSelected = true;
+                        }
+                    }
+                }
+            }
+            if (!isDateTimeSelected) {
+                isValid = false;
+                Utils.showToastShort(CheckOutActivity.this, getString(R.string.error_checkout_date_time));
+            }
         }
-//        else if() {
-//
-//        }
-//
         return isValid;
     }
 
@@ -400,5 +415,179 @@ public class CheckOutActivity extends AppCompatActivity {
         Intent intent = new Intent(CheckOutActivity.this, PaymentSuccessfulActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+
+    private void placeOrder() {
+        try {
+            DataRequest placeOrderDataRequest = new DataRequest(CheckOutActivity.this);
+            placeOrderDataRequest.execute(IWebService.PLACE_ORDER, generatePlaceOrderJson(), new DataRequest.CallBack() {
+                public void onPreExecute() {
+                    rlvGlobalProgressbar.setVisibility(View.VISIBLE);
+                }
+
+                public void onPostExecute(String response) {
+                    try {
+                        rlvGlobalProgressbar.setVisibility(View.GONE);
+                        if (!DataRequest.hasError(CheckOutActivity.this, response, true)) {
+                            placeOrderSuccessful();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String generatePlaceOrderJson() {
+        String placeOrderJObject = null;
+        try {
+            JSONObject mainJObject = new JSONObject();
+
+            /**
+             * Order json object
+             */
+            JSONObject orderJObject = new JSONObject();
+            orderJObject.put(IWebService.KEY_REQ_CUSTOMER_ID,
+                    DBAdapter.getMapKeyValueString(CheckOutActivity.this, IMap.CUSTOMER_ID));
+            orderJObject.put(IWebService.KEY_REQ_ORDER_SUBURB_ID,
+                    DBAdapter.getMapKeyValueString(CheckOutActivity.this, IMap.SUBURB_ID));
+            orderJObject.put(IWebService.KEY_REQ_CUSTOMER_BILLING_ID, currentAddress.addressId);
+            orderJObject.put(IWebService.KEY_REQ_CUSTOMER_SHIPPING_ID, currentAddress.addressId);
+
+            String slotId = "0";
+            for (int indexDate = 0; indexDate < checkoutDateArrayList.size(); indexDate++) {
+                if (checkoutDateArrayList.get(indexDate).isSelected) {
+                    for (int indexTime = 0; indexTime < checkoutDateArrayList.get(indexDate).checkoutTimesArrayList.size(); indexTime++) {
+                        if (checkoutDateArrayList.get(indexDate).checkoutTimesArrayList.get(indexTime).isSelected) {
+                            slotId = checkoutDateArrayList.get(indexDate).checkoutTimesArrayList.get(indexTime).slotId;
+                        }
+                    }
+                }
+            }
+            orderJObject.put(IWebService.KEY_REQ_ORDER_SLOT_ID, slotId);
+
+
+            String storeId = "0";
+            if (storeArrayList != null) {
+                for (int i = 0; i < storeArrayList.size(); i++) {
+                    if (storeArrayList.get(i).isSelected) {
+                        storeId = storeArrayList.get(i).storeId;
+                    }
+                }
+            }
+            orderJObject.put(IWebService.KEY_REQ_PREFERRED_STORE_ID, storeId);
+
+
+            setTotal();
+            orderJObject.put(IWebService.KEY_REQ_SUB_TOTAL, allProductPrice);
+            orderJObject.put(IWebService.KEY_REQ_TOTAL, totalPrice);
+            mainJObject.put(IWebService.KEY_REQ_ORDER, orderJObject);
+
+            /**
+             * Coupon json object
+             */
+            JSONObject couponJObject = new JSONObject();
+            couponJObject.put(IWebService.KEY_REQ_COUPON_ID, currentCoupon.couponCode);
+            couponJObject.put(IWebService.KEY_REQ_COUPON_DISCOUNT_AMOUNT, currentCoupon.discountAmount);
+            mainJObject.put(IWebService.KEY_REQ_COUPON, couponJObject);
+
+            /**
+             * Payment json object
+             */
+            JSONObject paymentJObject = new JSONObject();
+            paymentJObject.put(IWebService.KEY_REQ_PAYMENT_TRANSACTION_ID, paymentId);
+            mainJObject.put(IWebService.KEY_REQ_PAYMENT, paymentJObject);
+
+            /**
+             * Product list json object
+             */
+            JSONArray productJArray = new JSONArray();
+
+            ArrayList<Product> productArrayList = DBAdapter.getAllProductFromCart(CheckOutActivity.this);
+            for (int indexProduct = 0; indexProduct < productArrayList.size(); indexProduct++) {
+                Product product = productArrayList.get(indexProduct);
+                JSONObject productJObject = new JSONObject();
+                productJObject.put(IWebService.KEY_REQ_PRODUCT_ID, product.productId);
+                productJObject.put(IWebService.KEY_REQ_PRODUCT_NAME, product.productName);
+                productJObject.put(IWebService.KEY_REQ_PRODUCT_QUANTITY, product.productQuantity);
+                productJObject.put(IWebService.KEY_REQ_PRODUCT_PRICE, product.productPrice);
+                productJObject.put(IWebService.KEY_REQ_PRODUCT_SALEPRICE, product.productSalePrice);
+
+                JSONArray optionJArray = new JSONArray();
+                if (product.productHasOption) {
+                    for (int indexOption = 0; indexOption < product.productOptionArrayList.size(); indexOption++) {
+                        JSONObject optionJObject = new JSONObject();
+                        for (int indexValue = 0;
+                             indexValue < product.productOptionArrayList.get(indexOption).productOptionValueArrayList.size();
+                             indexValue++) {
+                            if (product.productOptionArrayList.get(indexOption).productOptionValueArrayList.get(indexValue).isSelected) {
+                                optionJObject.put(IWebService.KEY_REQ_PRODUCT_ID, product.productId);
+                                optionJObject.put(IWebService.KEY_REQ_OPTION_ID, product.productOptionArrayList.get(indexOption).optionId);
+                                optionJObject.put(IWebService.KEY_REQ_NAME, product.productOptionArrayList.get(indexOption).optionName);
+                                optionJObject.put(IWebService.KEY_REQ_OPTION_VALUE_ID,
+                                        product.productOptionArrayList.get(indexOption).productOptionValueArrayList.get(indexValue).optionValueId);
+                                optionJObject.put(IWebService.KEY_REQ_OPTION_VALUE,
+                                        product.productOptionArrayList.get(indexOption).productOptionValueArrayList.get(indexValue).optionValueName);
+                                optionJArray.put(optionJObject);
+                                break;
+                            }
+                        }
+                    }
+                }
+                productJObject.put(IWebService.KEY_REQ_OPTION_LIST, optionJArray);
+
+                productJArray.put(productJObject);
+            }
+            mainJObject.put(IWebService.KEY_REQ_PRODUCT_LIST, productJArray);
+            placeOrderJObject = mainJObject.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "placeOrderJObject = " + placeOrderJObject);
+        return placeOrderJObject;
+    }
+
+    private void getCouponVerify(final String couponNumber, double subTotalPrice) {
+        JSONObject couponParam = new JSONObject();
+        try {
+            couponParam.put(IWebService.KEY_REQ_CUSTOMER_ID,
+                    DBAdapter.getMapKeyValueString(CheckOutActivity.this, IMap.CUSTOMER_ID));
+            couponParam.put(IWebService.KEY_REQ_COUPON_CODE, couponNumber);
+            couponParam.put(IWebService.KEY_REQ_ORDER_AMOUNT, subTotalPrice);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        DataRequest couponVerifyDataRequest = new DataRequest(CheckOutActivity.this);
+        couponVerifyDataRequest.execute(IWebService.REDEEM_COUPON, couponParam.toString(), new DataRequest.CallBack() {
+            public void onPreExecute() {
+                rlvGlobalProgressbar.setVisibility(View.VISIBLE);
+            }
+
+            public void onPostExecute(String response) {
+                try {
+                    rlvGlobalProgressbar.setVisibility(View.GONE);
+                    if (!DataRequest.hasError(CheckOutActivity.this, response, true)) {
+                        JSONObject dataJObject = DataRequest.getJObjWebdata(response);
+
+                        currentCoupon = new Coupon();
+                        currentCoupon.couponCode = couponNumber;
+                        currentCoupon.couponId = dataJObject.getString(IWebService.KEY_RES_COUPON_ID);
+                        currentCoupon.discountAmount = dataJObject.getDouble(IWebService.KEY_RES_DISCOUNT_AMOUNT);
+
+                        setTotal();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
     }
 }

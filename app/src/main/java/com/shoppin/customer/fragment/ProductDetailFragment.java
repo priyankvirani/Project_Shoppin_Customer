@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -176,7 +177,7 @@ public class ProductDetailFragment extends BaseFragment {
 //        txtProductPrice.setPaintFlags(txtProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 //        txtProductSalePrice.setText("$ " + String.valueOf(productDetail.productSalePrice));
 
-        txtDescription.setText(productDetail.productDescription);
+        txtDescription.setText(Html.fromHtml(productDetail.productDescription));
 
         if (productDetail.productImages != null && productDetail.productImages.size() > 0) {
             productImageArrayList.clear();

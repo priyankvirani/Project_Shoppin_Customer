@@ -48,8 +48,10 @@ public class SigninActivity extends AppCompatActivity {
 
     @BindView(R.id.txtSignin)
     TextView txtSignin;
+
     @BindView(R.id.txtSignup)
     TextView txtSignup;
+
     @BindView(R.id.txtGuest)
     TextView txtGuest;
 

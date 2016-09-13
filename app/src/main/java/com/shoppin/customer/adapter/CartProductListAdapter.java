@@ -29,6 +29,7 @@ public class CartProductListAdapter extends RecyclerView.Adapter<CartProductList
     private Context context;
     private ArrayList<Product> productArrayList;
     private OnItemClickListener onItemClickListener;
+    private OnItemLongClickListener onItemLongClickListener;
     private OnCartChangeListener onCartChangeListener;
 
     public CartProductListAdapter(Context context, ArrayList<Product> productArrayList) {
@@ -119,10 +120,24 @@ public class CartProductListAdapter extends RecyclerView.Adapter<CartProductList
                 }
             }
         });
+
+//        holder.cellRoot.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View view) {
+//                if (onItemLongClickListener!= null) {
+//                    onItemLongClickListener.onItemLongClick(view, position);
+//                }
+//                return false;
+//            }
+//        });
     }
 
     public void setOnItemClickListener(final OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setOnItemLongClickListener(final OnItemLongClickListener onItemLongClickListener) {
+        this.onItemLongClickListener = onItemLongClickListener;
     }
 
     public void setOnCartChangeListener(final OnCartChangeListener onCartChangeListener) {
@@ -130,11 +145,15 @@ public class CartProductListAdapter extends RecyclerView.Adapter<CartProductList
     }
 
     public interface OnItemClickListener {
-        public void onItemClick(View view, int position);
+        void onItemClick(View view, int position);
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(View view, int position);
     }
 
     public interface OnCartChangeListener {
-        public void onCartChange(View view, int position, boolean isProductRemove);
+        void onCartChange(View view, int position, boolean isProductRemove);
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

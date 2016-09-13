@@ -28,6 +28,7 @@ import com.shoppin.customer.fragment.CartFragment;
 import com.shoppin.customer.fragment.HomeFragment;
 import com.shoppin.customer.fragment.IUpdateFragment;
 import com.shoppin.customer.fragment.MyAccountFragment;
+import com.shoppin.customer.fragment.MyOrderListFragment;
 import com.shoppin.customer.fragment.OfferFragment;
 import com.shoppin.customer.fragment.StoreListFragment;
 import com.shoppin.customer.fragment.UnderDevelopmentFragment;
@@ -123,7 +124,7 @@ public class NavigationDrawerActivity extends BaseActivity {
                         break;
 
                     case IDrawerMenu.MY_ORDER_ID:
-                        newContent = new UnderDevelopmentFragment();
+                        newContent = new MyOrderListFragment();
                         break;
 
                     case IDrawerMenu.CART_ID:

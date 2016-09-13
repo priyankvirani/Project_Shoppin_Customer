@@ -20,11 +20,12 @@ public class PaymentSuccessfulActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_successful);
         ButterKnife.bind(this);
+
+        DBAdapter.clearCart(PaymentSuccessfulActivity.this);
     }
 
     @OnClick(R.id.txtContinueShopping)
     void continueShopping() {
-        DBAdapter.clearCart(PaymentSuccessfulActivity.this);
         Intent intent = new Intent(PaymentSuccessfulActivity.this, NavigationDrawerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

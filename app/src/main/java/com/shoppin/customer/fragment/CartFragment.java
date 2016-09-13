@@ -1,8 +1,10 @@
 package com.shoppin.customer.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -62,6 +64,12 @@ public class CartFragment extends BaseFragment {
                 }
             }
         });
+        productListAdapter.setOnItemLongClickListener(new CartProductListAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        });
         productListAdapter.setOnCartChangeListener(new CartProductListAdapter.OnCartChangeListener() {
             @Override
             public void onCartChange(View view, int position, boolean isProductRemove) {
@@ -98,5 +106,24 @@ public class CartFragment extends BaseFragment {
 
     private void updateCartTotal() {
         txtCartSalePriceTotal.setText("Total : $ " + Cart.getCartSalePriceTotal(productArrayList));
+    }
+
+
+    private void showAlertForDeleteProduct(final String productName, final int position) {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setMessage(getActivity().getString(R.string.alert_message_remove_product, productName));
+        alertDialogBuilder.setPositiveButton(R.string.delete,
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        productArrayList.get(position).productQuantity = 0;
+                        DBAdapter.insertUpdateDeleteCart(getActivity(), productArrayList.get(position), false);
+                    }
+                });
+        alertDialogBuilder.setNegativeButton(R.string.cancel, null);
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }
