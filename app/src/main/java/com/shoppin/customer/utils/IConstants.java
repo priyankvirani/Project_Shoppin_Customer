@@ -16,11 +16,11 @@ public interface IConstants {
         String CHANGE_SUBURB = "Change Suburb";
         int CHANGE_SUBURB_ID = 1002;
 
-        String STORE_LIST = "Store List";
-        int STORE_LIST_ID = 1004;
+        String NEAR_BY_STORES = "Near By Stores";
+        int NEAR_BY_STORES_ID = 1004;
 
         // Login required
-        String MY_ORDER = "My Order";
+        String MY_ORDERS = "My Orders";
         int MY_ORDER_ID = 1005;
 
         String CART = "Cart";
@@ -31,5 +31,17 @@ public interface IConstants {
 
         String ABOUT_US = "About Us";
         int ABOUT_US_ID = 1008;
+    }
+
+    interface IPushNotification {
+        String APP_LAUNCH_TYPE = "app_launch_type";
+        String APP_LAUNCH_NOTIFICATION = "app_launch_notification";
+        String PUSHNOTIFICATION_DATA = "push_data";
+        String MESSAGE = "message";
+        String TTITLE = "title";
+        String IMAGE = "image";
+        String NOTIFICATION_TYPE = "type";
+        String NOTIFICATION_TYPE_OFFER = "offer";
+        String NOTIFICATION_TYPE_ORDER = "order";
     }
 }

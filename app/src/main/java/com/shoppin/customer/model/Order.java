@@ -10,16 +10,26 @@ public class Order {
     @SerializedName("order_number")
     public String orderNumber;
 
-    public String status;
+    @SerializedName("delivery_date")
+    public String orderDeliveryDate;
 
-    @SerializedName("ordered_on")
-    public String orderDateTime;
+    @SerializedName("delivery_time")
+    public String orderDeliveryTime;
+
+    @SerializedName("item_count")
+    public String itemCount;
 
     public String total;
+
+    public int status = -1;
 
     @SerializedName("status_label")
     public String statusLabel;
 
-    @SerializedName("item_count")
-    public String itemCount;
+    @SerializedName("completed_date")
+    public String orderCompleteDate;
+
+    @SerializedName("completed_time")
+    public String orderCompleteTime;
+
 }

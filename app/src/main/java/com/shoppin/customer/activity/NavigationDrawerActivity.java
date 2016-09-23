@@ -34,7 +34,10 @@ import com.shoppin.customer.fragment.StoreListFragment;
 import com.shoppin.customer.fragment.UnderDevelopmentFragment;
 import com.shoppin.customer.model.NavigationDrawerMenu;
 import com.shoppin.customer.model.Product;
+import com.shoppin.customer.utils.IConstants.IPushNotification;
 import com.shoppin.customer.utils.Utils;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -119,7 +122,7 @@ public class NavigationDrawerActivity extends BaseActivity {
                         newContent = new UnderDevelopmentFragment();
                         break;
 
-                    case IDrawerMenu.STORE_LIST_ID:
+                    case IDrawerMenu.NEAR_BY_STORES_ID:
                         newContent = new StoreListFragment();
                         break;
 
@@ -171,12 +174,14 @@ public class NavigationDrawerActivity extends BaseActivity {
         }
         initDrawer();
 
+        onNewIntent(getIntent());
+
         // For the first time load it will display
         // Product fragment as default
         if (content == null) {
             Log.i(TAG, "content is null");
-            switchContent(new HomeFragment(), true);
-            // switchContent(new ProductDetailFragment());
+//            switchContent(new HomeFragment(), true);
+            switchContent(new MyOrderListFragment(), true);
         }
         getSupportFragmentManager().addOnBackStackChangedListener(
                 onBackStackChangedListener);
@@ -235,11 +240,11 @@ public class NavigationDrawerActivity extends BaseActivity {
                 IDrawerMenu.CHANGE_SUBURB_ID, R.drawable.street));
 //        drawerMenuAdapter.add(new NavigationDrawerMenu(IDrawerMenu.HOME,
 //                IDrawerMenu.HOME_ID, R.drawable.user));
-        navigationDrawerMenuArrayList.add(new NavigationDrawerMenu(IDrawerMenu.STORE_LIST,
-                IDrawerMenu.STORE_LIST_ID, R.drawable.storelist));
+        navigationDrawerMenuArrayList.add(new NavigationDrawerMenu(IDrawerMenu.NEAR_BY_STORES,
+                IDrawerMenu.NEAR_BY_STORES_ID, R.drawable.storelist));
 
         if (DBAdapter.getMapKeyValueBoolean(NavigationDrawerActivity.this, IMap.IS_LOGIN)) {
-            navigationDrawerMenuArrayList.add(new NavigationDrawerMenu(IDrawerMenu.MY_ORDER,
+            navigationDrawerMenuArrayList.add(new NavigationDrawerMenu(IDrawerMenu.MY_ORDERS,
                     IDrawerMenu.MY_ORDER_ID, R.drawable.myorder));
         }
 
@@ -414,4 +419,37 @@ public class NavigationDrawerActivity extends BaseActivity {
         return cartCount;
     }
 
+    @Override
+    public void onNewIntent(Intent intent) {
+        try {
+            super.onNewIntent(intent);
+            // getIntent() should always return the most recent
+            setIntent(intent);
+            Bundle extras = intent.getExtras();
+
+            if (extras != null && extras.containsKey(IPushNotification.APP_LAUNCH_TYPE)
+                    && extras.getString(IPushNotification.APP_LAUNCH_TYPE).equals(
+                    IPushNotification.APP_LAUNCH_NOTIFICATION)) {
+                if (extras.containsKey(IPushNotification.PUSHNOTIFICATION_DATA)) {
+                    pushLaunch(extras.getString(IPushNotification.PUSHNOTIFICATION_DATA));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void pushLaunch(String push_data) {
+        try {
+            JSONObject pushDataJObject = new JSONObject(push_data);
+            if (pushDataJObject.has(IPushNotification.NOTIFICATION_TYPE)) {
+                // Pushnotification for new poll
+                if (pushDataJObject.getString(IPushNotification.NOTIFICATION_TYPE).equals(IPushNotification.NOTIFICATION_TYPE_ORDER)) {
+                    switchContent(new MyOrderListFragment(), true);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

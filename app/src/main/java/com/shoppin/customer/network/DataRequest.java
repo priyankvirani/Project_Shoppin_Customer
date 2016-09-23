@@ -1,8 +1,8 @@
 package com.shoppin.customer.network;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 
 import com.shoppin.customer.R;
@@ -37,9 +37,11 @@ public class DataRequest {
 
     private boolean showProgressDialog;
     private ProgressDialog progressDialog;
+    private Handler handler;
 
     public DataRequest(Context context) {
         this.context = context;
+        handler = new Handler(this.context.getMainLooper());
     }
 
     public static boolean hasError(Context context, String response,
@@ -73,7 +75,7 @@ public class DataRequest {
                     if (isShowAlert) {
                         showAlert(context,
                                 null,
-                                context.getString(R.string.error_technichal_problem));
+                                context.getString(R.string.error_technical_problem));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -150,7 +152,9 @@ public class DataRequest {
             progressDialog.show();
         }
 
-        callBack.onPreExecute();
+        if (callBack != null) {
+            callBack.onPreExecute();
+        }
         Log.e(TAG, "url = " + url);
         Log.e(TAG, "jsonParam = " + jsonParam);
         try {
@@ -193,19 +197,39 @@ public class DataRequest {
     }
 
     private void sendResponse(final String response) {
-        if (callBack != null) {
-            if (context != null) {
-                ((Activity) context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+        if (handler != null) {
+            handler.post(new Runnable() {
+
+                @Override
+                public void run() {
+                    if (callBack != null) {
                         callBack.onPostExecute(response);
                         if (isShowProgressDialog() && progressDialog != null && progressDialog.isShowing()) {
                             progressDialog.dismiss();
                         }
+                    } else {
+                        Log.d(TAG, "response = " + response);
                     }
-                });
-            }
+                }
+            });
         }
+
+
+//        if (callBack != null) {
+//            if (context != null && context instanceof Activity) {
+//                ((Activity) context).runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        callBack.onPostExecute(response);
+//                        if (isShowProgressDialog() && progressDialog != null && progressDialog.isShowing()) {
+//                            progressDialog.dismiss();
+//                        }
+//                    }
+//                });
+//            }
+//        } else {
+//            Log.d(TAG, "response = " + response);
+//        }
     }
 
     public interface CallBack {

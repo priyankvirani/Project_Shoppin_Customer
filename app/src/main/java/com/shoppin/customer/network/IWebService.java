@@ -10,11 +10,16 @@ public interface IWebService {
 //    String MAIN_URL = "http://192.168.0.1/shoppin/service/index.php/";
     String MAIN_URL = "http://dddemo.net/php/shoppin/service/index.php/";
 
+    String DEVICE_TYPE = "android";
+
     String KEY_RES_DATA = "data";
     String KEY_RES_SUCCESS = "success";
     String KEY_RES_MESSAGE = "message";
 
+
     String APP_VERSION_VERIFY = MAIN_URL + "app/VersionCustomer";
+
+    String FCM_TOKEN_REGISTRATION = MAIN_URL + "customer/DeviceRegistration";
 
     String GET_SUBURB = MAIN_URL + "customer/GetSuburb";
 
@@ -40,6 +45,12 @@ public interface IWebService {
     String REDEEM_COUPON = MAIN_URL + "coupon/RedeemCoupon";
 
     String GET_MY_ORDERS = MAIN_URL + "order/MyOrders";
+
+    String GET_ORDER_DETAIL = MAIN_URL + "order/OrderDetail";
+
+    String CUSTOMER_SIGN_OUT = MAIN_URL + "customer/Logout";
+
+    String NEAR_BY_STORES = MAIN_URL + "store/NearByStores";
 
     /**
      * Request Params
@@ -86,6 +97,8 @@ public interface IWebService {
     String KEY_REQ_OPTION_VALUE = "option_value";
     String KEY_REQ_COUPON_CODE = "coupon_code";
     String KEY_REQ_ORDER_AMOUNT = "order_amount";
+    String KEY_REQ_ORDER_NUMBER = "order_number";
+    String KEY_REQ_SUBURB_ID = "customer_suburb_id";
 
     /**
      * Response Params
@@ -104,4 +117,28 @@ public interface IWebService {
     String KEY_RES_DISCOUNT_AMOUNT = "discount_amount";
     String KEY_RES_COUPON_ID = "coupon_id";
     String KEY_RES_UPDATE_REQUIRE = "update_require";
+    String KEY_RES_ADDRESS = "address";
+    String KEY_RES_ORDER = "order";
+
+    /**
+     * Order status response
+     */
+    int KEY_RES_ORDER_STATUS_PLACED = 1;
+    int KEY_RES_ORDER_STATUS_REJECTED = 2;
+    int KEY_RES_ORDER_STATUS_ACCEPTED = 3;
+    int KEY_RES_ORDER_STATUS_PURCHASING = 4;
+    int KEY_RES_ORDER_STATUS_SHIPPING = 5;
+    int KEY_RES_ORDER_STATUS_COMPLETED = 6;
+    int KEY_RES_ORDER_STATUS_ON_HOLD = 7;
+    int KEY_RES_ORDER_STATUS_CANCELLED = 8;
+
+    /**
+     * Product status
+     */
+    int KEY_RES_PRODUCT_STATUS_AVAILABLE = 1;
+    int KEY_RES_PRODUCT_STATUS_NOT_AVAILABLE = -1;
+    int KEY_RES_PRODUCT_STATUS_NORMAL = 0;
+
+    int KEY_REQ_PREFERRED_STORE_ID_NONE = 0;
+
 }

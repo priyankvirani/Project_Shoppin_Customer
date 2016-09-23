@@ -11,17 +11,13 @@ import java.io.Serializable;
 public class Store implements Serializable {
 
     @SerializedName("store_id")
-    public String storeId;
+    public int storeId;
+
     @SerializedName("store_name")
     public String storeName;
+
     @SerializedName("store_address")
     public String storeAddress;
 
     public boolean isSelected;
-
-    public Store(String store_id, String store_name, String store_address) {
-        this.storeId = store_id;
-        this.storeName = store_name;
-        this.storeAddress = store_address;
-    }
 }

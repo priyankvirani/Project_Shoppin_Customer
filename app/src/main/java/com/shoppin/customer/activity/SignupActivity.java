@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shoppin.customer.R;
@@ -22,6 +23,7 @@ import com.shoppin.customer.database.IDatabase;
 import com.shoppin.customer.model.Suburb;
 import com.shoppin.customer.network.DataRequest;
 import com.shoppin.customer.network.IWebService;
+import com.shoppin.customer.utils.UniqueId;
 import com.shoppin.customer.utils.Utils;
 
 import org.json.JSONException;
@@ -93,9 +95,9 @@ public class SignupActivity extends AppCompatActivity {
                 signupParam.put(IWebService.KEY_REQ_CUSTOMER_POSTCODE, etxPostcode.getText().toString());
                 signupParam.put(IWebService.KEY_REQ_CUSTOMER_PASSWORD, etxPassword.getText().toString());
 
-                signupParam.put(IWebService.KEY_REQ_CUSTOMER_DEVICE_TYPE, etxSigninId.getText().toString());
-                signupParam.put(IWebService.KEY_REQ_CUSTOMER_DEVICE_TOKEN, etxSigninId.getText().toString());
-                signupParam.put(IWebService.KEY_REQ_CUSTOMER_DEVICE_ID, etxSigninId.getText().toString());
+                signupParam.put(IWebService.KEY_REQ_CUSTOMER_DEVICE_TYPE, IWebService.DEVICE_TYPE);
+                signupParam.put(IWebService.KEY_REQ_CUSTOMER_DEVICE_TOKEN, FirebaseInstanceId.getInstance().getToken());
+                signupParam.put(IWebService.KEY_REQ_CUSTOMER_DEVICE_ID, UniqueId.getUniqueId(SignupActivity.this));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

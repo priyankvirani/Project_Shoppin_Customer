@@ -23,6 +23,7 @@
     <color name="shadow">#d8d8d8</color>
     <color name="text_black">#464646</color>
     <color name="tab_not_selected">#649f1f</color>
+    <color name="red">#F44336</color>
 
     <!-- Order Status -->
     <color name="order_status_default">#f0f0f0</color>

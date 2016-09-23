@@ -15,17 +15,20 @@
     <string name="update">Update</string>
     <string name="delete">Delete</string>
     <string name="user_login_id">Mobile Number</string>
+    <string name="preferred_store">Preferred Store :</string>
 
     <!-- Error messages -->
     <string name="error_title">Error : </string>
     <string name="error_app_update">Need to update app</string>
-    <string name="error_technichal_problem">Having some technical problem</string>
+    <string name="error_technical_problem">Having some technical problem</string>
     <string name="error_internet_check">Internet connection is not available. Please enable wifi or internet data.</string>
     <string name="error_required">Required</string>
     <string name="error_valid_suburb">Select valid suburb</string>
     <string name="error_confirm_password">Password and Confirm Password must be same</string>
     <string name="error_checkout_address">Please select address</string>
     <string name="error_checkout_date_time">Please select date and time</string>
+    <string name="error_order_onhold">Your order is on hold</string>
+    <string name="error_order_cancelled">Your order is cancelled</string>
 
     <!-- Textview -->
     <string name="text_dont_have_account">Don\'t have an account</string>
@@ -49,6 +52,7 @@
     <string name="text_continue_shopping">Continue Shopping</string>
     <string name="text_payment_success">Thank you for shopping with us. Your order has been successfully placed. Shopper will call you.</string>
     <string name="text_select_near_by_store">Select Near By Store</string>
+    <string name="text_repeat">Repeat</string>
 
 
     <!-- Edit text hint-->
@@ -94,6 +98,17 @@
     <string name="activity_choose_delivery_option">Choose Delivery Option</string>
     <string name="activity_credit_card">Credit Card</string>
     <string name="fragment_myaccount">My Account</string>
+    <string name="fragment_store_list">Near By Store</string>
+
+    <!-- Order Status -->
+    <string name="order_accepted">Accepted</string>
+    <string name="order_purchasing">Purchasing</string>
+    <string name="order_shipping">Shipping</string>
+    <string name="order_completed">Completed</string>
+
+    <!-- Product status -->
+    <string name="product_available">Available</string>
+    <string name="product_not_available">Not Available</string>
 
     <string name="toast_address_add">Address added successfully</string>
     <string name="toast_address_update">Address updated successfully</string>

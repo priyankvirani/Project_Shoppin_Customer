@@ -53,7 +53,7 @@ public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.MyVi
         @BindView(R.id.txtStoreName)
         TextView txtStoreName;
 
-        @BindView(R.id.txtStoreAddress)
+        @BindView(R.id.txtPreferredStoreAddress)
         TextView txtStoreAddress;
 
         MyViewHolder(View itemView) {

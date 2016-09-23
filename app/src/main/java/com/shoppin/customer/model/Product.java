@@ -39,8 +39,11 @@ public class Product implements Serializable {
     @SerializedName("option_list")
     public ArrayList<ProductOption> productOptionArrayList;
 
-    public int productQuantity;
+    public int availability;
 
+    public int productQuantity;
+    // For repeat order
+    public boolean isRepeat = true;
     //    private double priceAsPerSelection = 0;
     private String selectedOptions = null;
 

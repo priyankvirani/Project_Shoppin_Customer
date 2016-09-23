@@ -43,9 +43,10 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(final MyOrderAdapter.MyViewHolder holder, final int position) {
-        Log.e(TAG, "productId = " + orderArrayList.get(position).orderDateTime);
+        Log.e(TAG, "productId = " + orderArrayList.get(position).orderDeliveryDate);
 
-        holder.txtOrderDateTime.setText(orderArrayList.get(position).orderDateTime);
+        holder.txtOrderDeliveryDate.setText(orderArrayList.get(position).orderDeliveryDate);
+        holder.txtOrderDeliveryTime.setText(orderArrayList.get(position).orderDeliveryTime);
         holder.txtOrderNumber.setText(orderArrayList.get(position).orderNumber);
         holder.txtOrderTotal.setText("$ " + orderArrayList.get(position).total);
         holder.txtOrderItemCount.setText(orderArrayList.get(position).itemCount);
@@ -73,8 +74,11 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.MyViewHo
         @BindView(R.id.cellRoot)
         View cellRoot;
 
-        @BindView(R.id.txtOrderDateTime)
-        TextView txtOrderDateTime;
+        @BindView(R.id.txtOrderDeliveryDate)
+        TextView txtOrderDeliveryDate;
+
+        @BindView(R.id.txtOrderDeliveryTime)
+        TextView txtOrderDeliveryTime;
 
         @BindView(R.id.txtOrderNumber)
         TextView txtOrderNumber;

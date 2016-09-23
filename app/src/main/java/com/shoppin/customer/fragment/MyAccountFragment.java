@@ -28,6 +28,7 @@ import com.shoppin.customer.model.Suburb;
 import com.shoppin.customer.network.DataRequest;
 import com.shoppin.customer.network.IWebService;
 import com.shoppin.customer.utils.Customer;
+import com.shoppin.customer.utils.UniqueId;
 import com.shoppin.customer.utils.Utils;
 
 import org.json.JSONException;
@@ -91,6 +92,8 @@ public class MyAccountFragment extends BaseFragment {
         layoutView = inflater.inflate(R.layout.fragment_my_account, container, false);
         ButterKnife.bind(this, layoutView);
 
+        rootContainer.setVisibility(View.GONE);
+
         addressArrayList = new ArrayList<>();
         addressAdapter = new AddressAdapter(getActivity(), addressArrayList, MyAccountFragment.this);
         rclAddress.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -100,7 +103,6 @@ public class MyAccountFragment extends BaseFragment {
         suburbArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, suburbArrayList);
         atxSuburb.setAdapter(suburbArrayAdapter);
 
-        rootContainer.setVisibility(View.GONE);
         getSuburbs();
 
         return layoutView;
@@ -143,10 +145,7 @@ public class MyAccountFragment extends BaseFragment {
 
     @OnClick(R.id.txtLogout)
     void logOut() {
-        Customer.singOut(getActivity());
-        Intent intent = new Intent(getActivity(), SigninActivity.class);
-        startActivity(intent);
-        getActivity().finish();
+        signOut();
     }
 
     @OnClick(R.id.btnExport)
@@ -343,6 +342,37 @@ public class MyAccountFragment extends BaseFragment {
                         e.printStackTrace();
                     }
 
+                }
+            }
+        });
+    }
+
+    private void signOut() {
+        JSONObject myOrderParam = new JSONObject();
+        try {
+            myOrderParam.put(IWebService.KEY_REQ_CUSTOMER_ID,
+                    DBAdapter.getMapKeyValueString(getActivity(), IMap.CUSTOMER_ID));
+            myOrderParam.put(IWebService.KEY_REQ_CUSTOMER_DEVICE_ID, UniqueId.getUniqueId(getActivity()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        DataRequest getSuburbsDataRequest = new DataRequest(getActivity());
+        getSuburbsDataRequest.execute(IWebService.CUSTOMER_SIGN_OUT, myOrderParam.toString(), new DataRequest.CallBack() {
+            public void onPreExecute() {
+                rlvGlobalProgressbar.setVisibility(View.VISIBLE);
+            }
+
+            public void onPostExecute(String response) {
+                try {
+                    rlvGlobalProgressbar.setVisibility(View.GONE);
+                    if (!DataRequest.hasError(getActivity(), response, true)) {
+                        Customer.singOut(getActivity());
+                        Intent intent = new Intent(getActivity(), SigninActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });

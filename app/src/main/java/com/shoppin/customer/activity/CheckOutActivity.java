@@ -472,7 +472,7 @@ public class CheckOutActivity extends AppCompatActivity {
             orderJObject.put(IWebService.KEY_REQ_ORDER_SLOT_ID, slotId);
 
 
-            String storeId = "0";
+            int storeId = 0;
             if (storeArrayList != null) {
                 for (int i = 0; i < storeArrayList.size(); i++) {
                     if (storeArrayList.get(i).isSelected) {

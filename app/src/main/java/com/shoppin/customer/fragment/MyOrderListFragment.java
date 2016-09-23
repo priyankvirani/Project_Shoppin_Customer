@@ -19,7 +19,6 @@ import com.shoppin.customer.database.IDatabase;
 import com.shoppin.customer.model.Order;
 import com.shoppin.customer.network.DataRequest;
 import com.shoppin.customer.network.IWebService;
-import com.shoppin.customer.utils.Utils;
 
 import org.json.JSONObject;
 
@@ -58,7 +57,6 @@ public class MyOrderListFragment extends BaseFragment {
                 if (navigationDrawerActivity != null) {
                     navigationDrawerActivity.switchContent(MyOrderDetailFragment.newInstance(orderArrayList.get(position).orderNumber), false);
                 }
-                Utils.showToastShort(getActivity(), getString(R.string.under_development));
             }
         });
         recyclerListOrder.setLayoutManager(new LinearLayoutManager(getActivity()));

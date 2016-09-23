@@ -6,41 +6,60 @@
     android:orientation="vertical"
     android:padding="@dimen/margin_tiny">
 
-    <TextView
-        android:id="@+id/txtOrderDateTime"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin_tiny"
-        android:textColor="@color/black"
-        android:textSize="@dimen/font_size_title"
-        android:textStyle="bold" />
+        android:padding="@dimen/margin_tiny">
 
-    <TextView
-        android:id="@+id/txtOrderNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/margin_tiny"
-        android:textColor="@color/black"
-        android:textSize="@dimen/font_size_edittext" />
+        <TextView
+            android:id="@+id/txtOrderNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_edittext" />
 
-    <TextView
-        android:id="@+id/txtOrderTotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/margin_tiny"
-        android:textColor="@color/black"
-        android:textSize="@dimen/font_size_edittext" />
+        <TextView
+            android:id="@+id/txtOrderDeliveryDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_edittext" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_tiny">
+
+        <TextView
+            android:id="@+id/txtOrderTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_edittext" />
+
+        <TextView
+            android:id="@+id/txtOrderDeliveryTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_edittext" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_tiny">
 
         <TextView
             android:id="@+id/txtOrderItemCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:padding="@dimen/margin_tiny"
             android:textColor="@color/black"
             android:textSize="@dimen/font_size_edittext" />
 
@@ -49,7 +68,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:padding="@dimen/margin_tiny"
             android:textColor="@color/black"
             android:textSize="@dimen/font_size_edittext" />
 

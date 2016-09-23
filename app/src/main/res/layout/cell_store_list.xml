@@ -2,28 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_tiny"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/txtStoreName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_small"
-        android:text="Store Name"
+        android:layout_margin="@dimen/margin_tiny"
         android:textColor="@color/black"
         android:textSize="@dimen/font_size_edittext"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/txtStoreAddress"
+        android:id="@+id/txtPreferredStoreAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_small"
+        android:layout_margin="@dimen/margin_tiny"
         android:drawableLeft="@drawable/nearbystreet"
         android:drawablePadding="@dimen/margin_tiny"
         android:gravity="center_vertical"
-        android:text="Near By Street"
-        android:textColor="@color/gray"
+        android:textColor="@color/text_black"
         android:textSize="@dimen/font_size_edittext" />
 
     <View
