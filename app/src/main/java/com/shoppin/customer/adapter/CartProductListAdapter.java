@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class CartProductListAdapter extends RecyclerView.Adapter<CartProductList
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
     private OnCartChangeListener onCartChangeListener;
+
 
     public CartProductListAdapter(Context context, ArrayList<Product> productArrayList) {
         this.context = context;
@@ -183,6 +185,7 @@ public class CartProductListAdapter extends RecyclerView.Adapter<CartProductList
 
         @BindView(R.id.imgIncrementProductCart)
         ImageView imgIncrementProductCart;
+
 
         MyViewHolder(View itemView) {
             super(itemView);

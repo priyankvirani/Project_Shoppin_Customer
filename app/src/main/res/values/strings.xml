@@ -23,6 +23,7 @@
     <string name="error_technical_problem">Having some technical problem</string>
     <string name="error_internet_check">Internet connection is not available. Please enable wifi or internet data.</string>
     <string name="error_required">Required</string>
+    <string name="error_card_expires">Card Expires</string>
     <string name="error_valid_suburb">Select valid suburb</string>
     <string name="error_confirm_password">Password and Confirm Password must be same</string>
     <string name="error_checkout_address">Please select address</string>
