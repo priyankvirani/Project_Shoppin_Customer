@@ -50,7 +50,7 @@ import static com.shoppin.customer.utils.IConstants.IDrawerMenu;
 
 public class NavigationDrawerActivity extends BaseActivity {
 
-    private static final String TAG = SignupActivity.class.getSimpleName();
+    private static final String TAG = NavigationDrawerActivity.class.getSimpleName();
 
     @BindView(R.id.txtFragmentTitle)
     public TextView txtFragmentTitle;

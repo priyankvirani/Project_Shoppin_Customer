@@ -1,27 +1,58 @@
 {
   "project_info": {
-    "project_number": "1050007260479",
-    "firebase_url": "https://customer-lets-go-shoppin.firebaseio.com",
-    "project_id": "customer-lets-go-shoppin",
-    "storage_bucket": "customer-lets-go-shoppin.appspot.com"
+    "project_number": "437213884048",
+    "firebase_url": "https://project-shoppin-customer.firebaseio.com",
+    "project_id": "project-shoppin-customer",
+    "storage_bucket": "project-shoppin-customer.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1050007260479:android:07da137ddeb3222e",
+        "mobilesdk_app_id": "1:437213884048:android:07da137ddeb3222e",
         "android_client_info": {
           "package_name": "com.shoppin.customer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1050007260479-i28ako0a3s64glna4nrrvr12njga72t7.apps.googleusercontent.com",
+          "client_id": "437213884048-ls84h3t1s17vnh1nkligglpshaac8u5e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBDtkpbkGRcnOqirIUK_wMW1VQzPzN2Q5g"
+          "current_key": "AIzaSyB92dPhBl8ojFz5QrRLiofqO7dQUPVaTm8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437213884048:android:eb149a1e82293929",
+        "android_client_info": {
+          "package_name": "com.shoppin.shopper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "437213884048-ls84h3t1s17vnh1nkligglpshaac8u5e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB92dPhBl8ojFz5QrRLiofqO7dQUPVaTm8"
         }
       ],
       "services": {

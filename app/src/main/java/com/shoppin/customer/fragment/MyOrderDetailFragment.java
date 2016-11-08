@@ -215,6 +215,7 @@ public class MyOrderDetailFragment extends BaseFragment {
                                 dataJObject.getJSONObject(IWebService.KEY_RES_ORDER).toString(),
                                 new TypeToken<Order>() {
                                 }.getType());
+
                         if (order != null) {
                             setOrder(order);
                             setOrderStatus(order.status);
